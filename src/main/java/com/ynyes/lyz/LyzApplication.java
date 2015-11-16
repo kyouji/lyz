@@ -1,12 +1,55 @@
 package com.ynyes.lyz;
 
+import javax.servlet.MultipartConfigElement;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.MultipartConfigFactory;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
-@SpringBootApplication
-public class LyzApplication {
+@Configuration
+@ComponentScan
+@EnableAutoConfiguration
+public class LyzApplication extends SpringBootServletInitializer implements CommandLineRunner{
 
+	@Bean
+	public CharacterEncodingFilter encodingFilter() {
+		CharacterEncodingFilter filter = new CharacterEncodingFilter();
+		filter.setEncoding("UTF-8");
+		filter.setForceEncoding(true);
+		return filter;
+	}
+
+	@Bean
+    MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize("10MB");
+        factory.setMaxRequestSize("10MB");
+        return factory.createMultipartConfig();
+    }
+
+	
     public static void main(String[] args) {
         SpringApplication.run(LyzApplication.class, args);
     }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        // Customize the application or call application.sources(...) to add sources
+        // Since our example is itself a @Configuration class we actually don't
+        // need to override this method.
+        return application;
+    }
+    
+	@Override
+	public void run(String... arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
