@@ -577,7 +577,7 @@ function del_goods_comb(obj) {
     </div>
     
     <div class="tab-content" style="display: none;">
-        
+<#--        
         <dl>
             <dt>支持限时抢购</dt>
             <dd>
@@ -701,7 +701,7 @@ function del_goods_comb(obj) {
                 <input name="groupSaleSoldNumber" type="text" value="<#if goods?? && goods.groupSaleSoldNumber??>${goods.groupSaleSoldNumber?c}<#else>0</#if>" class="input normal" datatype="n0-10" sucmsg=" ">
                 <span class="Validform_checktip">团购已售商品数量</span>
             </dd>
-        </dl>
+        </dl> -->
     </div>
     
     <div class="tab-content" style="display: none;">

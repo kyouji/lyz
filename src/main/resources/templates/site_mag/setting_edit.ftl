@@ -288,7 +288,7 @@ $(function () {
     </dl>
 </div> 
 <div class="tab-content" style="display: none;">
-    <dl>
+ <#-->   <dl>
         <dt>注册成功奖励积分</dt>
         <dd>
             <input name="registerSuccessPoints" type="text" value="<#if setting??>${setting.registerSuccessPoints!"50"}<#else>50</#if>" class="input normal" datatype="n" sucmsg=" ">
@@ -323,7 +323,7 @@ $(function () {
                 <input name="returnRation" type="text" value="<#if setting??>${setting.returnRation!"0"}<#else>0</#if>" class="input normal"  sucmsg=" ">
                 <span class="Validform_checktip">填写小数(返利计算为订单总金额*返利比例)</span>
             </dd>
-        </dl>
+        </dl> -->
 </div>    
 <div class="tab-content" style="display: none;">
     <dl>

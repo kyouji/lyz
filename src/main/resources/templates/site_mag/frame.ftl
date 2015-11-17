@@ -110,7 +110,7 @@
   var returnsnumber = 0;        //退换货
   var complainsnumber = 0;      //投诉
   $(document).ready(function () {
-        setInterval("remind()",30000);
+        //setInterval("remind()",30000);
   });
   //下单自动提醒
     function remind(){    
