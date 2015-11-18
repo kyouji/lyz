@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 自提点
+ * 门店
  * 
  * @author Sharon
  *
@@ -19,11 +19,11 @@ public class TdDiySite {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
- // 自提点名称
+    // 门店名称
     @Column
     private String title;
     
-    // 自提点地址
+    // 门店地址
     @Column
     private String address;
     
@@ -43,17 +43,21 @@ public class TdDiySite {
     @Column
     private String complainTele;
     
-    // 自提点省份
+    // 门店省份
     @Column
     private String province;
     
-    // 自提点城市
+    // 门店城市
     @Column
     private String city;
     
-    // 自提点城市地区
+    // 门店城市地区
     @Column
     private String disctrict;
+    
+    //门店区域Id
+    @Column
+    private Long regionId;
     
     // 是否启用
     @Column
@@ -83,22 +87,6 @@ public class TdDiySite {
     @Column
     private String showPictures;
     
-    // 登录名
-    @Column
-    private String username;
-    
-    // 登录密码
-    @Column
-    private String password;
-    
-    // 手机号
-    @Column
-    private String mobile;
-    
-    // 返利
-    @Column
-    private Double totalCash;
-
     // 客服qq
     @Column
     private String qq;
@@ -107,7 +95,15 @@ public class TdDiySite {
     @Column
     private Boolean isFlagShip;
     
-    public Long getId() {
+	public Long getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -225,38 +221,6 @@ public class TdDiySite {
 
 	public void setShowPictures(String showPictures) {
 		this.showPictures = showPictures;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public Double getTotalCash() {
-		return totalCash;
-	}
-
-	public void setTotalCash(Double totalCash) {
-		this.totalCash = totalCash;
 	}
 
 	public String getAddress() {

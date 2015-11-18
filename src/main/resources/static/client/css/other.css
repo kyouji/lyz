@@ -1,0 +1,60 @@
+/*01.注册*/
+.onload_content{width: 10rem; float: left;}
+.reg_logo{width: 10rem; float: left; text-align: center; margin-top: 1.5rem; margin-bottom: 0.6rem;}
+.reg_logo img{width: 2.6rem;}
+.reg_content{ float: left; width: 7.6rem;padding-left: 1.2rem; padding-bottom: 0.6rem; }
+.reg_content dl{ width: 7.6rem; overflow: hidden;}
+.reg_content dt{ width: 7.6rem; border-bottom:#c91425 2px solid; height: 1.3rem; float: left; }
+.reg_content dt input{ width: 40%; border: none;height: 1.2rem; color: #999999;}
+.reg_content dt input:nth-child(1){float: left;}
+.reg_content dt input:nth-child(2){float: right; height: 1rem; margin-top: 0.15rem; border-radius: 0.5rem; background: white; border:#cc1421 1px solid; color: #cc1421;}
+.reg_content dd{width: 100%;border-bottom:#c91425 2px solid;height: 1.3rem; float: left;}
+.reg_content dd input{ width: 100%; height: 1.2rem; border: none; line-height: 1.2rem; color: #999999;}
+.reg_content dd:nth-last-child(2){border: none;margin-top: 1rem;} 
+.reg_content dd:nth-last-child(2) input{ border: none;  color: white; background: #c91425; border-radius:0.6rem; }
+.reg_content dd:nth-last-child(1){border: none;margin-top: 0.6rem;} 
+.reg_content dd:nth-last-child(1) input{border:#c91425 2px solid;  color: white;  border-radius:0.6rem; background: white; color:#c91425 ;}
+.my_sele{display: block; background:url(/client/images/on_down.png) no-repeat 7rem;background-size: 0.56rem;  height: 1.2rem;width: 7.6rem; line-height: 1.2rem; color: black; color: #999999; ; }
+.my_box{width: 7.6rem; position: absolute; left: 0px; top: 1.3rem; z-index: 9999; display: none;}
+.my_box a{display: block; width: 7.6rem; height: 1rem; line-height: 1rem; float: left; color: #999999; background: white; border-bottom: #c91425 1px solid;}
+.my_box a.bd{color:#c91425 ;}
+
+/*02.登录*/
+.on_content{ float: left; width: 7.6rem;padding-left: 1.2rem; padding-bottom: 0.6rem; }
+.on_content dl{ width: 7.6rem; overflow: hidden;}
+.on_content dt{ width: 7.6rem;  height: 1.3rem; float: left; margin-top: 0.2rem; }
+.on_content dt input{ width: 6.4rem; border: none;height: 1.2rem; color: #999999; float: right;border-bottom:#c91425 2px solid;}
+.on_content dt:nth-child(1){background: url(/client/images/on_icon01.png) no-repeat left; background-size: 1rem;}
+.on_content dt:nth-child(2){background: url(/client/images/on_icon02.png) no-repeat left; background-size: 1rem;}
+.on_content dd{width: 100%;border-bottom:#c91425 2px solid;height: 1.3rem; float: left;}
+.on_content dd input{ width: 100%; height: 1.2rem; border: none; line-height: 1.2rem; color: #999999;}
+.on_content dd:nth-last-child(3){border: none;margin-top: 1rem;} 
+.on_content dd:nth-last-child(3) input{ border: none;  color: white; border-radius:0.6rem;background:#c91425; }
+.on_content dd:nth-last-child(2){border: none;margin-top: 0.6rem;} 
+.on_content dd:nth-last-child(2) input{border:#c91425 2px solid;  color: white;  border-radius:0.6rem; background: white; color:#c91425 ;}
+.on_content dd:nth-last-child(1){ border: none;margin-top: 0.8rem;}
+.on_content dd:nth-last-child(1) a{ display: block; color: #c91425; background: url(/client/images/on_icon03.png) no-repeat right; background-size: 0.4rem; width: 2.6rem; margin: auto; line-height:1.3rem ; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
