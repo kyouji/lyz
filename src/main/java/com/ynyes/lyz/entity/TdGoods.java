@@ -362,6 +362,10 @@ public class TdGoods {
     @Column
     private String code;
     
+    // 归属： 1 华润商品  2 乐意装商品
+    @Column
+    private Long belongTo;
+    
     public Long getId() {
         return id;
     }
@@ -498,7 +502,23 @@ public class TdGoods {
         this.configuration = configuration;
     }
 
-    public String getService() {
+    public List<TdGoodsParameter> getParamList() {
+		return paramList;
+	}
+
+	public void setParamList(List<TdGoodsParameter> paramList) {
+		this.paramList = paramList;
+	}
+
+	public Long getBelongTo() {
+		return belongTo;
+	}
+
+	public void setBelongTo(Long belongTo) {
+		this.belongTo = belongTo;
+	}
+
+	public String getService() {
         return service;
     }
 
