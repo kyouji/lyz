@@ -18,11 +18,9 @@ function showCityInfo() {
 			if (status === 'complete' && result.info === 'OK') {
 				if (result && result.city && result.bounds) {
 					var cityinfo = result.city;
-					alert("您当前所在城市：" + cityinfo + "");
-					if (!cities.toString().indexOf(cityinfo) > -1) {
-						$('.my_box').append('<a>'+cityinfo+'</a>');
+					if (cities.toString().indexOf(cityinfo) > -1) {
+						$("#my_box").html(cityinfo);
 					}
-					$("#my_city").html(cityinfo);
 				}
 			}
 		});

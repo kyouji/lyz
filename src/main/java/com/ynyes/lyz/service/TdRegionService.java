@@ -42,13 +42,13 @@ public class TdRegionService {
 	}
 	
 	/**
-	 * 根据下属城市的名称查找到开通了配送业务的省会城市
+	 * 根据城市名称查询到地区实体
 	 * @author dengxiao
 	 */
-	public TdRegion findBySubCityNameAndCitySendTrue(String subCityName){
-		if(null == subCityName){
+	public TdRegion findByCityName(String cityName){
+		if(null == cityName){
 			return null;
 		}
-		return repository.findBySubCityNameAndCitySendTrue(subCityName);
+		return repository.findByCityName(cityName);
 	}
 }

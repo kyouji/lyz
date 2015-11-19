@@ -46,16 +46,19 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="app">
-        <header class="top_head">登录</header>
+        <header class="top_head">
+            <div class="head_back" style="background:none;"></div>
+            <div class="head_title">登陆</div>
+        </header>
         <section class="onload_content" ng-controller="ctrl">
             <div class="reg_logo"><img src="/client/images/big_logo.png" /></div>
             <form class="on_content" name="loginForm" ng-submit="submitForm()">               
                 <dl>
-                    <dt><input type="text" name="username" ng-model="user.username" ng-pattern="/^1\d{10}$/" placeholder="手机号" ng-required="true" /></dt>
-                    <dt><input type="password" name="password" ng-model="user.password" ng-minlength="6" ng-maxlength="20"  ng-required="true"/></dt>
+                    <dt><input type="text" name="username" ng-model="user.username" ng-pattern="/^1\d{10}$/" placeholder="手机号码" ng-required="true" /></dt>
+                    <dt><input type="password" name="password" ng-model="user.password" ng-minlength="6" placeholder="用户密码" ng-maxlength="20"  ng-required="true"/></dt>
                     <dd><input type="submit" ng-disabled="loginForm.$invalid" value="登陆" /></dd>
-                    <dd><input type="button" ng-click="regist()" value="注册" /></dd>
                     <dd><a>忘记密码</a><span></span></dd>
+                    <dd><a href="/regist">注册</a></dd>
                 </dl>                       
             </form>
         </section>

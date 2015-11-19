@@ -27,25 +27,37 @@ public class TdRegion {
 	@Column
 	private String cityName;
 	
-	//省会城市是否开通配送服务
+	//是否开通配送服务
 	@Column
 	private Boolean citySend;
 	
-	//下属城市
+	//上级城市
 	@Column
-	private String subCityName;
+	private String parentCityName;
 	
-	//下属城市是否开通配送业务
+	//上级城市是否开通配送业务
 	@Column
-	private Boolean subCitySend;
+	private Boolean parentCitySend;
 	
 	//价目表Id
 	@Column
 	private Long priceListId;
 	
+	//短信息账户Id
+	@Column
+	private Long smsAccountId;
+	
 	//排序号
 	@Column
 	private Long sortId;
+
+	public Long getSmsAccountId() {
+		return smsAccountId;
+	}
+
+	public void setSmsAccountId(Long smsAccountId) {
+		this.smsAccountId = smsAccountId;
+	}
 
 	public Long getSortId() {
 		return sortId;
@@ -87,20 +99,20 @@ public class TdRegion {
 		this.citySend = citySend;
 	}
 
-	public String getSubCityName() {
-		return subCityName;
+	public String getParentCityName() {
+		return parentCityName;
 	}
 
-	public void setSubCityName(String subCityName) {
-		this.subCityName = subCityName;
+	public void setParentCityName(String parentCityName) {
+		this.parentCityName = parentCityName;
 	}
 
-	public Boolean getSubCitySend() {
-		return subCitySend;
+	public Boolean getParentCitySend() {
+		return parentCitySend;
 	}
 
-	public void setSubCitySend(Boolean subCitySend) {
-		this.subCitySend = subCitySend;
+	public void setParentCitySend(Boolean parentCitySend) {
+		this.parentCitySend = parentCitySend;
 	}
 
 	public Long getPriceListId() {

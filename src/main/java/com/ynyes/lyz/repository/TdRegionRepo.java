@@ -7,6 +7,6 @@ import com.ynyes.lyz.entity.TdRegion;
 
 public interface TdRegionRepo extends PagingAndSortingRepository<TdRegion, Long>, JpaSpecificationExecutor<TdRegion> {
 
-	// 根据下属城市的名称查找到开通了配送业务的省会城市
-	TdRegion findBySubCityNameAndCitySendTrue(String subCityName);
+	// 根据城市名称查询地区实体
+	TdRegion findByCityName(String cityName);
 }

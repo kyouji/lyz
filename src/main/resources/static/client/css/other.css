@@ -1,50 +1,69 @@
 /*01.注册*/
-.onload_content{width: 10rem; float: left;}
-.reg_logo{width: 10rem; float: left; text-align: center; margin-top: 1.5rem; margin-bottom: 0.6rem;}
-.reg_logo img{width: 2.6rem;}
-.reg_content{ float: left; width: 7.6rem;padding-left: 1.2rem; padding-bottom: 0.6rem; }
-.reg_content dl{ width: 7.6rem; overflow: hidden;}
-.reg_content dt{ width: 7.6rem; border-bottom:#c91425 2px solid; height: 1.3rem; float: left; }
-.reg_content dt input{ width: 40%; border: none;height: 1.2rem; color: #999999;}
-.reg_content dt input:nth-child(1){float: left;}
-.reg_content dt input:nth-child(2){float: right; height: 1rem; margin-top: 0.15rem; border-radius: 0.5rem; background: white; border:#cc1421 1px solid; color: #cc1421;}
+.onload_content{width: 100%; float: left;}
+.reg_logo{width: 100%; float: left; text-align: center; margin-top: 1.5rem; margin-bottom: 0.6rem;}
+.reg_logo img{width: 26%;}
+.reg_content{ float: left; width: 76%;padding-left: 12%; padding-bottom: 0.6rem; }
+.reg_content dl{ width: 100%; overflow: hidden;}
+.reg_content dt{ width: 100%; border-bottom:#c91425 2px solid; height: 1.3rem; float: left; }
+.reg_content dt input{ width: 40%;height: 1.2rem;}
+.reg_content dt input:nth-child(1){float: left; color: #999999; border: none;}
+.reg_content dt input:nth-child(2){float: right; height: 1rem; margin-top: 0.15rem; border-radius: 0.5rem; background: white;}
 .reg_content dd{width: 100%;border-bottom:#c91425 2px solid;height: 1.3rem; float: left;}
 .reg_content dd input{ width: 100%; height: 1.2rem; border: none; line-height: 1.2rem; color: #999999;}
 .reg_content dd:nth-last-child(2){border: none;margin-top: 1rem;} 
-.reg_content dd:nth-last-child(2) input{ border: none;  color: white; background: #c91425; border-radius:0.6rem; }
+.reg_content dd:nth-last-child(2) input{ border: none;  color: white; border-radius:0.6rem; }
 .reg_content dd:nth-last-child(1){border: none;margin-top: 0.6rem;} 
 .reg_content dd:nth-last-child(1) input{border:#c91425 2px solid;  color: white;  border-radius:0.6rem; background: white; color:#c91425 ;}
-.my_sele{display: block; background:url(/client/images/on_down.png) no-repeat 7rem;background-size: 0.56rem;  height: 1.2rem;width: 7.6rem; line-height: 1.2rem; color: black; color: #999999; ; }
-.my_box{width: 7.6rem; position: absolute; left: 0px; top: 1.3rem; z-index: 9999; display: none;}
-.my_box a{display: block; width: 7.6rem; height: 1rem; line-height: 1rem; float: left; color: #999999; background: white; border-bottom: #c91425 1px solid;}
-.my_box a.bd{color:#c91425 ;}
+.reg_content dt select{width: 100%;outline: none; color: #666666;position: absolute;left: 0px; top: 0px; filter:alpha(opacity:0);opacity: 0; background: none;height: 1rem;  border: none; }
+.reg_content dt option{width: 100%;}
+.reg_content dt div{width: 99%; height: 1rem; background: url(/client/images/on_down.png) no-repeat right; background-size: 0.8rem;line-height: 1rem;}
+
+/*
+.reg_content dt span{float: right; height: 1rem; margin-top: 0.15rem; border-radius: 0.5rem; background: white;width: 40%;display:block;line-height:1rem;text-align:center;}
+*/
+.reg_content dd span{width: 100%; height: 100%;display: block; border: none; line-height: 1.2rem; color: #999999;}
+.valid{background:#c91425;}
+.invalid{background:#999999;}
+.sms_valid{ border:#c91425 1px solid;color:#c91425;}
+.sms_invalid{ border:#dddddd 1px solid;color:#dddddd;}
+
 
 /*02.登录*/
-.on_content{ float: left; width: 7.6rem;padding-left: 1.2rem; padding-bottom: 0.6rem; }
-.on_content dl{ width: 7.6rem; overflow: hidden;}
-.on_content dt{ width: 7.6rem;  height: 1.3rem; float: left; margin-top: 0.2rem; }
-.on_content dt input{ width: 6.4rem; border: none;height: 1.2rem; color: #999999; float: right;border-bottom:#c91425 2px solid;}
-.on_content dt:nth-child(1){background: url(/client/images/on_icon01.png) no-repeat left; background-size: 1rem;}
-.on_content dt:nth-child(2){background: url(/client/images/on_icon02.png) no-repeat left; background-size: 1rem;}
-.on_content dd{width: 100%;border-bottom:#c91425 2px solid;height: 1.3rem; float: left;}
+.on_content{ float: left; width: 76%;padding-left: 12%; padding-bottom: 0.6rem; }
+.on_content dl{ width: 100%; overflow: hidden;}
+.on_content dt{ width: 100%;  height: 1.3rem; float: left; margin-top: 0.2rem; }
+.on_content dt input{ width: 80%;margin-left:20%; border: none;height: 1rem; color: #999999; float: right;border-bottom:#c91425 2px solid;}
+.on_content dt:nth-child(1){background: url(/client/images/on_icon01.png) no-repeat left; background-size: 10%;}
+.on_content dt:nth-child(2){background: url(/client/images/on_icon02.png) no-repeat left; background-size:10%;}
+.on_content dd{width: 100%;border-bottom:#c91425 2px solid;height: 1.2rem; float: left;}
 .on_content dd input{ width: 100%; height: 1.2rem; border: none; line-height: 1.2rem; color: #999999;}
 .on_content dd:nth-last-child(3){border: none;margin-top: 1rem;} 
-.on_content dd:nth-last-child(3) input{ border: none;  color: white; border-radius:0.6rem;background:#c91425; }
-.on_content dd:nth-last-child(2){border: none;margin-top: 0.6rem;} 
-.on_content dd:nth-last-child(2) input{border:#c91425 2px solid;  color: white;  border-radius:0.6rem; background: white; color:#c91425 ;}
-.on_content dd:nth-last-child(1){ border: none;margin-top: 0.8rem;}
-.on_content dd:nth-last-child(1) a{ display: block; color: #c91425; background: url(/client/images/on_icon03.png) no-repeat right; background-size: 0.4rem; width: 2.6rem; margin: auto; line-height:1.3rem ; }
+.on_content dd:nth-last-child(3) input{ border: none;  color: white; background: #c91425; border-radius:0.6rem; }
+.on_content dd:nth-last-child(2){ border: none;margin-top: 0.8rem; }
+.on_content dd:nth-last-child(2) a{ display: block; color: #c91425; background: url(/client/images/on_icon03.png) no-repeat right; background-size: 0.4rem; width:36%; margin: auto; line-height:1rem ; }
+.on_content dd:nth-last-child(1){ border: none;}
+.on_content dd:nth-last-child(1) a{ display: block; color: #c91425;  width: 26%; margin: auto; line-height:1rem ; color: #666666;}
 
 
-
-
-
-
-
-
-
-
-
+/*03.分类选择页*/
+.r_content{width: 100%; height: 100%; position: relative;}
+.win_cla{width: 100%;  background: red; position: fixed; left:100%; top: 0px;background: url(/client/images/win_cla_bd.png);
+-webkit-transition: 1s;
+transition: 1s;
+ }
+.win_cla dt{width: 30%;overflow: hidden; float: left; height:100%;}
+.win_cla dt span{background: url(/client/images/win_cla_icon01.png) no-repeat center;background-size: 60px 60px; display: block;width: 62%; height: 1.5rem; margin: auto; margin-top: 100%;}
+.win_cla dd{width: 70%;overflow: hidden; float: left; height:90%; padding-top:5%; position: relative;
+}
+.win_cla dd a{display: block; height: 33%;width: 100%; color: #666666;overflow: hidden;  
+-webkit-transform:translateX(10rem);
+transform:translateX(10rem);
+}
+.win_cla dd a:nth-child(1) div{background: url(/client/images/win_cla_icon02.png) no-repeat center;background-size: 80px 80px;}
+.win_cla dd a:nth-child(2) div{background: url(/client/images/win_cla_icon03.png) no-repeat center;background-size: 80px 80px;}
+.win_cla dd a:nth-child(3) div{background: url(/client/images/win_cla_icon04.png) no-repeat center;background-size: 80px 80px;}
+.win_cla dd a div{overflow: hidden;display: block; height: 100%; color: #666666;overflow: hidden; position: relative;}
+.win_cla dd a span{width: 100%; text-align: center;position: absolute; left: 0px; bottom: 0px;}
 
 
 

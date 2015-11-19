@@ -1,11 +1,20 @@
 package com.ynyes.lyz.controller.front;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,9 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ynyes.lyz.entity.TdRegion;
+import com.ynyes.lyz.entity.TdSmsAccount;
 import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.service.TdRegionService;
+import com.ynyes.lyz.service.TdSmsAccountService;
 import com.ynyes.lyz.service.TdUserService;
+import com.ynyes.lyz.util.MD5;
 
 @Controller
 @RequestMapping(value = "/regist")
@@ -27,6 +39,9 @@ public class TdRegistController {
 
 	@Autowired
 	private TdUserService tdUserService;
+
+	@Autowired
+	private TdSmsAccountService tdSmsAccountService;
 
 	@RequestMapping
 	public String regist(HttpServletRequest req, ModelMap map) {
@@ -55,28 +70,35 @@ public class TdRegistController {
 			String repassword, String referPhone, String diySiteName) {
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
-		String smsCode = (String) req.getSession().getAttribute("smsCode");
+		String smsCode = (String) req.getSession().getAttribute("SMSCODE");
 		TdUser user = tdUserService.findByUsername(phone);
+		if(null==cityInfo||"".equals(cityInfo)||"地区".equals(cityInfo)){
+			res.put("message", "您还未选择您的地区");
+			return res;
+		}
 		if (null != user) {
 			res.put("message", "该手机号码已注册！");
 			return res;
 		}
-		// if (null == smsCode) {
-		// res.put("message", "验证码错误！");
-		// return res;
-		// }
-		// if (!smsCode.equals(code)) {
-		// res.put("message", "验证码错误！");
-		// return res;
-		// }
+		 if (null == smsCode) {
+		 res.put("message", "验证码错误！");
+		 return res;
+		 }
+		 if (!smsCode.equals(code)) {
+		 res.put("message", "验证码错误！");
+		 return res;
+		 }
 		if (!repassword.equals(password)) {
 			res.put("message", "两次输入的密码不一致！");
 			return res;
 		}
+		if("".equals(password)){
+			password = "123456";
+		}
 
 		TdUser new_user = new TdUser();
 		new_user.setUsername(phone);
-		new_user.setPassword(password);
+		new_user.setPassword(MD5.md5(password, 32));
 		new_user.setReferPhone(referPhone);
 		new_user.setBalance(0.00);
 		new_user.setNickname(phone);
@@ -88,6 +110,7 @@ public class TdRegistController {
 		new_user.setIsOld(false);
 		new_user.setLastLoginTime(new Date());
 		new_user.setDiyName(cityInfo + "默认门店");
+		new_user.setIsEnable(true);
 
 		TdUser refer_user = tdUserService.findByUsernameAndCityNameAndIsEnableTrue(referPhone, cityInfo);
 		if (null != refer_user) {
@@ -102,4 +125,89 @@ public class TdRegistController {
 		res.put("status", 0);
 		return res;
 	}
+
+	@RequestMapping(value = "/send/code")
+	@ResponseBody
+	public Map<String, Object> sendCode(HttpServletRequest req, String phone, String cityInfo) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+		Random random = new Random();
+		String smscode = random.nextInt(9000) + 1000 + "";
+		HttpSession session = req.getSession();
+		session.setAttribute("SMSCODE", smscode);
+		String info = "您的验证码为" + smscode + "，请在页面中输入以完成验证。";
+		System.err.println(smscode);
+		String content = null;
+		try {
+			content = URLEncoder.encode(info, "GB2312");
+			System.err.println(content);
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.put("message", "验证码生成失败！");
+			return res;
+		}
+
+		TdRegion region = tdRegionService.findByCityName(cityInfo);
+		if(null == region){
+			res.put("message", "您还未选择区域！");
+			return res;
+		}
+		TdSmsAccount account = tdSmsAccountService.findOne(region.getSmsAccountId());
+		String url = "http://www.mob800.com/interface/Send.aspx?enCode=" + account.getEncode() + "&enPass="
+				+ account.getEnpass() + "&userName=" + account.getUserName() + "&mob=" + phone + "&msg=" + content;
+		StringBuffer return_code = null;
+		try {
+			URL u = new URL(url);
+			URLConnection connection = u.openConnection();
+			HttpURLConnection httpConn = (HttpURLConnection) connection;
+			httpConn.setRequestProperty("Content-type", "text/html");
+			httpConn.setRequestProperty("Accept-Charset", "utf-8");
+			httpConn.setRequestProperty("contentType", "utf-8");
+			InputStream inputStream = null;
+			InputStreamReader inputStreamReader = null;
+			BufferedReader reader = null;
+			StringBuffer resultBuffer = new StringBuffer();
+			String tempLine = null;
+
+			if (httpConn.getResponseCode() >= 300) {
+				res.put("message", "HTTP Request is not success, Response code is " + httpConn.getResponseCode());
+				return res;
+			}
+
+			try {
+				inputStream = httpConn.getInputStream();
+				inputStreamReader = new InputStreamReader(inputStream);
+				reader = new BufferedReader(inputStreamReader);
+
+				while ((tempLine = reader.readLine()) != null) {
+					resultBuffer.append(tempLine);
+				}
+
+				return_code = resultBuffer;
+
+			} finally {
+
+				if (reader != null) {
+					reader.close();
+				}
+
+				if (inputStreamReader != null) {
+					inputStreamReader.close();
+				}
+
+				if (inputStream != null) {
+					inputStream.close();
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.put("message", "验证码生成失败！");
+			return res;
+		}
+		res.put("status", 0);
+		res.put("code", return_code);
+		return res;
+	}
+	
 }

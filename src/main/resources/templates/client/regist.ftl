@@ -31,7 +31,8 @@
                         "${item.cityName!''}",
                     </#list>
                 </#if>
-            ];        
+            ];     
+            
             var app = angular.module("app",[]);
             var ctrl = app.controller("ctrl",function($scope,$http){
                 $scope.regions = [
@@ -41,6 +42,11 @@
                         </#list>
                     </#if>
                 ];
+                
+                
+                $scope.isCityFalse = false;
+                $scope.time = 59;
+                
                 $scope.infos = {
                     phone:"",
                     code:"",
@@ -50,10 +56,30 @@
                     diySiteName:"归属门店：默认门店"
                 }
                 
+                $scope.changeSms = function(){
+                    $scope.isCityFalse = true;
+                    $("#sendSys").val("重新获取（"+$scope.time+"）");
+                    $scope.time = $scope.time-1;
+                    if(0 == $scope.time){
+                        console.debug("结束");
+                        $scope.isCityFalse = false;
+                        $("#sendSys").val("发送验证码");
+                        $scope.time = 60;
+                    }else{
+                        setTimeout($scope.changeSms,1000);
+                        $scope.isClose();
+                    }
+                }
+                
+                $scope.isClose = function(){
+                    return $scope.isCityFalse;
+                }
+                
                 $scope.checkRefer = function(){
                     var check = /^1\d{10}$/;
-                    var cityInfo = $("#my_city").html();
+                    var cityInfo = $("#my_box").html();
                     if(check.test($scope.infos.referPhone)){
+                        console.debug("获取门店信息");
                         $http.get("/regist/refer/check",{params:{
                             referPhone:$scope.infos.referPhone,
                             cityInfo:cityInfo
@@ -65,12 +91,30 @@
                     }
                 }
                 
-                $scope.login = function(){
-                    window.location.href = "/";
+                $scope.smscode = function(){
+                    $scope.isCityFalse = true;
+                    var cityInfo = $("#my_box").html();
+                    $http.get("/regist/send/code",{params:{
+                        cityInfo:cityInfo,
+                        phone:$scope.infos.phone,
+                    }}).success(function(res){
+                        if(0==res.status){
+                            if(00==res.code){
+                                $("#sendSys").val("重新获取（60）");
+                                setTimeout($scope.changeSms,1000);
+                            }else{
+                                console.debug(res.code);
+                                alert("验证码发送失败！")
+                            }
+                        }else{
+                            alert(res.message);
+                        }
+                        
+                    });
                 }
                 
                 $scope.submitForm = function(){
-                    var cityInfo = $("#my_city").html();
+                    var cityInfo = $("#my_box").html();
                     $http.get("/regist/save",{params:{
                         cityInfo:cityInfo,
                         phone:$scope.infos.phone,
@@ -90,29 +134,31 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="app">
-        <header class="top_head">注册</header>
+        <header class="top_head">
+            <a href="javascript:history.go(-1);"><div class="head_back"></div></a>
+            <div class="head_title">注册</div>
+        </header>
         <div id="map" style="display:block"></div>
         <section class="onload_content" ng-controller="ctrl">
             <div class="reg_logo"><img src="/client/images/big_logo.png" /></div>
             <form class="reg_content" name="registForm" ng-submit="submitForm()">              
                 <dl>
                     <dt >
-                        <span class="my_sele" id="my_city">城市</span>
-                        <span class="my_box">
-                            <a ng-repeat="region in regions">{{region.name}}</a>
-                        </span>
+                        <div class="my_sele" id="my_box">地区</div>
+                        <select calss="my_box" id="my_city">
+                            <option ng-repeat="region in regions">{{region.name}}</option>
+                        </select>
                     </dt>
                     <dd><input type="text" name="phone" ng-model="infos.phone" ng-pattern="/^1\d{10}$/" placeholder="手机号码" ng-required="true"/></dd>
                     <dt>
                         <input type="text" name="code" ng-model="infos.code" ng-minlength="4" ng-maxlength="4" placeholder="手机验证码" ng-required="true"/>
-                        <input type="button" ng-disabled="registForm.phone.$invalid" value="发送验证码" />
+                        <input id="sendSys" class="sms_button" type="button" ng-click="smscode()" ng-class="{'sms_valid':registForm.phone.$valid,'sms_invalid':registForm.phone.$invalid||isClose()}" ng-disabled="registForm.phone.$invalid||isClose()" value="发送验证码" />
                     </dt>
-                    <dd><input type="password" name="password" ng-model="infos.password" placeholder="设置密码" ng-minlength="6" ng-maxlength="20" ng-required="true"/></dd>
-                    <dd><input type="password" name="repassword" ng-model="infos.repassword" placeholder="确认密码" ng-minlength="6" ng-maxlength="20" ng-required="true"/></dd>
+                    <dd><input type="password" name="password" ng-model="infos.password" placeholder="默认密码：123456（可修改）" ng-minlength="6" ng-maxlength="20" /></dd>
+                    <dd><input type="password" name="repassword" ng-model="infos.repassword" placeholder="重复密码：123456（可修改）" ng-minlength="6" ng-maxlength="20" /></dd>
                     <dd><input type="text" name="referPhone" ng-model="infos.referPhone" ng-change="checkRefer();" placeholder="推荐人电话" /></dd>
-                    <dd><input type="text" name="diySiteName" ng-model="infos.diySiteName" placeholder="服务门店" disabled="true" /></dd>
-                    <dd><input type="submit" ng-disabled="registForm.$invalid" value="注册" /></dd>
-                    <dd><input type="button" ng-click="login();" value="登录" /></dd>
+                    <dd><span ng-bind="infos.diySiteName"></span></dd>
+                    <dd><input type="submit" ng-class="{'valid':registForm.$valid,'invalid':registForm.$invalid}" ng-disabled="registForm.$invalid" value="注册" /></dd>
                 </dl>                       
             </form>
         </section>
