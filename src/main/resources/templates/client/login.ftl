@@ -30,7 +30,7 @@
                     }}).success(function(res){
                         if(0 == res.status){
                             <#-- 进行页面跳转 window.location.href = ""; -->
-                            alert("登陆成功！");
+                            window.location.href = "/";
                         }else{
                            alert(res.message);
                         }

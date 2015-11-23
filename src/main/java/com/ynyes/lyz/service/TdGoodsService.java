@@ -1,12 +1,8 @@
 package com.ynyes.lyz.service;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,12 +17,9 @@ import org.springframework.ui.ModelMap;
 import com.ynyes.lyz.entity.TdGoods;
 import com.ynyes.lyz.entity.TdGoodsCombination;
 import com.ynyes.lyz.entity.TdGoodsGift;
-import com.ynyes.lyz.entity.TdGoodsParameter;
 import com.ynyes.lyz.entity.TdPriceChangeLog;
-import com.ynyes.lyz.entity.TdProduct;
 import com.ynyes.lyz.entity.TdProductCategory;
 import com.ynyes.lyz.repository.TdGoodsRepo;
-import com.ynyes.lyz.util.ClientConstant;
 import com.ynyes.lyz.util.SiteMagConstant;
 
 
@@ -40,6 +33,7 @@ import com.ynyes.lyz.util.SiteMagConstant;
 @Service
 @Transactional
 public class TdGoodsService {
+	
     @Autowired
     TdGoodsRepo repository;
 
@@ -1426,6 +1420,14 @@ public class TdGoodsService {
         }
         
         return e;
+    }
+    
+    /**
+     * 查找所有首页推荐的商品
+     * @author dengxiao
+     */
+    public List<TdGoods> findByIsRecommendIndexTrueAndIsOnSaleTrueOrderBySortIdAsc(){
+    	return repository.findByIsRecommendIndexTrueAndIsOnSaleTrueOrderBySortIdAsc();
     }
 
 }

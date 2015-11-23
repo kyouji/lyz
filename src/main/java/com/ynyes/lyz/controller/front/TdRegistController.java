@@ -72,7 +72,7 @@ public class TdRegistController {
 		res.put("status", -1);
 		String smsCode = (String) req.getSession().getAttribute("SMSCODE");
 		TdUser user = tdUserService.findByUsername(phone);
-		if(null==cityInfo||"".equals(cityInfo)||"地区".equals(cityInfo)){
+		if (null == cityInfo || "".equals(cityInfo) || "地区".equals(cityInfo)) {
 			res.put("message", "您还未选择您的地区");
 			return res;
 		}
@@ -80,19 +80,20 @@ public class TdRegistController {
 			res.put("message", "该手机号码已注册！");
 			return res;
 		}
-		 if (null == smsCode) {
-		 res.put("message", "验证码错误！");
-		 return res;
-		 }
-		 if (!smsCode.equals(code)) {
-		 res.put("message", "验证码错误！");
-		 return res;
-		 }
+		if (null == smsCode) {
+			res.put("message", "验证码错误！");
+			return res;
+		}
+		if (!smsCode.equals(code)) {
+			res.put("message", "验证码错误！");
+			return res;
+		}
 		if (!repassword.equals(password)) {
 			res.put("message", "两次输入的密码不一致！");
 			return res;
 		}
-		if("".equals(password)){
+
+		if ("".equals(password)) {
 			password = "123456";
 		}
 
@@ -120,6 +121,7 @@ public class TdRegistController {
 		}
 
 		tdUserService.save(new_user);
+		req.getSession().setMaxInactiveInterval(60 * 60 * 24);
 		req.getSession().setAttribute("username", phone);
 
 		res.put("status", 0);
@@ -148,7 +150,7 @@ public class TdRegistController {
 		}
 
 		TdRegion region = tdRegionService.findByCityName(cityInfo);
-		if(null == region){
+		if (null == region) {
 			res.put("message", "您还未选择区域！");
 			return res;
 		}
@@ -209,5 +211,5 @@ public class TdRegistController {
 		res.put("code", return_code);
 		return res;
 	}
-	
+
 }

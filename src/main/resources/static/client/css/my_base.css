@@ -1,0 +1,18 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{padding:0;margin:0;}
+html,body{margin:0px;padding:0px;color:#333333;font-family:"Microsoft YaHei", Arial, Helvetica, sans-serif;font-size:0.9em;background:#fff;position:relative;}
+img{border:0;position:relative;max-width:100%;}
+.clear{height:0px;line-height:0px;font-size: 0px;clear:both;visibility:hidden;overflow:hidden;padding:0;margin:0;}
+div,ul,dl,dd,dt,li,td,tr,table,p,span,h1,h2,h3,h4,h5,h6,form{margin:0px;padding:0px;list-style:none;list-style-type:none;word-wrap:break-word;position:relative;border:none;}
+a{color:#666666;text-decoration:none;text-align:center;position:relative;cursor:pointer;}
+header,footer,nav,section,article,menu,aside{display:block;position:relative;} 
+textarea{resize:none;}
+i,em{font-style:normal;}
+strong{font-weight:normal;}
+table{border-collapse:collapse;border-spacing:0;}
+th,td{text-align:left;}
+input,select,textarea{font-family:"Microsoft YaHei";}
+/*去除ios默认input样式*/
+input[type="text"],input[type="password"],input[type="submit"],input[type="reset"], input[type="button"],button{font-family:"Microsoft YaHei";-webkit-appearance:none;appearance:none;outline:none;-webkit-tap-highlight-color:rgba(0,0,0,0);border-radius:0;}

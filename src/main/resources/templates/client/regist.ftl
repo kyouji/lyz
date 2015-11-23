@@ -44,8 +44,7 @@
                 ];
                 
                 
-                $scope.isCityFalse = false;
-                $scope.time = 59;
+                $scope.time = 0;
                 
                 $scope.infos = {
                     phone:"",
@@ -57,22 +56,14 @@
                 }
                 
                 $scope.changeSms = function(){
-                    $scope.isCityFalse = true;
                     $("#sendSys").val("重新获取（"+$scope.time+"）");
                     $scope.time = $scope.time-1;
-                    if(0 == $scope.time){
+                    if(-1 == $scope.time){
                         console.debug("结束");
-                        $scope.isCityFalse = false;
                         $("#sendSys").val("发送验证码");
-                        $scope.time = 60;
                     }else{
                         setTimeout($scope.changeSms,1000);
-                        $scope.isClose();
                     }
-                }
-                
-                $scope.isClose = function(){
-                    return $scope.isCityFalse;
                 }
                 
                 $scope.checkRefer = function(){
@@ -92,15 +83,18 @@
                 }
                 
                 $scope.smscode = function(){
-                    $scope.isCityFalse = true;
                     var cityInfo = $("#my_box").html();
+                    if(0 != $scope.time){
+                        console.debug("失效！");
+                        return;
+                    }
+                    $scope.time = 60;
                     $http.get("/regist/send/code",{params:{
                         cityInfo:cityInfo,
                         phone:$scope.infos.phone,
                     }}).success(function(res){
                         if(0==res.status){
                             if(00==res.code){
-                                $("#sendSys").val("重新获取（60）");
                                 setTimeout($scope.changeSms,1000);
                             }else{
                                 console.debug(res.code);
@@ -124,7 +118,11 @@
                         referPhone:$scope.infos.referPhone,
                         diySiteName:$scope.infos.diySiteName
                     }}).success(function(res){
-                        alert("成功！");
+                        console.debug(res);
+                        alert(res.message);
+                        if(0==res.status){
+                            window.location.href="/";
+                        }
                     });
                 }
             });
@@ -152,13 +150,14 @@
                     <dd><input type="text" name="phone" ng-model="infos.phone" ng-pattern="/^1\d{10}$/" placeholder="手机号码" ng-required="true"/></dd>
                     <dt>
                         <input type="text" name="code" ng-model="infos.code" ng-minlength="4" ng-maxlength="4" placeholder="手机验证码" ng-required="true"/>
-                        <input id="sendSys" class="sms_button" type="button" ng-click="smscode()" ng-class="{'sms_valid':registForm.phone.$valid,'sms_invalid':registForm.phone.$invalid||isClose()}" ng-disabled="registForm.phone.$invalid||isClose()" value="发送验证码" />
+                        <input id="sendSys" class="sms_button" type="button" ng-click="smscode()" ng-class="{'sms_valid':registForm.phone.$valid,'sms_invalid':registForm.phone.$invalid}" ng-disabled="registForm.phone.$invalid" value="发送验证码" />
                     </dt>
                     <dd><input type="password" name="password" ng-model="infos.password" placeholder="默认密码：123456（可修改）" ng-minlength="6" ng-maxlength="20" /></dd>
                     <dd><input type="password" name="repassword" ng-model="infos.repassword" placeholder="重复密码：123456（可修改）" ng-minlength="6" ng-maxlength="20" /></dd>
                     <dd><input type="text" name="referPhone" ng-model="infos.referPhone" ng-change="checkRefer();" placeholder="推荐人电话" /></dd>
                     <dd><span ng-bind="infos.diySiteName"></span></dd>
                     <dd><input type="submit" ng-class="{'valid':registForm.$valid,'invalid':registForm.$invalid}" ng-disabled="registForm.$invalid" value="注册" /></dd>
+                    <dd ng-bind="isClose()"></dd>
                 </dl>                       
             </form>
         </section>
