@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.service.TdUserService;
+import com.ynyes.lyz.util.MD5;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/login")
 public class TdLoginController {
 
 	@Autowired
@@ -26,15 +27,16 @@ public class TdLoginController {
 		return "/client/login";
 	};
 	
-	@RequestMapping(value = "/login/check")
+	@RequestMapping(value = "/check")
 	@ResponseBody
 	public Map<String, Object> loginCheck(HttpServletRequest req,String username,String password){
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
-		TdUser user = tdUserService.findByUsernameAndPasswordAndIsEnableTrue(username, password);
+		TdUser user = tdUserService.findByUsernameAndPasswordAndIsEnableTrue(username, MD5.md5(password, 32));
 		if(null!=user){
 			res.put("status", 0);
 			user.setLastLoginTime(new Date());
+			req.getSession().setMaxInactiveInterval(60 * 60 * 24);
 			req.getSession().setAttribute("username", username);
 		}
 		
@@ -53,5 +55,4 @@ public class TdLoginController {
 		}
 		return res;
 	}
-	
 }

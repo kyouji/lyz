@@ -280,4 +280,9 @@ public interface TdGoodsRepo extends
     Page<TdGoods> findByCategoryIdTreeContainingAndTitleContainingIgnoreCaseAndIsOnSaleFalseAndIsGroupSaleTrueOrCategoryIdTreeContainingAndSubTitleContainingIgnoreCaseAndIsOnSaleTrueAndIsGroupSaleTrueOrCategoryIdTreeContainingAndDetailContainingIgnoreCaseAndIsOnSaleTrueAndIsGroupSaleTrue(String catId1,
             String keywords1, String catId2, String keywords2,String catId3, String keywords3, Pageable page);
     
+    /**
+     * 查找首页推荐的所有商品
+     * @author dengxiao
+     */
+    List<TdGoods> findByIsRecommendIndexTrueAndIsOnSaleTrueOrderBySortIdAsc();
 }

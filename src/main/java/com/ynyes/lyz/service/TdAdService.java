@@ -133,4 +133,12 @@ public class TdAdService {
         
         return (List<TdAd>) repository.save(entities);
     }
+    
+    /**
+     * 根据广告类型查找未过期的广告
+     */
+    public List<TdAd> findByTypeIdAndIsValidTrueOrderByIdDesc(Long typeId)
+    {
+        return repository.findByTypeIdAndStartTimeBeforeAndEndTimeAfterAndIsEnableTrueOrderByIdDesc(typeId, new Date(), new Date());
+    }
 }
