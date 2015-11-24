@@ -15,11 +15,11 @@
         <link rel="stylesheet" type="text/css" href="/client/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/other.css"/>
         
-        <script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
-        <script src="/client/js/rich_lee.js" type="text/javascript"></script>
         <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=bdd6b0736678f88ed49be498bff86754"></script>
         <script type="text/javascript" src="/client/js/map.js"></script>
-        <script type="text/javascript" src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.js"></script>
+        <script type="text/javascript" src="/client/js/angular.js"></script>
+        <script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
+        <script src="/client/js/rich_lee.js" type="text/javascript"></script>
         <script>
             $(function(){
                 showCityInfo();
@@ -33,8 +33,8 @@
                 </#if>
             ];     
             
-            var app = angular.module("app",[]);
-            var ctrl = app.controller("ctrl",function($scope,$http){
+            var app = angular.module("regist",[]);
+            var ctrl = app.controller("ctrl",function($scope,$http,$location){
                 $scope.regions = [
                     <#if regions??>
                         <#list regions as item>
@@ -61,6 +61,7 @@
                     if(-1 == $scope.time){
                         console.debug("结束");
                         $("#sendSys").val("发送验证码");
+                        $scope.time = 0;
                     }else{
                         setTimeout($scope.changeSms,1000);
                     }
@@ -69,14 +70,15 @@
                 $scope.checkRefer = function(){
                     var check = /^1\d{10}$/;
                     var cityInfo = $("#my_box").html();
+                    var data = {
+                        referPhone:$scope.infos.referPhone,
+                        cityInfo:cityInfo
+                    };
+                    var config = {};
                     if(check.test($scope.infos.referPhone)){
-                        console.debug("获取门店信息");
-                        $http.get("/regist/refer/check",{params:{
-                            referPhone:$scope.infos.referPhone,
-                            cityInfo:cityInfo
-                        }}).success(function(res){
+                        $.post("/regist/refer/check",data,function(res){
                             if(0 == res.status){
-                                $scope.infos.diySiteName = "归属门店："+res.message;
+                                $("#diyName").html("归属门店："+res.message);
                             }
                         });
                     }
@@ -89,27 +91,27 @@
                         return;
                     }
                     $scope.time = 60;
-                    $http.get("/regist/send/code",{params:{
+                    $.post("/regist/send/code",{
                         cityInfo:cityInfo,
-                        phone:$scope.infos.phone,
-                    }}).success(function(res){
+                        phone:$scope.infos.phone
+                    },function(res){
                         if(0==res.status){
                             if(00==res.code){
                                 setTimeout($scope.changeSms,1000);
                             }else{
-                                console.debug(res.code);
+                                $scope.time = 0;
                                 alert("验证码发送失败！")
                             }
                         }else{
+                            $scope.time = 0;
                             alert(res.message);
                         }
-                        
                     });
                 }
                 
                 $scope.submitForm = function(){
                     var cityInfo = $("#my_box").html();
-                    $http.get("/regist/save",{params:{
+                    var data = {
                         cityInfo:cityInfo,
                         phone:$scope.infos.phone,
                         code:$scope.infos.code,
@@ -117,11 +119,13 @@
                         repassword:$scope.infos.repassword,
                         referPhone:$scope.infos.referPhone,
                         diySiteName:$scope.infos.diySiteName
-                    }}).success(function(res){
-                        console.debug(res);
-                        alert(res.message);
+                    };
+                    var config = {};
+                    $.post("/regist/save",data,function(res){
                         if(0==res.status){
                             window.location.href="/";
+                        }else{
+                            alert(res.message);
                         }
                     });
                 }
@@ -131,7 +135,7 @@
     <script type="text/javascript">
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
-    <body ng-app="app">
+    <body ng-app="regist">
         <header class="top_head">
             <a href="javascript:history.go(-1);"><div class="head_back"></div></a>
             <div class="head_title">注册</div>
@@ -155,9 +159,9 @@
                     <dd><input type="password" name="password" ng-model="infos.password" placeholder="默认密码：123456（可修改）" ng-minlength="6" ng-maxlength="20" /></dd>
                     <dd><input type="password" name="repassword" ng-model="infos.repassword" placeholder="重复密码：123456（可修改）" ng-minlength="6" ng-maxlength="20" /></dd>
                     <dd><input type="text" name="referPhone" ng-model="infos.referPhone" ng-change="checkRefer();" placeholder="推荐人电话" /></dd>
-                    <dd><span ng-bind="infos.diySiteName"></span></dd>
+                    <dd><span id="diyName">归属门店：</span></dd>
                     <dd><input type="submit" ng-class="{'valid':registForm.$valid,'invalid':registForm.$invalid}" ng-disabled="registForm.$invalid" value="注册" /></dd>
-                    <dd ng-bind="isClose()"></dd>
+                    <dd></dd>
                 </dl>                       
             </form>
         </section>

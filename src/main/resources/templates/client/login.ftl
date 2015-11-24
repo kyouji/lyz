@@ -14,28 +14,40 @@
         <link rel="stylesheet" type="text/css" href="/client/css/base.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/other.css"/>
-        
-        <script type="text/javascript" src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.js"></script>
+       
+        <script type="text/javascript" src="/client/js/angular.js"></script>
+        <script type="text/javascript" src="/client/js/jquery-1.11.0.js"></script>
         <script>
             var app = angular.module("app",[]);
+            app.config(function($httpProvider){
+                $httpProvider.defaults.transformRequest = function(data){
+                    return $.param(data);
+                }
+            });
             var ctrl = app.controller("ctrl",function($scope,$http){
                 $scope.user = {
                     username : "",
                     password : ""
                 };
                 $scope.submitForm = function(){
-                    $http.get("/login/check",{params:{
-                        username:$scope.user.username,
-                        password:$scope.user.password
-                    }}).success(function(res){
+                    $http({
+                        method: "POST",
+                        url:"/login/check",
+                        data:{
+                            username:$scope.user.username,
+                            password:$scope.user.password
+                        },
+                        headers : { "Content-Type": "application/x-www-form-urlencoded"}
+                    }).success(function(res){
                         if(0 == res.status){
                             <#-- 进行页面跳转 window.location.href = ""; -->
                             window.location.href = "/";
                         }else{
-                           alert(res.message);
+                            alert(res.message);
                         }
                     });
                 }
+                
                 $scope.regist = function(){
                     window.location.href = "/regist"
                 }
@@ -56,7 +68,7 @@
                 <dl>
                     <dt><input type="text" name="username" ng-model="user.username" ng-pattern="/^1\d{10}$/" placeholder="手机号码" ng-required="true" /></dt>
                     <dt><input type="password" name="password" ng-model="user.password" ng-minlength="6" placeholder="用户密码" ng-maxlength="20"  ng-required="true"/></dt>
-                    <dd><input type="submit" ng-disabled="loginForm.$invalid" value="登陆" /></dd>
+                    <dd><input type="submit" ng-class="{'valid':loginForm.$valid,'invalid':loginForm.$invalid}" ng-disabled="loginForm.$invalid" value="登陆" /></dd>
                     <dd><a>忘记密码</a><span></span></dd>
                     <dd><a href="/regist">注册</a></dd>
                 </dl>                       

@@ -7,7 +7,7 @@ window.onload = function() {
 };
 
 function my_select() {
-	$('.reg_content dt select').change(function() {
+	$('.reg_content dt select').select(function() {
 		var optionvalue = $(this).find('option:selected').text();
 		$('#my_box').text(optionvalue);
 	});
