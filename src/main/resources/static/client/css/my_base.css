@@ -16,3 +16,249 @@ th,td{text-align:left;}
 input,select,textarea{font-family:"Microsoft YaHei";}
 /*去除ios默认input样式*/
 input[type="text"],input[type="password"],input[type="submit"],input[type="reset"], input[type="button"],button{font-family:"Microsoft YaHei";-webkit-appearance:none;appearance:none;outline:none;-webkit-tap-highlight-color:rgba(0,0,0,0);border-radius:0;}
+
+/* 等待样式 */
+.wait{
+    width: 100%;
+    height: 100%;
+    position:fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 99999999999999999;
+    text-align: center;
+    background: url(/clien/images/colo_waitbd.png);
+    display:none;
+}
+
+/*第二种抬头*/
+.sec_header{
+    width: 100%;
+    height: 50px;
+    background: #cc1421;
+    line-height: 50px;
+}
+.sec_header a{
+    width: 18%;
+    height: 50px;
+    display: block;
+    float: left;
+    background: url(/client/images/sec_header_icon.png) no-repeat center;
+    background-size: 16px;
+    text-align: center;
+    font-size: 1.4em;
+    color: white;
+}
+.sec_header p{
+    width: 64%;
+    line-height: 50px;
+    float: left;
+    color: white;
+    font-size: 1.4em;
+    color: #ded7d8; 
+    text-align: center;
+}
+.sec_header span{
+    width:18%;
+    height: 50px;
+    float: right;
+    background: url(/client/images/sec_header.png) no-repeat center;
+    background-size:34px;
+}
+/*第二种底部*/
+.sec_footer{
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+}
+.sec_footer li{
+    height: 60px;
+    float: left;
+    line-height: 60px;
+    text-align: center;
+}
+.sec_footer span{
+    display: block;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    color: white;
+}
+.sec_footer span img{
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+    float: left;
+}
+.sec_footer li:nth-child(1){
+    width: 17%;
+    background: url(/client/images/sec_footerbd.png);
+}
+.sec_footer li:nth-child(2){
+    width: 17%;
+    background: url(/client/images/sec_footerbd.png);
+}
+.sec_footer li:nth-child(3){
+    width: 33%;
+    background: #ffaa00;
+    font-size: 1.3em;
+}
+.sec_footer li:nth-child(4){
+    width: 33%;
+    background: #e5373a;
+    font-size: 1.3em;
+}
+.sec_footer li:nth-child(1) span{
+    background: url(/client/images/sec_footericon01.png) no-repeat center;
+    background-size:24px;
+    line-height: 100px;
+}
+.sec_footer li:nth-child(2) span{
+    background: url(/client/images/sec_footericon02.png) no-repeat center;
+    background-size:24px;
+    line-height: 100px;
+}
+.index_test_box{
+    width: 100%;
+    height: 8px;
+    background: #f4f4f4;
+}
+.index_test_box02{
+    width: 100%;
+    height: 80px;
+    background: #f4f4f4;
+}
+.index_test_box03{
+    width: 100%;
+    height: 130px;
+}
+
+
+/*footer*/
+.footer_box{
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+}
+.index_footer{
+    width: 100%;
+    height: 60px;
+    position: relative;
+    background: #272727;    
+}
+.index_footer ul{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;   
+    }
+.index_footer ul li{
+    width: 20%;
+    height: 100%;
+}
+.index_footer ul li:nth-child(1){
+    float: left;
+}
+.index_footer ul li:nth-child(2){
+    float: left;
+}
+.index_footer ul li:nth-child(3){
+    float: right;
+}
+.index_footer ul li:nth-child(4){
+    float: right;
+}
+.index_footer ul li a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: relative;
+    
+}
+.index_footer ul li div{
+    width: 100%;
+    height: 40px;
+    background: url(/client/images/footer_icon01.png) no-repeat center;
+    
+}
+.index_footer ul li:nth-child(1) div{
+    background: url(/client/images/footer_icon01.png) no-repeat center;
+    background-size: 26px;
+}
+.index_footer ul li:nth-child(2) div{
+    background: url(/client/images/footer_icon02.png) no-repeat center;
+    background-size: 26px;
+}
+.index_footer ul li:nth-child(3) div{
+    background: url(/client/images/footer_icon04.png) no-repeat center;
+    background-size: 26px;
+}
+.index_footer ul li:nth-child(4) div{
+    background: url(/client/images/footer_icon03.png) no-repeat center;
+    background-size: 26px;
+}
+.index_footer ul li span{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    display: block;
+    text-align: center;
+    width: 100%;
+    color: #cccccc;
+    height: 20px;
+    line-height: 20px;
+}
+
+.footer_act{
+    position: absolute;
+    left: 0px;
+    top: -5px;
+    display: block;
+    width: 80px;
+    height: 66px;
+    background: url(/client/images/footer_icon05.png) no-repeat center;
+    background-size: 63px;
+    margin: auto;
+}
+
+/*head*/
+.index_head{
+    width: 100%;
+    height: 50px;
+    background: #cc1421;
+    line-height: 50px;
+}
+.index_head span{
+    width: 22%;
+    line-height: 50px;
+    display: block;
+    float: left;
+    text-align: center;
+    font-size: 1.4em;
+    color: white;
+}
+.index_head input{
+    width: 54%;
+    line-height: 30px;
+    float: left;
+    border-radius:6px;
+    border: none;
+    padding-left:30px;
+    margin-top: 12px;
+    color: white;
+    outline: none;
+    background:#990001 url(/client/images/search.png) no-repeat 6px;
+    background-size:22px 22px;
+    font-size: 1.1em;
+    color: #ded7d8; 
+}
+.index_head div{
+    width:14%;
+    height: 50px;
+    float: right;
+    background: url(/client/images/index_mesicon01.png) no-repeat center;
+    background-size:24px 24px;
+}

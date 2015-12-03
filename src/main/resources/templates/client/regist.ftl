@@ -20,6 +20,19 @@
         <script type="text/javascript" src="/client/js/angular.js"></script>
         <script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
         <script src="/client/js/rich_lee.js" type="text/javascript"></script>
+        <style>
+            .wait{
+                width: 100%;
+                height: 100%;
+                position:fixed;
+                left: 0px;
+                top: 0px;
+                z-index: 99999999999999999;
+                text-align: center;
+                background: url(/client/images/colo_waitbd.png);
+                display:none;
+            }
+        </style>
         <script>
             $(function(){
                 showCityInfo();
@@ -91,6 +104,38 @@
                         return;
                     }
                     $scope.time = 60;
+                    wait();
+                    $.ajax({
+                        url:"/regist/send/code",
+                        method:"post",
+                        data:{
+                            cityInfo:cityInfo,
+                            phone:$scope.infos.phone
+                        },
+                        timeout:10000,
+                        error:function(XMLHttpRequest, textStatus, errorThrown){
+                            close(1);
+                            alert("亲，您的网速不给力啊！");
+                            $scope.time = 0;
+                        },
+                        success:function(res){
+                            close(1000);
+                            if(0 == res.status){
+                                if(00==res.code){
+                                    setTimeout($scope.changeSms,1000);
+                                }else{
+                                    $scope.time = 0;
+                                    alert("验证码发送失败！")
+                                    console.debug(res.code);
+                                }
+                            }else{
+                                $scope.time = 0;
+                                alert(res.message);
+                                console.debug(res.code);
+                            }
+                        }
+                    });
+                    <#--
                     $.post("/regist/send/code",{
                         cityInfo:cityInfo,
                         phone:$scope.infos.phone
@@ -107,6 +152,7 @@
                             alert(res.message);
                         }
                     });
+                    -->
                 }
                 
                 $scope.submitForm = function(){
@@ -136,6 +182,9 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="regist">
+        <#include "/client/wait_img.ftl">
+        <#include "/client/common_warn.ftl">
+        
         <header class="top_head">
             <a href="javascript:history.go(-1);"><div class="head_back"></div></a>
             <div class="head_title">注册</div>

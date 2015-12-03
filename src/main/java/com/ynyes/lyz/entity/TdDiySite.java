@@ -15,86 +15,90 @@ import javax.persistence.Id;
 
 @Entity
 public class TdDiySite {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
-    // 门店名称
-    @Column
-    private String title;
-    
-    // 门店地址
-    @Column
-    private String address;
-    
-    // 付款方式
-    @Column
-    private String payType;
-    
-    // 营业时间
-    @Column
-    private String openTimeSpan;
-    
-    // 客服电话
-    @Column
-    private String serviceTele;
-    
-    // 投诉电话
-    @Column
-    private String complainTele;
-    
-    // 门店省份
-    @Column
-    private String province;
-    
-    // 门店城市
-    @Column
-    private String city;
-    
-    // 门店城市地区
-    @Column
-    private String disctrict;
-    
-    //门店区域Id
-    @Column
-    private Long regionId;
-    
-    // 是否启用
-    @Column
-    private Boolean isEnable;
-    
-    // 排序数字
-    @Column
-    private Long sortId;
-    
-    // 经度
-    @Column
-    private Double longitude;
-    
-    // 纬度
-    @Column
-    private Double latitude;
-    
-    // 描述说明
-    @Column
-    private String info;
-    
-    // 图片地址
-    @Column
-    private String imageUri;
-    
-    // 轮播展示图片，多张图片以,隔开
-    @Column
-    private String showPictures;
-    
-    // 客服qq
-    @Column
-    private String qq;
-    
-    // 是否为旗舰店
-    @Column
-    private Boolean isFlagShip;
-    
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	// 门店名称
+	@Column
+	private String title;
+
+	// 门店地址
+	@Column
+	private String address;
+
+	// 付款方式
+	@Column
+	private String payType;
+
+	// 营业时间
+	@Column
+	private String openTimeSpan;
+
+	// 客服电话
+	@Column
+	private String serviceTele;
+
+	// 投诉电话
+	@Column
+	private String complainTele;
+
+	// 门店省份
+	@Column
+	private String province;
+
+	// 门店城市
+	@Column
+	private String city;
+
+	// 门店城市地区
+	@Column
+	private String disctrict;
+
+	// 门店区域Id
+	@Column
+	private Long regionId;
+
+	// 是否启用
+	@Column
+	private Boolean isEnable;
+
+	// 排序数字
+	@Column
+	private Long sortId;
+
+	// 经度
+	@Column
+	private Double longitude;
+
+	// 纬度
+	@Column
+	private Double latitude;
+
+	// 描述说明
+	@Column
+	private String info;
+
+	// 图片地址
+	@Column
+	private String imageUri;
+
+	// 轮播展示图片，多张图片以,隔开
+	@Column
+	private String showPictures;
+
+	// 客服qq
+	@Column
+	private String qq;
+
+	// 是否为旗舰店
+	@Column
+	private Boolean isFlagShip;
+
+	// 门店所使用的价目表编号
+	@Column
+	private String priceListNumber;
+
 	public Long getRegionId() {
 		return regionId;
 	}
@@ -104,20 +108,20 @@ public class TdDiySite {
 	}
 
 	public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public Boolean getIsFlagShip() {
 		return isFlagShip;
@@ -224,35 +228,43 @@ public class TdDiySite {
 	}
 
 	public String getAddress() {
-        return address;
-    }
+		return address;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public Boolean getIsEnable() {
-        return isEnable;
-    }
+	public Boolean getIsEnable() {
+		return isEnable;
+	}
 
-    public void setIsEnable(Boolean isEnable) {
-        this.isEnable = isEnable;
-    }
-    
-    public Long getSortId() {
-        return sortId;
-    }
+	public void setIsEnable(Boolean isEnable) {
+		this.isEnable = isEnable;
+	}
 
-    public void setSortId(Long sortId) {
-        this.sortId = sortId;
-    }
+	public Long getSortId() {
+		return sortId;
+	}
 
-    public String getInfo() {
-        return info;
-    }
+	public void setSortId(Long sortId) {
+		this.sortId = sortId;
+	}
+	
+	public String getPriceListNumber() {
+		return priceListNumber;
+	}
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
+	public void setPriceListNumber(String priceListNumber) {
+		this.priceListNumber = priceListNumber;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
 
 }

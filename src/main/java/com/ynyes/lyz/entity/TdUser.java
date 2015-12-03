@@ -37,7 +37,7 @@ public class TdUser {
 	// 所属门店ID
 	@Column
 	private Long upperDiySiteId;
-	
+
 	// 归属门店名称
 	@Column
 	private String diyName;
@@ -104,22 +104,34 @@ public class TdUser {
 	@Column
 	private String referPhone;
 
-	//首单优惠是否可用
+	// 首单优惠是否可用
 	@Column
 	private Boolean firstOrder;
-	
-	//总消费
+
+	// 总消费
 	@Column
 	private Double allPayed;
-	
-	//是否是老会员
+
+	// 可提现余额
+	@Column(scale = 2)
+	private Double cashBalance;
+
+	// 不可提现余额
+	@Column(scale = 2)
+	private Double unCashBalance;
+
+	// 总余额
+	@Column(scale = 2)
+	private Double allBalance;
+
+	// 是否是老会员
 	@Column
 	private Boolean isOld;
-	
+
 	// 是否启用
 	@Column
 	private Boolean isEnable;
-	
+
 	public Boolean getFirstOrder() {
 		return firstOrder;
 	}
@@ -278,6 +290,30 @@ public class TdUser {
 
 	public void setIdentity(String identity) {
 		this.identity = identity;
+	}
+
+	public Double getCashBalance() {
+		return cashBalance;
+	}
+
+	public void setCashBalance(Double cashBalance) {
+		this.cashBalance = cashBalance;
+	}
+
+	public Double getUnCashBalance() {
+		return unCashBalance;
+	}
+
+	public void setUnCashBalance(Double unCashBalance) {
+		this.unCashBalance = unCashBalance;
+	}
+
+	public Double getAllBalance() {
+		return allBalance;
+	}
+
+	public void setAllBalance(Double allBalance) {
+		this.allBalance = allBalance;
 	}
 
 	public String getEmail() {

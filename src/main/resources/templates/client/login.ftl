@@ -14,9 +14,23 @@
         <link rel="stylesheet" type="text/css" href="/client/css/base.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/other.css"/>
+        <style>
+            .wait{
+                width: 100%;
+                height: 100%;
+                position:fixed;
+                left: 0px;
+                top: 0px;
+                z-index: 99999999999999999;
+                text-align: center;
+                background: url(/client/images/colo_waitbd.png);
+                display:none;
+            }
+        </style>
        
         <script type="text/javascript" src="/client/js/angular.js"></script>
         <script type="text/javascript" src="/client/js/jquery-1.11.0.js"></script>
+        <script type="text/javascript" src="/client/js/rich_lee.js"></script>
         <script>
             var app = angular.module("app",[]);
             app.config(function($httpProvider){
@@ -30,24 +44,29 @@
                     password : ""
                 };
                 $scope.submitForm = function(){
-                    $http({
-                        method: "POST",
+                    wait();
+                    $.ajax({
                         url:"/login/check",
+                        method:"post",
+                        timeout:10000,
                         data:{
                             username:$scope.user.username,
                             password:$scope.user.password
                         },
-                        headers : { "Content-Type": "application/x-www-form-urlencoded"}
-                    }).success(function(res){
-                        if(0 == res.status){
-                            <#-- 进行页面跳转 window.location.href = ""; -->
-                            window.location.href = "/";
-                        }else{
-                            alert(res.message);
+                        error:function(XMLHttpRequest, textStatus, errorThrown){
+                            colse(1);
+                           warning("亲，您的网速不给力啊");   
+                        },
+                        success:function(res){
+                            if(0 == res.status){
+                                window.location.href = "/";
+                            }else{
+                                close(1);
+                                warning(res.message);
+                            }
                         }
                     });
                 }
-                
                 $scope.regist = function(){
                     window.location.href = "/regist"
                 }
@@ -58,6 +77,8 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="app">
+        <#include "/client/wait_img.ftl">
+        <#include "/client/common_warn.ftl">
         <header class="top_head">
             <div class="head_back" style="background:none;"></div>
             <div class="head_title">登陆</div>

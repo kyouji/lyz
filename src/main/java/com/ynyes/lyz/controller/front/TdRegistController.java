@@ -71,25 +71,25 @@ public class TdRegistController {
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
 		String smsCode = (String) req.getSession().getAttribute("SMSCODE");
-		TdUser user = tdUserService.findByUsername(phone);
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(phone);		
 		if (null == cityInfo || "".equals(cityInfo) || "地区".equals(cityInfo)) {
 			res.put("message", "您还未选择您的地区");
 			return res;
 		}
 		if (null != user) {
-			res.put("message", "该手机号码已注册！");
+			res.put("message", "该手机号码已注册");
 			return res;
 		}
 		if (null == smsCode) {
-			res.put("message", "验证码错误！");
+			res.put("message", "验证码错误");
 			return res;
 		}
 		if (!smsCode.equals(code)) {
-			res.put("message", "验证码错误！");
+			res.put("message", "验证码错误");
 			return res;
 		}
 		if (!repassword.equals(password)) {
-			res.put("message", "两次输入的密码不一致！");
+			res.put("message", "两次输入的密码不一致");
 			return res;
 		}
 
@@ -121,7 +121,7 @@ public class TdRegistController {
 		}
 
 		tdUserService.save(new_user);
-		req.getSession().setMaxInactiveInterval(60 * 60 * 24);
+		req.getSession().setMaxInactiveInterval((60 * 60 * 60 * 24));
 		req.getSession().setAttribute("username", phone);
 
 		res.put("status", 0);
@@ -145,13 +145,13 @@ public class TdRegistController {
 			System.err.println(content);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.put("message", "验证码生成失败！");
+			res.put("message", "验证码生成失败");
 			return res;
 		}
 
 		TdRegion region = tdRegionService.findByCityName(cityInfo);
 		if (null == region) {
-			res.put("message", "您还未选择区域！");
+			res.put("message", "您还未选择区域");
 			return res;
 		}
 		TdSmsAccount account = tdSmsAccountService.findOne(region.getSmsAccountId());
@@ -204,7 +204,7 @@ public class TdRegistController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.put("message", "验证码生成失败！");
+			res.put("message", "验证码生成失败");
 			return res;
 		}
 		res.put("status", 0);

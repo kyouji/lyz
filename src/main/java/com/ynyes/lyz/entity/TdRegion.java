@@ -23,6 +23,10 @@ public class TdRegion {
 	@Column
 	private String province;
 	
+	//所属分公司id
+	@Column
+	private Long companyId;
+	
 	//城市名
 	@Column
 	private String cityName;
@@ -51,22 +55,6 @@ public class TdRegion {
 	@Column
 	private Long sortId;
 
-	public Long getSmsAccountId() {
-		return smsAccountId;
-	}
-
-	public void setSmsAccountId(Long smsAccountId) {
-		this.smsAccountId = smsAccountId;
-	}
-
-	public Long getSortId() {
-		return sortId;
-	}
-
-	public void setSortId(Long sortId) {
-		this.sortId = sortId;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -81,6 +69,14 @@ public class TdRegion {
 
 	public void setProvince(String province) {
 		this.province = province;
+	}
+
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getCityName() {
@@ -122,6 +118,27 @@ public class TdRegion {
 	public void setPriceListId(Long priceListId) {
 		this.priceListId = priceListId;
 	}
-	
-	
+
+	public Long getSmsAccountId() {
+		return smsAccountId;
+	}
+
+	public void setSmsAccountId(Long smsAccountId) {
+		this.smsAccountId = smsAccountId;
+	}
+
+	public Long getSortId() {
+		return sortId;
+	}
+
+	public void setSortId(Long sortId) {
+		this.sortId = sortId;
+	}
+
+	@Override
+	public String toString() {
+		return "TdRegion [id=" + id + ", province=" + province + ", companyId=" + companyId + ", cityName=" + cityName
+				+ ", citySend=" + citySend + ", parentCityName=" + parentCityName + ", parentCitySend=" + parentCitySend
+				+ ", priceListId=" + priceListId + ", smsAccountId=" + smsAccountId + ", sortId=" + sortId + "]";
+	}
 }

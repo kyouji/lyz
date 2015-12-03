@@ -47,6 +47,8 @@ public interface TdOrderRepo extends
     
     Page<TdOrder> findByUsernameAndStatusIdOrderByIdDesc(String username, Long statusId, Pageable page);
     
+    List<TdOrder> findByUsernameAndStatusIdOrderByIdDesc(String username,Long statusId);
+    
     Page<TdOrder> findByUsernameAndIsCancelTrue(String username,Pageable page); //取消订单 zhangji
     Page<TdOrder> findByIsCancelTrue(Pageable page); //取消订单 zhangji
     Page<TdOrder> findByIsCancelTrueAndIsRefundFalse(Pageable page); //取消订单 zhangji
@@ -66,4 +68,7 @@ public interface TdOrderRepo extends
     Long countByStatusId(Long statusId);
     
     TdOrder findByOrderNumber(String orderNumber);
+    
+    //根据用户名查找所有的订单
+    List<TdOrder> findByUsernameOrderByIdDesc(String username);
 }

@@ -40,16 +40,40 @@ public class TdCartGoodsService {
 	public List<TdCartGoods> findAll() {
 		return (List<TdCartGoods>) repository.findAll();
 	}
-	
+
 	/**
-	 * 根据用户名查找购物车
+	 * 删除用户所有的已选
+	 * 
 	 * @author dengxiao
 	 */
-	public List<TdCartGoods> findByUsername(String username){
-		if(null == username){
+	public void deleteAll(List<TdCartGoods> all){
+		if(null != all){
+			repository.delete(all);
+		}
+	}
+
+	/**
+	 * 根据用户名查找购物车
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdCartGoods> findByUsername(String username) {
+		if (null == username) {
 			return null;
 		}
 		return repository.findByUsername(username);
+	}
+
+	/**
+	 * 根据用户名和商品id查找购物车项
+	 * 
+	 * @author dengxiao
+	 */
+	public TdCartGoods findByUsernameAndGoodsId(String username, Long goodsId) {
+		if (null == username || null == goodsId) {
+			return null;
+		}
+		return repository.findByUsernameAndGoodsId(username, goodsId);
 	}
 
 }
