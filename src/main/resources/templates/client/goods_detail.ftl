@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+		<meta name="copyright" content="" />
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta charset="utf-8">
+		<title>乐易装首页</title>
+		
+		<link rel="stylesheet" type="text/css" href="/client/css/my_base.css"/>
+		<link rel="stylesheet" type="text/css" href="/client/css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="/client/css/other.css"/>
+		
+		<script src="/client/js/goods_list_normal.js" type="text/javascript"></script>
+		<script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
+		<script src="/client/js/rich_lee.js" type="text/javascript"></script>
+	</head>
+	<script type="text/javascript">
+		$(function(){
+			turn_hei($('.det_banner'),0.8) 
+			$('.det_banner img').width($(window).width())
+			win_colo($('.det_list .li03 p'),${goods.id?c});//颜色调理窗口窗口
+		});
+	</script>
+	<body>
+		<div>
+            
+            <div id="color_package_select">
+                <#include "/client/color_package.ftl">            
+            </div>
+			
+			<div class="det_banner">
+			    <#if goods??&&goods.showPictures??>
+    				<div class="det_scroll">
+    				    <#list goods.showPictures?split(",") as pic>
+    					   <img src="${pic!''}">
+    					</#list>
+    				</div>
+				</#if>
+    			<div class="det_title">
+    				<span onclick="javascript:history.go(-1);"></span>
+    				<span></span>
+    			</div>
+    			<#if goods??&&goods.showPictures??>
+    				<div class="dtbanner_btn">
+    					<ul>
+    					   <#list goods.showPictures?split(",") as pic>
+						      <li></li>
+    					   </#list>
+    					</ul>
+    				</div>
+				</#if>
+			</div>
+			<div class="index_test_box"></div>
+			<section class="det_content">
+				<div class="det_pri">
+				    <#if goods??>
+    					<p>${goods.name!''}</p>
+    					<p>￥<#if goods.salePrice??>${goods.salePrice?string("0.00")}</#if></p>
+    					<p>销量：24534件</p>
+					</#if>
+				</div>
+				<div class="index_test_box"></div>
+				<ul class="det_list">
+					<li class="li01">
+						<div>运费：</div>
+						<p>10元~100元 运费10元</p>
+					</li>
+					<li class="li02">
+						<div>促销：</div>
+						<p>满<a href="#">399</a>，赠墙面漆一桶</p>
+						<div></div>
+						<p>满<a href="#">399</a>，赠墙面漆一桶</p>
+					</li>
+					
+					<li class="li05"></li>
+					<li class="li03">
+						<div>数量：</div>
+						<a onclick="changeQuantity(${goods.id?c},'delete')">-</a>
+						<input type="text" id="quantity${goods.id?c}" value="${select_quantity!'0'}" />
+						<a onclick="changeQuantity(${goods.id?c},'add')">+</a>
+						<p>调色</p>
+						
+					</li>
+					<li class="li04">
+						<div>送至：</div>
+						<p>重庆市 渝中区 解放碑</p>
+					</li>
+					<li class="li04">
+						<div>服务：</div>
+						<p>由“乐易装”售后和发货，并享受售后服务</p>
+					</li>
+				</ul>
+				<div class="index_test_box"></div>
+				<dl class="det_text">
+					<dt>商品参数</dt>
+					<dd>
+						<span>品牌</span>
+						<p>欧丽缇</p>
+					</dd>
+					<dd>
+						<span>产地</span>
+						<p>法国</p>
+					</dd>
+					<dd>
+						<span>发货地</span>
+						<p>郑州一号仓库</p>
+					</dd>
+				</dl>
+				<div class="index_test_box"></div>
+			    <#if goods.detail??>
+    				<div class="det_img">${goods.detail!''}</div>
+				</#if>
+				<div class="det_mes">
+					<div class="det_mestitle">宝贝评价<span>（<#if user_comment_list??>${user_comment_list?size}<#else>0</#if>）</span></div>
+					<#if user_comment_list??&&user_comment_list?size gt 0>
+		                <#list user_comment_list as comment>
+        					<dl class="det_mes_box">
+        						<dt>
+        							<div><img src="${comment.userHeadUri!''}"></div>
+        							<span>${comment.username!''}</span>
+        						</dt>
+        						<dd>
+        							<p>${comment.content!''}</p>
+        							<#--
+            							<div>
+            								<img src="/client/images/det_banner01.png" />
+            							</div>
+        							-->
+        							<span>
+        							    <#if comment.stars??>
+                                            <#list 1..comment.stars as star>
+            								    <img src="/client/images/det_star.png">
+            								</#list>
+    									</#if>
+        							</span>
+        							<a><#if comment.commentTime??>${comment.commentTime?string("yyyy-MM-dd")}</#if></a>
+        						</dd>
+        					</dl>
+    					</#list>
+					</#if>
+				</div>
+				<ul class="sec_footer">
+					<li>
+						<span>
+							客服
+						</span>
+					</li>
+					<li>
+						<span>收藏</span>
+					</li>
+					<li>
+						<span>加入已选</span>
+					</li>
+					<li>
+						<span>立刻购买</span>
+					</li>	
+				</ul>
+				<div class="index_test_box02"></div>
+			</section>
+		</div>		
+	</body>
+</html>

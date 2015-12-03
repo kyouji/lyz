@@ -23,4 +23,11 @@ public interface TdCartGoodsRepo
 	List<TdCartGoods> findByUsername(String username);
 
 	List<TdCartGoods> findByUsernameAndIsSelectedTrue(String username);
+
+	/**
+	 * 根据用户名和商品id查找购物车项
+	 * 
+	 * @author dengxiao
+	 */
+	TdCartGoods findByUsernameAndGoodsId(String username, Long goodsId);
 }

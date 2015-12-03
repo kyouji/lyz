@@ -121,7 +121,7 @@ public class TdRegistController {
 		}
 
 		tdUserService.save(new_user);
-		req.getSession().setMaxInactiveInterval(60 * 60 * 24);
+		req.getSession().setMaxInactiveInterval((60 * 60 * 60 * 24));
 		req.getSession().setAttribute("username", phone);
 
 		res.put("status", 0);

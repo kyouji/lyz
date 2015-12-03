@@ -13,12 +13,11 @@ function my_select() {
 	});
 }
 
-function my_hei() {
-	function turn_hei(obj, my_math) {
-		obj.height((obj.width()) * my_math)
+function turn_hei(obj,my_math){
+	obj.height((obj.width())*my_math);
+};
 
-	}
-	;
+function my_hei() {
 	turn_hei($('.index_banner'), 0.5)// 首页
 	// turn_hei($('.index_banner img'),0.5)//首页图片
 
@@ -28,45 +27,6 @@ function my_hei() {
 	turn_hei($('.index_goods02'), 1)// nav
 
 	turn_hei($('.index_goods03 ul li a'), 1.6)// nav
-};
-
-function win_cla() {
-	$('.win_cla').height($(window).height())
-
-	$('.btn').click(function() {
-		$('.win_cla').css({
-			left : '0px'
-		});
-		$('.win_cla dd a').css({
-			WebkitTransform : 'translateX(0px)'
-		});
-		$('.win_cla dd a').each(function(i) {
-			$(this).css({
-				WebkitTransition : '1s ' + i * 200 + 'ms'
-			});
-		});
-	});
-
-	$('.win_cla dt span').click(function() {
-		$('.win_cla').css({
-			left : '100%'
-		});
-		$('.win_cla dd a').css({
-			WebkitTransform : 'translateX(100%)'
-		});
-		$('.win_cla dd a').each(function(i) {
-			$(this).css({
-				WebkitTransition : '1s'
-			});
-		});
-	});
-
-	var hei = ($(window).height() - $('.win_cla dt span').height()) / 2
-	// console.log(hei)
-	$('.win_cla dt span').css({
-		marginTop : '' + hei + 'px'
-	})
-	$('.win_cla dt span').height($('.win_cla dt span').width())
 };
 
 function banner_scroll() {
@@ -159,5 +119,167 @@ function scroll_news() {
 					});
 				});
 	}, 5000);
+
+};
+
+function win_colo_temp() {
+	$('.colo_choice').height($(window).height())
+	$('.colo_box').height($(window).height() - 150)
+	$('.colo_box li').height($('.colo_box li').width() * 1)
+	$('.colo_sec').height($(window).height() - 50)
+	var hei = $(window).height() - 100
+	$('.colo_sec dl').css({
+		maxHeight : hei
+	})
+
+	$('.lei_box01 dl dt a').click(function() {
+//		$('.colo_choice').css({
+//			left : '0px'
+//		})
+	})
+	$('.colo_back').click(function() {
+		$('.colo_choice').css({
+			left : '100%'
+		})
+	})
+
+	$('.colo_test').click(function() {
+		$('.colo_choice').css({
+			left : '100%'
+		})
+	})
+
+	$('.colo_title a').click(function() {
+		$('.colo_sec').slideDown()
+	})
+	$('.colo_clo').click(function() {
+		$('.colo_sec').slideUp()
+	})
+}
+
+function win_colo(obj,goodsId){
+	obj.click(function(){
+		//console.log(0)
+		var quantityElementId = "#quantity"+goodsId;
+		var quantity = $(quantityElementId).val();
+		$.post("/goods/get/color",{
+			"goodsId" : goodsId,
+			"quantity" : quantity
+		},function(res){
+			//进行局部刷新
+			$("#color_package_select").html(res);
+			$('.colo_choice').height($(window).height())
+			$('.colo_box').height($(window).height()-150)
+			$('.colo_box li').height($('.colo_box li').width()*1)
+			$('.colo_sec').height($(window).height()-50)
+			var hei = $(window).height()-100
+			$('.colo_sec dl').css({maxHeight:hei})
+			$('.colo_choice').css({left:'0px'})	
+			$('.colo_back').click(function(){
+				$('.colo_choice').css({left:'100%'})	
+			})
+			
+			$('.colo_test').click(function(){
+				$('.colo_choice').css({left:'100%'})	
+			})
+			
+			$('.colo_title a').click(function(){
+				if($('.colo_sec').css('display') == 'none'){
+					$('.colo_sec').slideDown()	
+				}else if($('.colo_sec').css('display') == 'block'){
+					$('.colo_sec').slideUp()
+				};			
+			})
+			$('.colo_clo').click(function(){
+				$('.colo_sec').slideUp()	
+			})
+		});
+	});
+};
+
+
+function my_check() {
+	// var my_num = [];
+	$('.my_black').hide();
+	$('.my_checkbox').each(function(i) {
+		$(this).click(function() {
+			if ($('.my_black').eq(i).css('display') == 'none') {
+				$('.my_black').eq(i).show();
+			} else {
+				$('.my_black').eq(i).hide();
+			}
+			;
+			/*
+			 * if($('.my_black').css('display') == 'block'){
+			 * $('.go_buy').animate({height:'50px',bottom:'60px'})
+			 * 
+			 * }else if($('.my_black').css('display') == 'none'){
+			 * $('.go_buy').animate({height:'0px',bottom:'0px'}) }
+			 */
+			// ///////////娱乐 统计数据
+			/*
+			 * if($('.my_black').eq(i).css('display') == 'block'){
+			 * my_num.push($('.my_black').eq(i)) }else
+			 * if($('.my_black').css('display') == 'none'){
+			 * my_num.shift($('.my_black').eq(i))); } $('.go_buy
+			 * span').text(my_num.length); //console.log(my_num.length)
+			 */
+		})
+	})
+};
+
+function win_cla() {
+	$('.win_cla').height($(window).height())
+
+	$('.index_head div').click(function() {
+		console.log(0)
+		$('.win_cla').css({
+			left : '0px'
+		});
+		$('.win_cla dd a').css({
+			WebkitTransform : 'translateX(0px)'
+		});
+		$('.win_cla dd a').each(function(i) {
+			$(this).css({
+				WebkitTransition : '1s ' + i * 200 + 'ms'
+			});
+		});
+	});
+
+	$('.win_cla dt span').click(function() {
+		$('.win_cla').css({
+			left : '100%'
+		});
+		$('.win_cla dd a').css({
+			WebkitTransform : 'translateX(100%)'
+		});
+		$('.win_cla dd a').each(function(i) {
+			$(this).css({
+				WebkitTransition : '1s'
+			});
+		});
+	});
+
+	var hei = ($(window).height() - $('.win_cla dt span').height()) / 2
+	// console.log(hei)
+	$('.win_cla dt span').css({
+		marginTop : '' + hei + 'px'
+	})
+	$('.win_cla dt span').height($('.win_cla dt span').width())
+};
+
+
+//等待开始方法
+function wait(){
+	var wait = ($(window).height() - $('.wait img').height())/2;
+	$('.wait img').css({marginTop:wait})			
+	$('.wait').show();
+};
+
+//等待关闭方法
+function close(times){
+	var timer = setTimeout(function(){
+		$('.wait').hide()
+		},times);
 };
 

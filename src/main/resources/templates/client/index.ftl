@@ -21,7 +21,7 @@
 			<header class="index_head">
 				<span><#if user??>${user.cityName!''}</#if></span>
 				<input type="" name="" id="" placeholder="快速搜索商品" />
-				<div ></div>
+				<div onclick="window.location.href='/goods/normal/list'"></div>
 			</header>
 		    <#if circle_ad_list??>
     			<div class="index_banner">
@@ -226,24 +226,24 @@
     					       <#if item_index==0||(item_index)%2==0>
         						    <li>
 						       </#if>
-        							<a class="good03_box" href="#">
-        								<div>
-        									<img src="/client/images/index_goods_img07.png" />
-        									<span>满减</span>
-        									<span>满减</span>
-        								</div>
-        								<p>华润漆 净味惠涂易内墙乳胶漆RS901-18L 油漆涂料 内</p>
-        								<span class="box03_pri">￥700.00</span>
-        							</a>
-        							<a class="good03_box" href="#">
-        								<div>
-        									<img src="/client/images/index_goods_img07.png" />
-        									<span>满减</span>
-        									<span>满减</span>
-        								</div>
-        								<p>华润漆 净味惠涂易内墙乳胶漆RS901-18L 油漆涂料 内</p>
-        								<span class="box03_pri">￥700.00</span>
-        							</a>
+    							<a class="good03_box" href="#">
+    								<div>
+    									<img src="/client/images/index_goods_img07.png" />
+    									<span>满减</span>
+    									<span>满减</span>
+    								</div>
+    								<p>华润漆 净味惠涂易内墙乳胶漆RS901-18L 油漆涂料 内</p>
+    								<span class="box03_pri">￥700.00</span>
+    							</a>
+    							<a class="good03_box" href="#">
+    								<div>
+    									<img src="/client/images/index_goods_img07.png" />
+    									<span>满减</span>
+    									<span>满减</span>
+    								</div>
+    								<p>华润漆 净味惠涂易内墙乳胶漆RS901-18L 油漆涂料 内</p>
+    								<span class="box03_pri">￥700.00</span>
+    							</a>
     							<#if item_index==1||item_index==(index_recommend_list?size-1)||(item_index+1)%2==0>
         						    </li>
         						</#if>
@@ -262,7 +262,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="#">
+						<a href="/goods/normal/list">
 							<div></div>
 							<span>下单</span>
 						</a>
