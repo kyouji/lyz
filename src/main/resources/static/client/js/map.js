@@ -9,6 +9,9 @@ var map = new AMap.Map("mapContainer", {
 });
 // 获取用户所在城市信息
 function showCityInfo() {
+	//调用等待方法
+	wait();
+	
 	// 加载城市查询插件
 	AMap.service([ "AMap.CitySearch" ], function() {
 		// 实例化城市查询类
@@ -18,10 +21,12 @@ function showCityInfo() {
 			if (status === 'complete' && result.info === 'OK') {
 				if (result && result.city && result.bounds) {
 					var cityinfo = result.city;
-					if (cities.toString().indexOf(cityinfo) > -1) {
-						$("#my_box").html(cityinfo);
-					}
+					$("#my_box").html(cityinfo);
+					//等待方法结束
+					close(1);
 				}
+			}else{
+				console.debug("城市信息获取失败");
 			}
 		});
 	});

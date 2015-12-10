@@ -7,17 +7,17 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ynyes.lyz.entity.TdRegion;
-import com.ynyes.lyz.repository.TdRegionRepo;
+import com.ynyes.lyz.entity.TdCity;
+import com.ynyes.lyz.repository.TdCityRepo;
 
 @Service
 @Transactional
-public class TdRegionService {
+public class TdCityService {
 
 	@Autowired
-	private TdRegionRepo repository;
+	private TdCityRepo repository;
 	
-	public TdRegion save(TdRegion entity){
+	public TdCity save(TdCity entity){
 		if(null == entity){
 			return null;
 		}
@@ -30,22 +30,22 @@ public class TdRegionService {
 		}
 	}
 	
-	public TdRegion findOne(Long id){
+	public TdCity findOne(Long id){
 		if(null == id){
 			return null;
 		}
 		return repository.findOne(id);
 	}
 	
-	public List<TdRegion> findAll(){
-		return (List<TdRegion>) repository.findAll();
+	public List<TdCity> findAll(){
+		return (List<TdCity>) repository.findAll();
 	}
 	
 	/**
 	 * 根据城市名称查询到地区实体
 	 * @author dengxiao
 	 */
-	public TdRegion findByCityName(String cityName){
+	public TdCity findByCityName(String cityName){
 		if(null == cityName){
 			return null;
 		}

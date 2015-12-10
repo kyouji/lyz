@@ -22,10 +22,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ynyes.lyz.entity.TdRegion;
+import com.ynyes.lyz.entity.TdCity;
 import com.ynyes.lyz.entity.TdSmsAccount;
 import com.ynyes.lyz.entity.TdUser;
-import com.ynyes.lyz.service.TdRegionService;
+import com.ynyes.lyz.service.TdCityService;
 import com.ynyes.lyz.service.TdSmsAccountService;
 import com.ynyes.lyz.service.TdUserService;
 import com.ynyes.lyz.util.MD5;
@@ -35,7 +35,7 @@ import com.ynyes.lyz.util.MD5;
 public class TdRegistController {
 
 	@Autowired
-	private TdRegionService tdRegionService;
+	private TdCityService tdRegionService;
 
 	@Autowired
 	private TdUserService tdUserService;
@@ -45,7 +45,7 @@ public class TdRegistController {
 
 	@RequestMapping
 	public String regist(HttpServletRequest req, ModelMap map) {
-		List<TdRegion> regions = tdRegionService.findAll();
+		List<TdCity> regions = tdRegionService.findAll();
 		map.addAttribute("regions", regions);
 		return "/client/regist";
 	}
@@ -57,6 +57,7 @@ public class TdRegistController {
 		res.put("status", -1);
 		TdUser user = tdUserService.findByUsernameAndCityNameAndIsEnableTrue(referPhone, cityInfo);
 		if (null == user) {
+			res.put("message", cityInfo + "默认门店");
 			return res;
 		}
 		res.put("message", user.getDiyName());
@@ -71,7 +72,7 @@ public class TdRegistController {
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
 		String smsCode = (String) req.getSession().getAttribute("SMSCODE");
-		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(phone);		
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(phone);
 		if (null == cityInfo || "".equals(cityInfo) || "地区".equals(cityInfo)) {
 			res.put("message", "您还未选择您的地区");
 			return res;
@@ -117,7 +118,7 @@ public class TdRegistController {
 		if (null != refer_user) {
 			new_user.setUpperDiySiteId(refer_user.getUpperDiySiteId());
 			new_user.setDiyName(refer_user.getDiyName());
-			new_user.setRegionId(refer_user.getRegionId());
+			new_user.setCityId(refer_user.getCityId());
 		}
 
 		tdUserService.save(new_user);
@@ -149,9 +150,9 @@ public class TdRegistController {
 			return res;
 		}
 
-		TdRegion region = tdRegionService.findByCityName(cityInfo);
+		TdCity region = tdRegionService.findByCityName(cityInfo);
 		if (null == region) {
-			res.put("message", "您还未选择区域");
+			res.put("message", "该地区未开通服务");
 			return res;
 		}
 		TdSmsAccount account = tdSmsAccountService.findOne(region.getSmsAccountId());

@@ -9,17 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.ynyes.lyz.entity.TdPriceList;
-import com.ynyes.lyz.repository.TdPriceListRepo;
+import com.ynyes.lyz.entity.TdPriceListItem;
+import com.ynyes.lyz.repository.TdPriceListItemRepo;
 
 @Service
 @Transactional
-public class TdPriceListService {
+public class TdPriceListItemService {
 
 	@Autowired
-	private TdPriceListRepo repository;
+	private TdPriceListItemRepo repository;
 
-	public TdPriceList save(TdPriceList e) {
+	public TdPriceListItem save(TdPriceListItem e) {
 		if (null == e) {
 			return null;
 		}
@@ -32,15 +32,15 @@ public class TdPriceListService {
 		}
 	}
 
-	public TdPriceList findOne(Long id) {
+	public TdPriceListItem findOne(Long id) {
 		if (null == id) {
 			return null;
 		}
 		return repository.findOne(id);
 	}
 
-	public List<TdPriceList> findAll() {
-		return (List<TdPriceList>) repository.findAll();
+	public List<TdPriceListItem> findAll() {
+		return (List<TdPriceListItem>) repository.findAll();
 	}
 
 	/**
@@ -48,13 +48,25 @@ public class TdPriceListService {
 	 * 
 	 * @author dengxiao
 	 */
-	public Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(String priceListNumber, int size,
-			int page) {
+	public Page<TdPriceListItem> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(String priceListNumber,
+			int size, int page) {
 		if (null == priceListNumber) {
 			return null;
 		}
 		PageRequest pageRequest = new PageRequest(page, size);
 		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(priceListNumber, pageRequest);
 	}
+
+	/**
+	 * 查找所有参与促销的商品（不分页）
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdPriceListItem> findByPriceListNumberAndIsPromotionTrueOrderBySortIdAsc(String priceListNumber){
+		if(null == priceListNumber){
+			return null;
+		}
+		return repository.findByPriceListNumberAndIsPromotionTrueOrderBySortIdAsc(priceListNumber);
+	};
 
 }

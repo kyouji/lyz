@@ -79,7 +79,7 @@ public class TdGoodsController {
 		String username = (String) req.getSession().getAttribute("username");
 		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
 		List<TdColorPackage> color_package_list = tdColorPackageService
-				.findByGoodsIdAndRegionIdOrderBySortIdAsc(goodsId, user.getRegionId());
+				.findByGoodsIdAndRegionIdOrderBySortIdAsc(goodsId, user.getCityId());
 		if (null != color_package_list && color_package_list.size() > 0) {
 			if (null != color_package_list.get(0).getPrice()) {
 				map.addAttribute("unit_price", color_package_list.get(0).getPrice());

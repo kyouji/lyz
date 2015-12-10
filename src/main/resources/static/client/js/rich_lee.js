@@ -262,20 +262,6 @@ function win_cla(){
 };
 
 
-//等待开始方法
-function wait(){
-	var wait = ($(window).height() - $('.wait img').height())/2;
-	$('.wait img').css({marginTop:wait})			
-	$('.wait').show();
-};
-
-//等待关闭方法
-function close(times){
-	var timer = setTimeout(function(){
-		$('.wait').hide()
-		},times);
-};
-
 function footer(){
 	var le = ($(window).width() - $('.footer_act').width())/2;
 	$('.footer_act').css({left:le});

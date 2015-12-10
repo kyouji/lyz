@@ -14,20 +14,7 @@
         <link rel="stylesheet" type="text/css" href="/client/css/base.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/other.css"/>
-        <style>
-            .wait{
-                width: 100%;
-                height: 100%;
-                position:fixed;
-                left: 0px;
-                top: 0px;
-                z-index: 99999999999999999;
-                text-align: center;
-                background: url(/client/images/colo_waitbd.png);
-                display:none;
-            }
-        </style>
-       
+        
         <script type="text/javascript" src="/client/js/angular.js"></script>
         <script type="text/javascript" src="/client/js/jquery-1.11.0.js"></script>
         <script type="text/javascript" src="/client/js/rich_lee.js"></script>
@@ -77,7 +64,7 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="app">
-        <#include "/client/wait_img.ftl">
+        <#include "/client/common_wait.ftl">
         <#include "/client/common_warn.ftl">
         <header class="top_head">
             <div class="head_back" style="background:none;"></div>

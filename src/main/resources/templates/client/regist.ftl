@@ -20,23 +20,10 @@
         <script type="text/javascript" src="/client/js/angular.js"></script>
         <script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
         <script src="/client/js/rich_lee.js" type="text/javascript"></script>
-        <style>
-            .wait{
-                width: 100%;
-                height: 100%;
-                position:fixed;
-                left: 0px;
-                top: 0px;
-                z-index: 99999999999999999;
-                text-align: center;
-                background: url(/client/images/colo_waitbd.png);
-                display:none;
-            }
-        </style>
         <script>
-            $(function(){
+            window.onload=function(){
                 showCityInfo();
-            });
+            }
             //创建一个包含所有城市信息的数组
             var cities = [
                 <#if regions??>
@@ -72,7 +59,6 @@
                     $("#sendSys").val("重新获取（"+$scope.time+"）");
                     $scope.time = $scope.time-1;
                     if(-1 == $scope.time){
-                        console.debug("结束");
                         $("#sendSys").val("发送验证码");
                         $scope.time = 0;
                     }else{
@@ -88,11 +74,11 @@
                         cityInfo:cityInfo
                     };
                     var config = {};
+                    wait();
                     if(check.test($scope.infos.referPhone)){
                         $.post("/regist/refer/check",data,function(res){
-                            if(0 == res.status){
-                                $("#diyName").html("归属门店："+res.message);
-                            }
+                            close(1);
+                            $("#diyName").html("归属门店："+res.message);
                         });
                     }
                 }
@@ -115,7 +101,7 @@
                         timeout:10000,
                         error:function(XMLHttpRequest, textStatus, errorThrown){
                             close(1);
-                            alert("亲，您的网速不给力啊！");
+                            warning("亲，您的网速不给力啊！");
                             $scope.time = 0;
                         },
                         success:function(res){
@@ -125,55 +111,59 @@
                                     setTimeout($scope.changeSms,1000);
                                 }else{
                                     $scope.time = 0;
-                                    alert("验证码发送失败！")
+                                    warning("验证码发送失败！")
                                     console.debug(res.code);
                                 }
                             }else{
+                                close(1);
                                 $scope.time = 0;
-                                alert(res.message);
-                                console.debug(res.code);
+                                warning(res.message);
                             }
                         }
                     });
-                    <#--
-                    $.post("/regist/send/code",{
-                        cityInfo:cityInfo,
-                        phone:$scope.infos.phone
-                    },function(res){
-                        if(0==res.status){
-                            if(00==res.code){
-                                setTimeout($scope.changeSms,1000);
-                            }else{
-                                $scope.time = 0;
-                                alert("验证码发送失败！")
-                            }
-                        }else{
-                            $scope.time = 0;
-                            alert(res.message);
-                        }
-                    });
-                    -->
                 }
                 
+                <#-- 提交注册表单的方法 -->
                 $scope.submitForm = function(){
                     var cityInfo = $("#my_box").html();
-                    var data = {
-                        cityInfo:cityInfo,
-                        phone:$scope.infos.phone,
-                        code:$scope.infos.code,
-                        password:$scope.infos.password,
-                        repassword:$scope.infos.repassword,
-                        referPhone:$scope.infos.referPhone,
-                        diySiteName:$scope.infos.diySiteName
-                    };
                     var config = {};
+                    wait();
+                    $.ajax({
+                        url:"/regist/save",
+                        method:"post",
+                        data:{
+                            cityInfo:cityInfo,
+                            phone:$scope.infos.phone,
+                            code:$scope.infos.code,
+                            password:$scope.infos.password,
+                            repassword:$scope.infos.repassword,
+                            referPhone:$scope.infos.referPhone,
+                            diySiteName:$scope.infos.diySiteName
+                        },
+                        timeout:10000,
+                        error:function(XMLHttpRequest, textStatus, errorThrown){
+                            close(1);
+                            warning("亲，您的网速不给力啊！");
+                        },
+                        success:function(res){
+                            close(1);
+                            if(0==res.status){
+                                window.location.href="/";
+                            }else{
+                                warning(res.message);
+                            }
+                        }
+                        
+                    });
+                    <#--
                     $.post("/regist/save",data,function(res){
                         if(0==res.status){
                             window.location.href="/";
                         }else{
-                            alert(res.message);
+                            warning(res.message);
                         }
                     });
+                    -->
                 }
             });
         </script>
@@ -182,9 +172,9 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="regist">
-        <#include "/client/wait_img.ftl">
+        <#include "/client/common_wait.ftl">
         <#include "/client/common_warn.ftl">
-        
+        <div id="mapContainer" style="display:none;"></div>
         <header class="top_head">
             <a href="javascript:history.go(-1);"><div class="head_back"></div></a>
             <div class="head_title">注册</div>
@@ -194,8 +184,8 @@
             <div class="reg_logo"><img src="/client/images/big_logo.png" /></div>
             <form class="reg_content" name="registForm" ng-submit="submitForm()">              
                 <dl>
-                    <dt >
-                        <div class="my_sele" id="my_box">地区</div>
+                    <dt>
+                        <div class="my_sele" id="my_box">定位中...</div>
                         <select calss="my_box" id="my_city">
                             <option ng-repeat="region in regions">{{region.name}}</option>
                         </select>

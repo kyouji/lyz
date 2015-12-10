@@ -24,7 +24,7 @@
         });
     </script>
     <body>
-        <#include "/client/wait_img.ftl">
+        <#include "/client/common_wait.ftl">
         <#include "/client/common_warn.ftl">    
         <div>
             <dl class="win_cla">

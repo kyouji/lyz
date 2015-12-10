@@ -98,7 +98,7 @@ public class TdUser {
 
 	// 归属区域Id
 	@Column
-	private Long regionId;
+	private Long cityId;
 
 	// 归属销顾电话（推荐人电话）
 	@Column
@@ -156,12 +156,12 @@ public class TdUser {
 		this.isOld = isOld;
 	}
 
-	public Long getRegionId() {
-		return regionId;
+	public Long getCityId() {
+		return cityId;
 	}
 
-	public void setRegionId(Long regionId) {
-		this.regionId = regionId;
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
 	}
 
 	public String getDiyName() {

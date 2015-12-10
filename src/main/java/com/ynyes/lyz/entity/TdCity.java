@@ -7,14 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 区域实体类
+ * 城市实体类
  * @author Administrator
  */
 
 @Entity
-public class TdRegion {
+public class TdCity {
 
-	//区域Id
+	//城市Id
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
