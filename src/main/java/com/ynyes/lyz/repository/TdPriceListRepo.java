@@ -19,6 +19,7 @@ public interface TdPriceListRepo
 	 */
 	List<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(String priceListNumber);
 
+
 	/**
 	 * 根据价目表编号和首页推荐查找价目表项（分页）
 	 * 
@@ -31,4 +32,5 @@ public interface TdPriceListRepo
 	 * @注释：搜索
 	 */
 	Page<TdPriceList> findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(String keyword, String keyword1, String keyword2, String keyword3, Pageable page);
+
 }

@@ -75,13 +75,15 @@ public class TdPriceListService {
 	 * 
 	 * @author dengxiao
 	 */
-	public Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(String priceListNumber, int size,
+	public Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(String priceListNumber, int size,
 			int page) {
 		if (null == priceListNumber) {
 			return null;
 		}
 		PageRequest pageRequest = new PageRequest(page, size);
+
 		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(priceListNumber, pageRequest);
+
 	}
 
 }
