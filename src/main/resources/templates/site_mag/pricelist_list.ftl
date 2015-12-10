@@ -11,7 +11,7 @@
 <link href="/mag/style/style.css" rel="stylesheet" type="text/css">
 </head>
 <body class="mainbody">
-<form name="form1" method="post" action="/Verwalter/requisition/requisition/list/" id="form1">
+<form name="form1" method="post" action="/Verwalter/pricelist/list" id="form1">
 <div>
 <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
 <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
@@ -36,9 +36,9 @@ function __doPostBack(eventTarget, eventArgument) {
         <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
         <a href="/Verwalter/center" class="home"><i></i><span>首页</span></a>
         <i class="arrow"></i>
-        <a><span>要货单管理</span></a>
+        <a><span>价目表管理</span></a>
         <i class="arrow"></i>
-        <span>要货单列表</span>
+        <span>价目表列表</span>
           
     </div>
     <!--/导航栏-->
@@ -46,7 +46,7 @@ function __doPostBack(eventTarget, eventArgument) {
     <div class="toolbar-wrap">
         <div id="floatHead" class="toolbar">
             <div class="l-list">
-                <ul class="icon-list">                   
+                <ul class="icon-list">
                     <li>
                         <a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a>
                     </li>
@@ -72,45 +72,49 @@ function __doPostBack(eventTarget, eventArgument) {
             选择
         </th>
         <th align="left">
-            要货单号
+            价目表编号
         </th>
-        <th align="left" width="12%">
-            门店名称
+        <th align="left" width="">
+            价目表名称
         </th>
-        <th align="left" width="10%">
-            商户备注
+        <th align="left" width="">
+           所属区域城市名称
         </th>
-        <th align="left" width="10%">
-            下单时间
+        <th align="left" width="">
+            所属分公司名称
         </th>
-        <th width="8%">
-            确认时间
+        <th width="">
+            商品名称
         </th>
-        <th width="8%">
-            操作
+        <th width="">
+            销售价
         </th>
+             <th width="8%">
+            进货价
+        </th>
+            
     </tr>
 
-    <#if requisition_page??>
-        <#list requisition_page.content as requisition>
+    <#if pricelist_page??>
+        <#list pricelist_page.content as pricelist>
             <tr>
                 <td align="center">
                     <span class="checkall" style="vertical-align:middle;">
-                        <input id="listChkId" type="checkbox" name="listChkId" value="${requisition_index}" >
+                        <input id="listChkId" type="checkbox" name="listChkId" value="${pricelist_index}" >
                     </span>
-                    <input type="hidden" name="listId" id="listId" value="${requisition.id?c}">
+                    <input type="hidden" name="listId" id="listId" value="${pricelist.id?c}">
                 </td>
                 <td>
-                    <a href="/Verwalter/requisition/requisition/edit?id=${requisition.id?c}">${requisition.requisitionNumber!""}</a></td>
-                <td>${requisition.diySiteTitle!""}</td>
-                <td>${requisition.remarkInfo!""}</td>
-                <td><#if requisition.orderTime??>${requisition.orderTime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
+                    <a href="/Verwalter/pricelist/edit?id=${pricelist.id?c}">${pricelist.priceListNumber!""}</a></td>
+                <td>${pricelist.priceListName!""}</td>
+                <td>${pricelist.cityName!""}</td>
+                <td>${pricelist.companyName!""}</td>
+                <td>${pricelist.goodsTitle}</td>
                 <td align="center">
-                   <#if requisition.checkTime??>${requisition.checkTime?string("yyyy-MM-dd HH:mm:ss")}</#if>
+                   <#if pricelist.salePrice??>${pricelist.salePrice?string("0.00")}</#if>
                 </td>
-                
                 <td align="center">
-                    <a href="/Verwalter/requisition/requisition/edit?id=${requisition.id?c}">详细</a>
+                   <#if pricelist.stockPrice??>${pricelist.stockPrice?string("0.00")}</#if>
                 </td>
             </tr>
         </#list>
@@ -120,7 +124,7 @@ function __doPostBack(eventTarget, eventArgument) {
         
 <!--/列表-->
 <!--内容底部-->
-<#assign PAGE_DATA=requisition_page />
+<#assign PAGE_DATA=pricelist_page />
 <#include "/site_mag/list_footer.ftl" />
 <!--/内容底部-->
 </form>

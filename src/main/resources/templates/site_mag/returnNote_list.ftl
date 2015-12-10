@@ -51,7 +51,7 @@ function __doPostBack(eventTarget, eventArgument) {
                         <a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a>
                     </li>
                     <li>
-                        <a onclick="return ExePostBack('btnDelete','删除后订单将无法恢复，是否继续？');" class="del" href="javascript:__doPostBack('btnDelete','')"><i></i><span>删除退货单</span></a>
+                        <a onclick="return ExePostBack('btnDelete','删除后将无法恢复，是否继续？');" class="del" href="javascript:__doPostBack('btnDelete','')"><i></i><span>删除退货单</span></a>
                     </li>
                     
                 </ul>

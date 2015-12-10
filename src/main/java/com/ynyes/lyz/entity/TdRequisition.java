@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+
+//要货单
+
 @Entity
 public class TdRequisition {
 	

@@ -191,8 +191,8 @@ function confirmCopy(id)
             <div class="tools">
                 
                 <a title="上架/下架" class="hot <#if content.isOnSale?? && content.isOnSale>selected</#if>" href="javascript:__doPostBack('btnOnSale','${content.id?c!''}')"></a>
-                <a title="改价" class="change" href="javascript:showDialogChangePrice('${content.id!""}')"></a>
-                <a title="改价记录" class="record" href="javascript:showDialogPriceLog('${content.id!""}')"></a>
+                <#--><a title="改价" class="change" href="javascript:showDialogChangePrice('${content.id!""}')"></a>
+                <a title="改价记录" class="record" href="javascript:showDialogPriceLog('${content.id!""}')"></a> -->
                 <input name="listSortId" type="text" value="${content.sortId!""}" class="sort" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)));">
               
               <#--
