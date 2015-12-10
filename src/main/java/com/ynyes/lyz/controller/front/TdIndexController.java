@@ -99,7 +99,7 @@ public class TdIndexController {
 		map.addAttribute("navi_bar_list", navi_bar_list);
 
 		// 查找首页推荐商品
-		Page<TdPriceList> commend_page = tdPriceListService.findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(
+		Page<TdPriceList> commend_page = tdPriceListService.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(
 				diySite.getPriceListNumber(), ClientConstant.pageSize, 0);
 		map.addAttribute("commend_page", commend_page);
 

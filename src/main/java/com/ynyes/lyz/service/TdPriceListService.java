@@ -44,29 +44,17 @@ public class TdPriceListService {
 	}
 
 	/**
-	 * 根据价目表编号和首页推荐查找价目表项（不分页）
-	 * 
-	 * @author dengxiao
-	 */
-	public List<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(String priceListNumber) {
-		if (null == priceListNumber) {
-			return null;
-		}
-		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(priceListNumber);
-	}
-
-	/**
 	 * 根据价目表编号和首页推荐查找价目表项（分页）
 	 * 
 	 * @author dengxiao
 	 */
-	public Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(String priceListNumber, int size,
+	public Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(String priceListNumber, int size,
 			int page) {
 		if (null == priceListNumber) {
 			return null;
 		}
 		PageRequest pageRequest = new PageRequest(page, size);
-		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(priceListNumber, pageRequest);
+		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(priceListNumber, pageRequest);
 	}
 
 }
