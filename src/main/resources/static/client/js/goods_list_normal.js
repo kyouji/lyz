@@ -232,5 +232,4 @@ function getGoodsDetail(goodsId) {
 	var quantity = $(quantityElementId).val();
 
 	window.location.href = "/goods/detail/" + goodsId + "?quantity=" + quantity;
-
 }
