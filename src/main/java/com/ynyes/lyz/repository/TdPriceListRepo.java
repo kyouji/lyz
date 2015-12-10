@@ -17,12 +17,18 @@ public interface TdPriceListRepo
 	 * 
 	 * @author dengxiao
 	 */
-	List<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(String priceListNumber);
+	List<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(String priceListNumber);
 
 	/**
 	 * 根据价目表编号和首页推荐查找价目表项（分页）
 	 * 
 	 * @author dengxiao
 	 */
-	Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(String priceListNumber, Pageable page);
+	Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(String priceListNumber, Pageable page);
+	
+	/**
+	 * @author lc
+	 * @注释：搜索
+	 */
+	Page<TdPriceList> findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(String keyword, String keyword1, String keyword2, String keyword3, Pageable page);
 }

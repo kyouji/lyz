@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ynyes.lyz.entity.TdPriceList;
@@ -43,6 +45,19 @@ public class TdPriceListService {
 		return (List<TdPriceList>) repository.findAll();
 	}
 
+	public Page<TdPriceList> findAll(int page, int size){
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+		return repository.findAll(pageRequest);
+	}
+	
+	public Page<TdPriceList> searchAll(String keywords, int page, int size){		
+		if (null == keywords) {
+			return null;
+		}
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+		return repository.findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(keywords, keywords, keywords, keywords, pageRequest);
+	}
+	
 	/**
 	 * 根据价目表编号和首页推荐查找价目表项（不分页）
 	 * 
@@ -52,7 +67,7 @@ public class TdPriceListService {
 		if (null == priceListNumber) {
 			return null;
 		}
-		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(priceListNumber);
+		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(priceListNumber);
 	}
 
 	/**
@@ -66,7 +81,7 @@ public class TdPriceListService {
 			return null;
 		}
 		PageRequest pageRequest = new PageRequest(page, size);
-		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(priceListNumber, pageRequest);
+		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(priceListNumber, pageRequest);
 	}
 
 }

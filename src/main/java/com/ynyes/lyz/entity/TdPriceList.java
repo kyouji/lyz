@@ -40,6 +40,10 @@ public class TdPriceList {
 	// 商品id
 	@Column
 	private Long goodsId;
+	
+	// 商品名称
+	@Column
+	private String goodsTitle;
 
 	// 该件商品的销售价
 	@Column(scale = 2)
@@ -58,7 +62,7 @@ public class TdPriceList {
 	private Boolean isCommendIndex;
 
 	// 此处应该有个参与活动的种类，应该设置为一个list
-
+	
 	//排序号
 	@Column
 	private Long sortId;
@@ -166,4 +170,13 @@ public class TdPriceList {
 	public void setSortId(Long sortId) {
 		this.sortId = sortId;
 	}
+
+	public String getGoodsTitle() {
+		return goodsTitle;
+	}
+
+	public void setGoodsTitle(String goodsTitle) {
+		this.goodsTitle = goodsTitle;
+	}
+	
 }
