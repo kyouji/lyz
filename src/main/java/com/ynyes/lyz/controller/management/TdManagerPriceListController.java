@@ -15,6 +15,7 @@ import com.ynyes.lyz.entity.TdPriceList;
 import com.ynyes.lyz.entity.TdShippingAddress;
 import com.ynyes.lyz.service.TdDiySiteService;
 import com.ynyes.lyz.service.TdManagerLogService;
+import com.ynyes.lyz.service.TdPriceListItemService;
 import com.ynyes.lyz.service.TdPriceListService;
 import com.ynyes.lyz.util.SiteMagConstant;
 
@@ -25,6 +26,9 @@ import com.ynyes.lyz.util.SiteMagConstant;
 public class TdManagerPriceListController {
 	@Autowired
 	TdPriceListService tdPriceListService;
+	
+	@Autowired
+	TdPriceListItemService tdPriceListItemService;
 	
 	@Autowired
 	TdDiySiteService tdDiySiteService;
