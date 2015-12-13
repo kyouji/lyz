@@ -8,13 +8,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ynyes.lyz.entity.TdDeliveryType;
-import com.ynyes.lyz.entity.TdDiySite;
-import com.ynyes.lyz.entity.TdPayType;
-import com.ynyes.lyz.entity.TdPriceList;
-import com.ynyes.lyz.entity.TdShippingAddress;
+import com.ynyes.lyz.entity.TdPriceListItem;
 import com.ynyes.lyz.service.TdDiySiteService;
 import com.ynyes.lyz.service.TdManagerLogService;
+import com.ynyes.lyz.service.TdPriceListItemService;
 import com.ynyes.lyz.service.TdPriceListService;
 import com.ynyes.lyz.util.SiteMagConstant;
 
@@ -25,6 +22,9 @@ import com.ynyes.lyz.util.SiteMagConstant;
 public class TdManagerPriceListController {
 	@Autowired
 	TdPriceListService tdPriceListService;
+	
+	@Autowired
+	TdPriceListItemService tdPriceListItemService;
 	
 	@Autowired
 	TdDiySiteService tdDiySiteService;
@@ -102,7 +102,7 @@ public class TdManagerPriceListController {
          else
          {
              map.addAttribute("pricelist_page", 
-            		 tdPriceListService.searchAll(keywords, page, size));
+            		 tdPriceListItemService.searchAll(keywords, page, size));
          }
          
          return "/site_mag/pricelist_list";
@@ -152,14 +152,14 @@ public class TdManagerPriceListController {
 	            
 	            if (type.equalsIgnoreCase("pricelist"))
 	            {
-	                TdPriceList e = tdPriceListService.findOne(id);
+	                TdPriceListItem e = tdPriceListItemService.findOne(id);
 	                
 	                if (null != e)
 	                {
 	                    if (sortIds.length > i)
 	                    {
 	                        e.setSortId(sortIds[i]);
-	                        tdPriceListService.save(e);
+	                        tdPriceListItemService.save(e);
 	                    }
 	                }
 	            }
