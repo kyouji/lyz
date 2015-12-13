@@ -26,6 +26,9 @@ public class TdManagerPriceListController {
 	@Autowired
 	TdPriceListItemService tdPriceListItemService;
 	
+//	@Autowired
+//	TdPriceListService tdPriceListService;
+	
 	@Autowired
 	TdDiySiteService tdDiySiteService;
 	
