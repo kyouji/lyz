@@ -7,22 +7,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 价目表实体类
- * 
+ * 调色包价目表类
  * @author dengxiao
  */
+
 @Entity
-public class TdPriceList {
+public class TdColorPackagePriceList {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	// 价目表名称
+	
+	//调色包价目表名称
 	@Column
 	private String name;
-
-	// 排序号
+	
+	//排序号
 	@Column
 	private Long sortId;
 
@@ -52,7 +52,6 @@ public class TdPriceList {
 
 	@Override
 	public String toString() {
-		return "TdPriceList [id=" + id + ", name=" + name + ", sortId=" + sortId + "]";
+		return "TdColorPackagePriceList [id=" + id + ", name=" + name + ", sortId=" + sortId + "]";
 	}
-
 }

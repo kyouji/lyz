@@ -19,7 +19,7 @@
             win_cla();
         });
     </script>
-    <body>
+    <body
         <div>
             <dl class="win_cla">
                 <dt>

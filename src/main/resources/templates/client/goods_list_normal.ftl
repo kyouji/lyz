@@ -72,19 +72,24 @@
                                         <#list ("goods_list"+level_one_index+level_two_index)?eval as goods>
                                             <dl>
                                                 <dt>
-                                                    <#--
-                                                        <span class="my_checkbox" onclick = "selectGoods(${goods.id?c})">
-                                                            <div id="${goods.id?c}" class="my_black"></div>
-                                                        </span>
-                                                    -->
                                                     <input type="hidden" id="inventory${goods.id?c}" value="">
                                                     <h3 onclick="getGoodsDetail(${goods.id?c})">${goods.title!''}</h3>
                                                     <#-- 后期会判断该商品是不是属于调色商品 -->
-                                                    <a id="color${goods.id?c}" href="javascript:changeColor(${goods.id?c});">调色></a>
+                                                    <#if goods.isColorful??&&goods.isColorful>
+                                                        <a id="color${goods.id?c}" href="javascript:changeColor(${goods.id?c});">调色></a>
+                                                    </#if>
                                                 </dt>
                                                 <dd>
-                                                    <p>￥958.00</p>
-                                                    <a>促销</a>
+                                                    <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval??>
+                                                        <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice??>
+                                                            <p>￥${("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice?string("0.00")}</p>
+                                                        </#if>
+                                                        <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion??>
+                                                            <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion>
+                                                                <a>促销</a>
+                                                            </#if>
+                                                        </#if>
+                                                    </#if>
                                                     <div>
                                                         <span onclick="changeQuantity(${goods.id?c},'delete')">-</span>
                                                         <input readonly="true" type="number" id="quantity${goods.id?c}" value="0">
@@ -105,6 +110,7 @@
             
             <div class="go_buy">
                 <p>查看已选(<span id="select_num">${selected_goods_number!'0'}</span>)</p>
+                <a href="">加入已选</a>
                 <a href="#">去结算</a>
             </div>
             <#include "/client/common_footer.ftl">

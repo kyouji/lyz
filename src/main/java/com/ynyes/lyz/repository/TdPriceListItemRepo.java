@@ -18,18 +18,27 @@ public interface TdPriceListItemRepo
 	 * 
 	 * @author dengxiao
 	 */
-	Page<TdPriceListItem> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(String priceListNumber, Pageable page);
+	Page<TdPriceListItem> findByPriceListIdAndIsCommendIndexTrueOrderBySortIdAsc(Long PriceListId,
+			Pageable page);
 
 	/**
 	 * 根据价目表编号查找所有参加促销的商品（不分页）
 	 * 
 	 * @author dengxiao
 	 */
-	List<TdPriceListItem> findByPriceListNumberAndIsPromotionTrueOrderBySortIdAsc(String priceListNumber);
-	
+	List<TdPriceListItem> findByPriceListIdAndIsPromotionTrueOrderBySortIdAsc(Long PriceListId);
+
 	/**
 	 * @author lc
 	 * @注释：搜索
 	 */
-	Page<TdPriceList> findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(String keyword, String keyword1, String keyword2, String keyword3, Pageable page);
+	Page<TdPriceList> findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(
+			String keyword, String keyword1, String keyword2, String keyword3, Pageable page);
+
+	/**
+	 * 根据价目表编号和商品id查找价目表项
+	 * 
+	 * @author dengxiao
+	 */
+	TdPriceListItem findByPriceListIdAndGoodsId(Long PriceListId, Long goodsId);
 }

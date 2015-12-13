@@ -1,34 +1,31 @@
 package com.ynyes.lyz.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 /**
- * 价目表项实体类
+ * 调色包价目表项
  * 
  * @author dengxiao
  */
+
 @Entity
-public class TdPriceListItem {
+public class TdColorPackagePriceListItem {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	// 价目表编号
+	// 调色包价目表编号
 	@Column
-	private Long priceListId;
+	private Long colorPackagePriceListId;
 
 	// 价目表名称
 	@Column
-	private String priceListName;
+	private String colorPackagePriceListName;
 
 	// 所属区域id
 	@Column
@@ -46,34 +43,17 @@ public class TdPriceListItem {
 	@Column
 	private Long companyId;
 
-	// 商品id
+	// 调色包id
 	@Column
-	private Long goodsId;
+	private Long colorPackageId;
 
-	// 该件商品的销售价
+	// 该件调色包的销售价
 	@Column(scale = 2)
 	private Double salePrice;
 
-	// 该件商品的进货价
+	// 该件调色包的进货价
 	@Column(scale = 2)
 	private Double stockPrice;
-
-	// 该商品在本地区是否参与促销
-	@Column
-	private Boolean isPromotion;
-
-	// 该件商品是否首页推荐
-	@Column
-	private Boolean isCommendIndex;
-
-	// 此处应该有个参与活动的种类，应该设置为一个list
-	@OneToMany
-	@JoinColumn(name = "activityId")
-	private List<TdActivity> activities;
-
-	// 排序号
-	@Column
-	private Long sortId;
 
 	public Long getId() {
 		return id;
@@ -83,20 +63,20 @@ public class TdPriceListItem {
 		this.id = id;
 	}
 
-	public Long getPriceListId() {
-		return priceListId;
+	public Long getColorPackagePriceListId() {
+		return colorPackagePriceListId;
 	}
 
-	public void setPriceListId(Long priceListId) {
-		this.priceListId = priceListId;
+	public void setColorPackagePriceListId(Long colorPackagePriceListId) {
+		this.colorPackagePriceListId = colorPackagePriceListId;
 	}
 
-	public String getPriceListName() {
-		return priceListName;
+	public String getColorPackagePriceListName() {
+		return colorPackagePriceListName;
 	}
 
-	public void setPriceListName(String priceListName) {
-		this.priceListName = priceListName;
+	public void setColorPackagePriceListName(String colorPackagePriceListName) {
+		this.colorPackagePriceListName = colorPackagePriceListName;
 	}
 
 	public Long getRegionId() {
@@ -131,12 +111,12 @@ public class TdPriceListItem {
 		this.companyId = companyId;
 	}
 
-	public Long getGoodsId() {
-		return goodsId;
+	public Long getColorPackageId() {
+		return colorPackageId;
 	}
 
-	public void setGoodsId(Long goodsId) {
-		this.goodsId = goodsId;
+	public void setColorPackageId(Long colorPackageId) {
+		this.colorPackageId = colorPackageId;
 	}
 
 	public Double getSalePrice() {
@@ -155,35 +135,12 @@ public class TdPriceListItem {
 		this.stockPrice = stockPrice;
 	}
 
-	public Boolean getIsPromotion() {
-		return isPromotion;
+	@Override
+	public String toString() {
+		return "TdColorPackagePriceListItem [id=" + id + ", colorPackagePriceListId=" + colorPackagePriceListId
+				+ ", colorPackagePriceListName=" + colorPackagePriceListName + ", regionId=" + regionId + ", cityName="
+				+ cityName + ", companyName=" + companyName + ", companyId=" + companyId + ", colorPackageId="
+				+ colorPackageId + ", salePrice=" + salePrice + ", stockPrice=" + stockPrice + "]";
 	}
-
-	public void setIsPromotion(Boolean isPromotion) {
-		this.isPromotion = isPromotion;
-	}
-
-	public Boolean getIsCommendIndex() {
-		return isCommendIndex;
-	}
-
-	public void setIsCommendIndex(Boolean isCommendIndex) {
-		this.isCommendIndex = isCommendIndex;
-	}
-
-	public List<TdActivity> getActivities() {
-		return activities;
-	}
-
-	public void setActivities(List<TdActivity> activities) {
-		this.activities = activities;
-	}
-
-	public Long getSortId() {
-		return sortId;
-	}
-
-	public void setSortId(Long sortId) {
-		this.sortId = sortId;
-	}
+	
 }

@@ -366,10 +366,14 @@ public class TdGoods {
 	@Column
 	private Boolean isColorful;
 
+	// 可调色的调色包id（多个调色包以","分割）
+	@Column
+	private String colorPackageId;
+
 	// 归属： 1 华润商品 2 乐意装商品
 	@Column
 	private Long belongTo;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -1024,6 +1028,14 @@ public class TdGoods {
 
 	public void setPointLimited(Long pointLimited) {
 		this.pointLimited = pointLimited;
+	}
+
+	public String getColorPackageId() {
+		return colorPackageId;
+	}
+
+	public void setColorPackageId(String colorPackageId) {
+		this.colorPackageId = colorPackageId;
 	}
 
 	public Boolean getIsColorful() {
