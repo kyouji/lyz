@@ -24,6 +24,11 @@
             window.onload=function(){
                 showCityInfo();
             }
+            
+            function changeCity(){
+                var optionvalue = $('.reg_content dt select').find('option:selected').text();
+                $('#my_box').text(optionvalue);
+            }
             //创建一个包含所有城市信息的数组
             var cities = [
                 <#if regions??>
@@ -186,8 +191,12 @@
                 <dl>
                     <dt>
                         <div class="my_sele" id="my_box">定位中...</div>
-                        <select calss="my_box" id="my_city">
-                            <option ng-repeat="region in regions">{{region.name}}</option>
+                        <select onChange="changeCity();" calss="my_box" id="my_city">
+                            <#if regions??>
+                                <#list regions as item>
+                                    <option value="${item.cityName!''}">${item.cityName!''}</option>
+                                </#list>
+                            </#if>
                         </select>
                     </dt>
                     <dd><input type="text" name="phone" ng-model="infos.phone" ng-pattern="/^1\d{10}$/" placeholder="手机号码" ng-required="true"/></dd>

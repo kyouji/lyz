@@ -72,7 +72,7 @@
                                         <#list ("goods_list"+level_one_index+level_two_index)?eval as goods>
                                             <dl>
                                                 <dt>
-                                                    <input type="hidden" id="inventory${goods.id?c}" value="">
+                                                    <input type="hidden" id="inventory${goods.id?c}" value="<#if goods.inventory??>${goods.inventory?c}<#else>0</#if>">
                                                     <h3 onclick="getGoodsDetail(${goods.id?c})">${goods.title!''}</h3>
                                                     <#-- 后期会判断该商品是不是属于调色商品 -->
                                                     <#if goods.isColorful??&&goods.isColorful>

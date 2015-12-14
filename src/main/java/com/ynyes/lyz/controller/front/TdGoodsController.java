@@ -127,46 +127,46 @@ public class TdGoodsController {
 		return "/client/color_package";
 	}
 
-	// 添加已选调色包的方法
-	@RequestMapping(value = "/color/add")
-	public String colorAdd(String colorName, Long goodsId, Long quantity, Long max, ModelMap map,
-			HttpServletRequest req) {
-		colorName = colorName.trim();
-		TdColorPackage colorPackage = tdColorPackageService.findByNumber(colorName);
-		colorPackage.setQuantity(quantity);
-		colorPackage.setTotalPrice(colorPackage.getPrice() * quantity);
-		// 获取所有已经选择的调色包
-		@SuppressWarnings("unchecked")
-		Map<String, List<TdColorPackage>> all_color = (Map<String, List<TdColorPackage>>) req.getSession()
-				.getAttribute("all_color");
-		if (null == all_color) {
-			all_color = new HashMap<>();
-		}
-		List<TdColorPackage> colors = all_color.get("goods" + goodsId);
-
-		if (null == colors) {
-			colors = new ArrayList<>();
-		}
-		Boolean isHave = false;
-		for (int i = 0; i < colors.size(); i++) {
-			if (colorName.equals(colors.get(i).getNumber())) {
-				isHave = true;
-				colors.get(i).setQuantity(colors.get(i).getQuantity() + quantity);
-				colors.get(i).setTotalPrice(colors.get(i).getPrice() * colors.get(i).getQuantity());
-			}
-		}
-		if (!isHave) {
-			colors.add(colorPackage);
-		}
-
-		all_color.put("goods" + goodsId, colors);
-		req.getSession().setAttribute("all_color", all_color);
-
-		map.addAttribute("unit_price", colorPackage.getPrice());
-		map.addAttribute("select_colors", colors);
-		map.addAttribute("goodsId", goodsId);
-		return "/client/selected_color_package";
-	}
+//	// 添加已选调色包的方法
+//	@RequestMapping(value = "/color/add")
+//	public String colorAdd(String colorName, Long goodsId, Long quantity, Long max, ModelMap map,
+//			HttpServletRequest req) {
+//		colorName = colorName.trim();
+//		TdColorPackage colorPackage = tdColorPackageService.findByNumber(colorName);
+//		colorPackage.setQuantity(quantity);
+//		colorPackage.setTotalPrice(colorPackage.getPrice() * quantity);
+//		// 获取所有已经选择的调色包
+//		@SuppressWarnings("unchecked")
+//		Map<String, List<TdColorPackage>> all_color = (Map<String, List<TdColorPackage>>) req.getSession()
+//				.getAttribute("all_color");
+//		if (null == all_color) {
+//			all_color = new HashMap<>();
+//		}
+//		List<TdColorPackage> colors = all_color.get("goods" + goodsId);
+//
+//		if (null == colors) {
+//			colors = new ArrayList<>();
+//		}
+//		Boolean isHave = false;
+//		for (int i = 0; i < colors.size(); i++) {
+//			if (colorName.equals(colors.get(i).getNumber())) {
+//				isHave = true;
+//				colors.get(i).setQuantity(colors.get(i).getQuantity() + quantity);
+//				colors.get(i).setTotalPrice(colors.get(i).getPrice() * colors.get(i).getQuantity());
+//			}
+//		}
+//		if (!isHave) {
+//			colors.add(colorPackage);
+//		}
+//
+//		all_color.put("goods" + goodsId, colors);
+//		req.getSession().setAttribute("all_color", all_color);
+//
+//		map.addAttribute("unit_price", colorPackage.getPrice());
+//		map.addAttribute("select_colors", colors);
+//		map.addAttribute("goodsId", goodsId);
+//		return "/client/selected_color_package";
+//	}
 
 	// 删除已选调色包的方法
 	@RequestMapping(value = "/delete/color")
