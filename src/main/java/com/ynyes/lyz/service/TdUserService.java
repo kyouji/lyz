@@ -5,6 +5,10 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ynyes.lyz.entity.TdUser;
@@ -85,4 +89,48 @@ public class TdUserService {
 		}
 		return repository.findByUsernameAndCityNameAndIsEnableTrue(username, cityName);
 	}
+	
+	/**
+	 * @author lc
+	 * @注释：查找所有按id降序排序
+	 */
+	public Page<TdUser> findAllOrderByIdDesc(int page, int size)
+	{
+	    PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.DESC, "id"));
+	        
+	    return repository.findAll(pageRequest);
+	}
+	
+	/**
+	 * @author lc
+	 * @注释：
+	 */
+	 public Page<TdUser> findByUserLevelIdOrderByIdDesc(Long userLevelId, int page, int size)
+	 {
+	     PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.DESC, "id"));
+	        
+	     return repository.findByUserLevelIdOrderByIdDesc(userLevelId, pageRequest);
+	 }
+	 
+	 /**
+	 * @author lc
+	 * @注释：搜索用户
+	 */
+	 public Page<TdUser> searchAndOrderByIdDesc(String keywords, int page, int size)
+	 {
+	     PageRequest pageRequest = new PageRequest(page, size);
+	        
+	     return repository.findByUsernameContainingOrEmailContainingOrderByIdDesc(keywords, keywords, pageRequest);
+	 }
+	 
+	 /**
+	 * @author lc
+	 * @注释：按等级搜索用户 
+	 */
+	 public Page<TdUser> searchAndfindByUserLevelIdOrderByIdDesc(String keywords, Long userLevelId, int page, int size)
+	 {
+	     PageRequest pageRequest = new PageRequest(page, size);
+	        
+	     return repository.findByUsernameContainingAndUserLevelIdOrEmailContainingAndUserLevelIdOrderByIdDesc(keywords, userLevelId,  keywords, userLevelId, pageRequest);
+	 }
 }
