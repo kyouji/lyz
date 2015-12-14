@@ -8,12 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ynyes.lyz.entity.TdDeliveryType;
-import com.ynyes.lyz.entity.TdDiySite;
-import com.ynyes.lyz.entity.TdPayType;
-import com.ynyes.lyz.entity.TdPriceList;
 import com.ynyes.lyz.entity.TdPriceListItem;
-import com.ynyes.lyz.entity.TdShippingAddress;
 import com.ynyes.lyz.service.TdDiySiteService;
 import com.ynyes.lyz.service.TdManagerLogService;
 import com.ynyes.lyz.service.TdPriceListItemService;

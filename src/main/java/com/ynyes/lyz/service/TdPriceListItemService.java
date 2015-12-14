@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.ynyes.lyz.entity.TdPriceList;
 import com.ynyes.lyz.entity.TdPriceListItem;
 import com.ynyes.lyz.repository.TdPriceListItemRepo;
 
@@ -55,7 +56,7 @@ public class TdPriceListItemService {
 			return null;
 		}
 		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
-		return repository.findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(keywords, keywords, keywords, keywords, pageRequest);
+		return repository.findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(keywords, keywords, keywords, keywords, pageRequest);
 	}
 
 	/**
@@ -63,13 +64,13 @@ public class TdPriceListItemService {
 	 * 
 	 * @author dengxiao
 	 */
-	public Page<TdPriceListItem> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(String priceListNumber,
+	public Page<TdPriceListItem> findByPriceListIdAndIsCommendIndexTrueOrderBySortIdAsc(Long PriceListId,
 			int size, int page) {
-		if (null == priceListNumber) {
+		if (null == PriceListId) {
 			return null;
 		}
 		PageRequest pageRequest = new PageRequest(page, size);
-		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(priceListNumber, pageRequest);
+		return repository.findByPriceListIdAndIsCommendIndexTrueOrderBySortIdAsc(PriceListId, pageRequest);
 	}
 
 	/**
@@ -77,11 +78,32 @@ public class TdPriceListItemService {
 	 * 
 	 * @author dengxiao
 	 */
-	public List<TdPriceListItem> findByPriceListNumberAndIsPromotionTrueOrderBySortIdAsc(String priceListNumber){
-		if(null == priceListNumber){
+	public List<TdPriceListItem> findByPriceListIdAndIsPromotionTrueOrderBySortIdAsc(Long PriceListId) {
+		if (null == PriceListId) {
 			return null;
 		}
-		return repository.findByPriceListNumberAndIsPromotionTrueOrderBySortIdAsc(priceListNumber);
+		return repository.findByPriceListIdAndIsPromotionTrueOrderBySortIdAsc(PriceListId);
 	};
 
+//	public Page<TdPriceList> searchAll(String keywords, int page, int size) {
+//		if (null == keywords) {
+//			return null;
+//		}
+//		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+//		return repository
+//				.findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(
+//						keywords, keywords, keywords, keywords, pageRequest);
+//	}
+
+	/**
+	 * 根据价目表名称和商品id查找价目表项
+	 * 
+	 * @author dengxiao
+	 */
+	public TdPriceListItem findByPriceListIdAndGoodsId(Long PriceListId, Long goodsId) {
+		if (null == PriceListId || null == goodsId) {
+			return null;
+		}
+		return repository.findByPriceListIdAndGoodsId(PriceListId, goodsId);
+	}
 }

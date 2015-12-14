@@ -1,9 +1,9 @@
 window.onload = function() {
-	my_select();// 模拟select
 	win_cla();// 分类弹窗
 	my_hei();// 百分比高设置
 	banner_scroll();// 首页banner滑动
 	scroll_news();// 滚动新闻
+    my_select();
 	footer();
 };
 

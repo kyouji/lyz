@@ -109,7 +109,7 @@ public class TdIndexController {
 		// 查找首页推荐商品
 		if (null != diySite) {
 			Page<TdPriceListItem> commend_page = tdPriceListService
-					.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(diySite.getPriceListNumber(),
+					.findByPriceListIdAndIsCommendIndexTrueOrderBySortIdAsc(diySite.getPriceListId(),
 							ClientConstant.pageSize, 0);
 			map.addAttribute("commend_page", commend_page);
 
@@ -118,7 +118,7 @@ public class TdIndexController {
 		// 查找所有参与促销的价目表项
 		if (null != diySite) {
 			List<TdPriceListItem> promotion_list_temp = tdPriceListService
-					.findByPriceListNumberAndIsPromotionTrueOrderBySortIdAsc(diySite.getPriceListNumber());
+					.findByPriceListIdAndIsPromotionTrueOrderBySortIdAsc(diySite.getPriceListId());
 			// 所有的促销商品价目表项
 			List<TdPriceListItem> promotion_list = new ArrayList<>();
 			// 首页特别推荐促销商品的价目表项

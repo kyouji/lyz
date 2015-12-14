@@ -97,7 +97,11 @@ public class TdDiySite {
 
 	// 门店所使用的价目表编号
 	@Column
-	private String priceListNumber;
+	private Long priceListId;
+
+	// 门店所使用的调色包价目表编号
+	@Column
+	private Long colorPackagePriceListId;
 
 	public Long getRegionId() {
 		return regionId;
@@ -250,14 +254,6 @@ public class TdDiySite {
 	public void setSortId(Long sortId) {
 		this.sortId = sortId;
 	}
-	
-	public String getPriceListNumber() {
-		return priceListNumber;
-	}
-
-	public void setPriceListNumber(String priceListNumber) {
-		this.priceListNumber = priceListNumber;
-	}
 
 	public String getInfo() {
 		return info;
@@ -265,6 +261,22 @@ public class TdDiySite {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public Long getPriceListId() {
+		return priceListId;
+	}
+
+	public void setPriceListId(Long priceListId) {
+		this.priceListId = priceListId;
+	}
+
+	public Long getColorPackagePriceListId() {
+		return colorPackagePriceListId;
+	}
+
+	public void setColorPackagePriceListId(Long colorPackagePriceListId) {
+		this.colorPackagePriceListId = colorPackagePriceListId;
 	}
 
 }

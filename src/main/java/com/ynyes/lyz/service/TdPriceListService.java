@@ -45,45 +45,10 @@ public class TdPriceListService {
 		return (List<TdPriceList>) repository.findAll();
 	}
 
-//	public Page<TdPriceList> findAll(int page, int size){
-//		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
-//		return repository.findAll(pageRequest);
-//	}
-//	
-//	public Page<TdPriceList> searchAll(String keywords, int page, int size){		
-//		if (null == keywords) {
-//			return null;
-//		}
-//		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
-//		return repository.findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(keywords, keywords, keywords, keywords, pageRequest);
-//	}
-//	
-//	/**
-//	 * 根据价目表编号和首页推荐查找价目表项（不分页）
-//	 * 
-//	 * @author dengxiao
-//	 */
-//	public List<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortId(String priceListNumber) {
-//		if (null == priceListNumber) {
-//			return null;
-//		}
-//		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(priceListNumber);
-//	}
-//
-//	/**
-//	 * 根据价目表编号和首页推荐查找价目表项（分页）
-//	 * 
-//	 * @author dengxiao
-//	 */
-//	public Page<TdPriceList> findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdAsc(String priceListNumber, int size,
-//			int page) {
-//		if (null == priceListNumber) {
-//			return null;
-//		}
-//		PageRequest pageRequest = new PageRequest(page, size);
-//
-//		return repository.findByPriceListNumberAndIsCommendIndexTrueOrderBySortIdDesc(priceListNumber, pageRequest);
-//
-//	}
+
+	public Page<TdPriceList> findAll(int page, int size){
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+		return repository.findAll(pageRequest);
+	}
 
 }

@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ynyes.lyz.entity.TdColorPackage;
+import com.ynyes.lyz.entity.TdColorPackagePriceListItem;
+import com.ynyes.lyz.entity.TdDiySite;
 import com.ynyes.lyz.entity.TdGoods;
 import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.entity.TdUserComment;
 import com.ynyes.lyz.entity.TdUserRecentVisit;
+import com.ynyes.lyz.service.TdColorPackagePriceListItemService;
 import com.ynyes.lyz.service.TdColorPackageService;
 import com.ynyes.lyz.service.TdCommonService;
+import com.ynyes.lyz.service.TdDiySiteService;
 import com.ynyes.lyz.service.TdGoodsService;
 import com.ynyes.lyz.service.TdUserCommentService;
 import com.ynyes.lyz.service.TdUserRecentVisitService;
@@ -50,26 +54,27 @@ public class TdGoodsController {
 	@Autowired
 	private TdUserRecentVisitService tdUserRecentVisitService;
 
+	@Autowired
+	private TdDiySiteService tdDiySiteService;
+
+	@Autowired
+	private TdColorPackagePriceListItemService tdColorPackagePriceListItemService;
+
 	/*
 	 *********************************** 普通下单模式的控制器和方法*****************************************************
 	 */
 
 	@RequestMapping(value = "/normal/list")
-	public String goodsListNormal(HttpServletRequest req, ModelMap map, Long selected_goods_number) {
+	public String goodsListNormal(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
 		if (null == username) {
 			return "redirect:/login";
 		}
 
-		tdCommonService.setHeader(req, map);
 		tdCommonService.getCategory(req, map);
 
-		if (null == selected_goods_number) {
-			selected_goods_number = 0L;
-		}
-
-		map.addAttribute("selected_goods_number", selected_goods_number);
-
+		// 将已选商品的数量（包括调色包）添加到ModelMap中
+		map.addAttribute("selected_number", tdCommonService.getSelectedNumber(req));
 		return "/client/goods_list_normal";
 	}
 
@@ -78,12 +83,33 @@ public class TdGoodsController {
 	public String getColor(HttpServletRequest req, Long goodsId, Long quantity, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
 		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
-		List<TdColorPackage> color_package_list = tdColorPackageService
-				.findByGoodsIdAndRegionIdOrderBySortIdAsc(goodsId, user.getCityId());
-		if (null != color_package_list && color_package_list.size() > 0) {
-			if (null != color_package_list.get(0).getPrice()) {
-				map.addAttribute("unit_price", color_package_list.get(0).getPrice());
+
+		// 根据goodsId获取指定的商品
+		TdGoods goods = tdGoodsService.findOne(goodsId);
+		List<TdColorPackage> color_package_list = new ArrayList<>();
+
+		// 获取指定商品可选调色包
+		if (null != goods && null != goods.getColorPackageId()) {
+			String[] all_color_id = goods.getColorPackageId().split(",");
+			for (int i = 0; i < all_color_id.length; i++) {
+				TdColorPackage colorPackage = tdColorPackageService.findOne(Long.parseLong(all_color_id[i]));
+				color_package_list.add(colorPackage);
 			}
+		}
+
+		// 获取用户的门店信息
+		TdDiySite diySite = tdDiySiteService.findOne(user.getUpperDiySiteId());
+		Long colorPackagePriceListId = null;
+		if (null != diySite) {
+			colorPackagePriceListId = diySite.getColorPackagePriceListId();
+		}
+
+		// 获取指定调色包对于登陆用户的价格
+		for (int i = 0; i < color_package_list.size(); i++) {
+			TdColorPackagePriceListItem priceListItem = tdColorPackagePriceListItemService
+					.findByColorPackagePriceListIdAndColorPackageId(colorPackagePriceListId,
+							color_package_list.get(i).getId());
+			map.addAttribute("colorPackagePriceListItem" + i, priceListItem);
 		}
 
 		// 获取所有已经选择的调色包
@@ -101,46 +127,46 @@ public class TdGoodsController {
 		return "/client/color_package";
 	}
 
-	// 添加已选调色包的方法
-	@RequestMapping(value = "/color/add")
-	public String colorAdd(String colorName, Long goodsId, Long quantity, Long max, ModelMap map,
-			HttpServletRequest req) {
-		colorName = colorName.trim();
-		TdColorPackage colorPackage = tdColorPackageService.findByNumber(colorName);
-		colorPackage.setQuantity(quantity);
-		colorPackage.setTotalPrice(colorPackage.getPrice() * quantity);
-		// 获取所有已经选择的调色包
-		@SuppressWarnings("unchecked")
-		Map<String, List<TdColorPackage>> all_color = (Map<String, List<TdColorPackage>>) req.getSession()
-				.getAttribute("all_color");
-		if (null == all_color) {
-			all_color = new HashMap<>();
-		}
-		List<TdColorPackage> colors = all_color.get("goods" + goodsId);
-
-		if (null == colors) {
-			colors = new ArrayList<>();
-		}
-		Boolean isHave = false;
-		for (int i = 0; i < colors.size(); i++) {
-			if (colorName.equals(colors.get(i).getNumber())) {
-				isHave = true;
-				colors.get(i).setQuantity(colors.get(i).getQuantity() + quantity);
-				colors.get(i).setTotalPrice(colors.get(i).getPrice() * colors.get(i).getQuantity());
-			}
-		}
-		if (!isHave) {
-			colors.add(colorPackage);
-		}
-
-		all_color.put("goods" + goodsId, colors);
-		req.getSession().setAttribute("all_color", all_color);
-
-		map.addAttribute("unit_price", colorPackage.getPrice());
-		map.addAttribute("select_colors", colors);
-		map.addAttribute("goodsId", goodsId);
-		return "/client/selected_color_package";
-	}
+//	// 添加已选调色包的方法
+//	@RequestMapping(value = "/color/add")
+//	public String colorAdd(String colorName, Long goodsId, Long quantity, Long max, ModelMap map,
+//			HttpServletRequest req) {
+//		colorName = colorName.trim();
+//		TdColorPackage colorPackage = tdColorPackageService.findByNumber(colorName);
+//		colorPackage.setQuantity(quantity);
+//		colorPackage.setTotalPrice(colorPackage.getPrice() * quantity);
+//		// 获取所有已经选择的调色包
+//		@SuppressWarnings("unchecked")
+//		Map<String, List<TdColorPackage>> all_color = (Map<String, List<TdColorPackage>>) req.getSession()
+//				.getAttribute("all_color");
+//		if (null == all_color) {
+//			all_color = new HashMap<>();
+//		}
+//		List<TdColorPackage> colors = all_color.get("goods" + goodsId);
+//
+//		if (null == colors) {
+//			colors = new ArrayList<>();
+//		}
+//		Boolean isHave = false;
+//		for (int i = 0; i < colors.size(); i++) {
+//			if (colorName.equals(colors.get(i).getNumber())) {
+//				isHave = true;
+//				colors.get(i).setQuantity(colors.get(i).getQuantity() + quantity);
+//				colors.get(i).setTotalPrice(colors.get(i).getPrice() * colors.get(i).getQuantity());
+//			}
+//		}
+//		if (!isHave) {
+//			colors.add(colorPackage);
+//		}
+//
+//		all_color.put("goods" + goodsId, colors);
+//		req.getSession().setAttribute("all_color", all_color);
+//
+//		map.addAttribute("unit_price", colorPackage.getPrice());
+//		map.addAttribute("select_colors", colors);
+//		map.addAttribute("goodsId", goodsId);
+//		return "/client/selected_color_package";
+//	}
 
 	// 删除已选调色包的方法
 	@RequestMapping(value = "/delete/color")

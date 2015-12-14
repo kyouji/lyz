@@ -4,8 +4,10 @@ function changeQuantity(goodsId, operation) {
 	var quantityElementId = "#quantity" + goodsId;
 	// 获取当前指定商品选择的数量
 	var quantity = $(quantityElementId).val();
-	// 获取当前已选商品的数量
-	var selectNumber = $("#select_num").html();
+	// 获取商品的库存量的标签的id
+	var inventoryId = "#inventory" + goodsId;
+	// 获取当前商品的库存量
+	var inventory = $(inventoryId).val();
 
 	// 如果是减少当前商品的数量
 	if ("delete" == operation) {
@@ -13,19 +15,15 @@ function changeQuantity(goodsId, operation) {
 		if (0 == quantity) {
 			return;
 		}
-		// 如果当前商品的数量是1，则减1后，代表该件商品没有被选中
-		if (1 == quantity) {
-			selectNumber = parseInt(selectNumber) - 1;
-		}
 		// 正常减少数量
 		quantity = parseInt(quantity) - 1;
 	}
 
 	// 如果是增加商品数量的情况
 	if ("add" == operation) {
-		// 如果当前商品的的数量是0，则加1之后，代表这件商品被选中
-		if (0 == quantity) {
-			selectNumber = parseInt(selectNumber) + 1;
+		//如果商品数量已经等于库存量之后就不做正常处理
+		if(){
+			
 		}
 		// 正常增加数量
 		quantity = parseInt(quantity) + 1;

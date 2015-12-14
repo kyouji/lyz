@@ -42,17 +42,6 @@ public class TdColorPackageService {
 	}
 	
 	/**
-	 * 根据商品id和地区id查找调色包
-	 * @author dengxiao
-	 */
-	public List<TdColorPackage> findByGoodsIdAndRegionIdOrderBySortIdAsc(Long goodsId,Long regionId){
-		if(null == goodsId||null == regionId){
-			return null;
-		}
-		return repository.findByGoodsIdAndRegionIdOrderBySortIdAsc(goodsId, regionId);
-	}
-	
-	/**
 	 * 根据调色包名查找调色包
 	 * @author dengxiao
 	 */

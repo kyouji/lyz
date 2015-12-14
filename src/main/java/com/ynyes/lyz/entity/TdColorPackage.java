@@ -32,53 +32,29 @@ public class TdColorPackage {
 	@Column
 	private String imageUri;
 
-	// 调色包价格
+	// 库存
+	@Column
+	private Long inventory;
+
+	// 当前销售价格
 	@Column(scale = 2)
-	private Double price;
+	private Double salePrice;
 
-	// 商品的编号
-	@Column
-	private Long goodsId;
-	
-	//商品的名称
-	@Column
-	private String goodsName;
+	// 当前进货价格
+	@Column(scale = 2)
+	private Double stockPrice;
 
-	// 地区编号
-	@Column
-	private Long regionId;
-
-	// 地区名称
-	@Column
-	private String regionName;
-	
-	//数量
+	// 购买数量
 	@Column
 	private Long quantity;
-	
-	//总价格
-	@Column(scale = 2)
-	private Double totalPrice;
+
+	// 归属： 1 华润商品 2 乐意装商品
+	@Column
+	private Long belongTo;
 
 	// 排序号
 	@Column
 	private Long sortId;
-
-	public Long getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Long quantity) {
-		this.quantity = quantity;
-	}
-
-	public Double getTotalPrice() {
-		return totalPrice;
-	}
-
-	public void setTotalPrice(Double totalPrice) {
-		this.totalPrice = totalPrice;
-	}
 
 	public Long getId() {
 		return id;
@@ -112,44 +88,44 @@ public class TdColorPackage {
 		this.imageUri = imageUri;
 	}
 
-	public Double getPrice() {
-		return price;
+	public Long getInventory() {
+		return inventory;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setInventory(Long inventory) {
+		this.inventory = inventory;
 	}
 
-	public Long getGoodsId() {
-		return goodsId;
+	public Double getSalePrice() {
+		return salePrice;
 	}
 
-	public void setGoodsId(Long goodsId) {
-		this.goodsId = goodsId;
+	public void setSalePrice(Double salePrice) {
+		this.salePrice = salePrice;
 	}
 
-	public String getGoodsName() {
-		return goodsName;
+	public Double getStockPrice() {
+		return stockPrice;
 	}
 
-	public void setGoodsName(String goodsName) {
-		this.goodsName = goodsName;
+	public void setStockPrice(Double stockPrice) {
+		this.stockPrice = stockPrice;
 	}
 
-	public Long getRegionId() {
-		return regionId;
+	public Long getQuantity() {
+		return quantity;
 	}
 
-	public void setRegionId(Long regionId) {
-		this.regionId = regionId;
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
 	}
 
-	public String getRegionName() {
-		return regionName;
+	public Long getBelongTo() {
+		return belongTo;
 	}
 
-	public void setRegionName(String regionName) {
-		this.regionName = regionName;
+	public void setBelongTo(Long belongTo) {
+		this.belongTo = belongTo;
 	}
 
 	public Long getSortId() {
