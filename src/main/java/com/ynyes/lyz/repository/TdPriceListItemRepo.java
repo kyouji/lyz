@@ -25,4 +25,10 @@ public interface TdPriceListItemRepo
 	 * @author dengxiao
 	 */
 	List<TdPriceListItem> findByPriceListNumberAndIsPromotionTrueOrderBySortIdAsc(String priceListNumber);
+	
+	/**
+	 * @author lc
+	 * @注释：搜索
+	 */
+	Page<TdPriceListItem> findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(String keyword, String keyword1, String keyword2, String keyword3, Pageable page);
 }

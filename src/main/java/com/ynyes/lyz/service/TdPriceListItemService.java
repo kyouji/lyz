@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ynyes.lyz.entity.TdPriceListItem;
@@ -41,6 +43,19 @@ public class TdPriceListItemService {
 
 	public List<TdPriceListItem> findAll() {
 		return (List<TdPriceListItem>) repository.findAll();
+	}
+	
+	public Page<TdPriceListItem> findAll(int page, int size){
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+		return repository.findAll(pageRequest);
+	}
+	
+	public Page<TdPriceListItem> searchAll(String keywords, int page, int size){		
+		if (null == keywords) {
+			return null;
+		}
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+		return repository.findBypriceListNumberContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(keywords, keywords, keywords, keywords, pageRequest);
 	}
 
 	/**

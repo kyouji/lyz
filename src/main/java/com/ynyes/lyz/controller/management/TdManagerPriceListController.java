@@ -12,9 +12,11 @@ import com.ynyes.lyz.entity.TdDeliveryType;
 import com.ynyes.lyz.entity.TdDiySite;
 import com.ynyes.lyz.entity.TdPayType;
 import com.ynyes.lyz.entity.TdPriceList;
+import com.ynyes.lyz.entity.TdPriceListItem;
 import com.ynyes.lyz.entity.TdShippingAddress;
 import com.ynyes.lyz.service.TdDiySiteService;
 import com.ynyes.lyz.service.TdManagerLogService;
+import com.ynyes.lyz.service.TdPriceListItemService;
 import com.ynyes.lyz.service.TdPriceListService;
 import com.ynyes.lyz.util.SiteMagConstant;
 
@@ -25,6 +27,9 @@ import com.ynyes.lyz.util.SiteMagConstant;
 public class TdManagerPriceListController {
 	@Autowired
 	TdPriceListService tdPriceListService;
+	
+	@Autowired
+	TdPriceListItemService tdPriceListItemService;
 	
 	@Autowired
 	TdDiySiteService tdDiySiteService;
@@ -97,15 +102,15 @@ public class TdManagerPriceListController {
 	     if (null == keywords)
          {
              map.addAttribute("pricelist_page", 
-                     tdPriceListService.findAll(page, size));
+            		 tdPriceListItemService.findAll(page, size));
          }
          else
          {
              map.addAttribute("pricelist_page", 
-            		 tdPriceListService.searchAll(keywords, page, size));
+            		 tdPriceListItemService.searchAll(keywords, page, size));
          }
          
-         return "/site_mag/pricelist_list";
+         return "/site_mag/pricelistItem_list";
 	}
 	
 	@RequestMapping(value = "/edit")
@@ -121,15 +126,15 @@ public class TdManagerPriceListController {
         map.addAttribute("__EVENTARGUMENT", __EVENTARGUMENT);
         map.addAttribute("__VIEWSTATE", __VIEWSTATE);
         
-        // 参数类型表
+
 
        
         if (null != id) {
-            map.addAttribute("pricelist", tdPriceListService.findOne(id));
+            map.addAttribute("pricelist", tdPriceListItemService.findOne(id));
         }
         
 
-        return "/site_mag/pricelist_edit";
+        return "/site_mag/pricelistItem_edit";
 
     }
 	
@@ -152,14 +157,14 @@ public class TdManagerPriceListController {
 	            
 	            if (type.equalsIgnoreCase("pricelist"))
 	            {
-	                TdPriceList e = tdPriceListService.findOne(id);
+	                TdPriceListItem e = tdPriceListItemService.findOne(id);
 	                
 	                if (null != e)
 	                {
 	                    if (sortIds.length > i)
 	                    {
 	                        e.setSortId(sortIds[i]);
-	                        tdPriceListService.save(e);
+	                        tdPriceListItemService.save(e);
 	                    }
 	                }
 	            }
@@ -188,7 +193,7 @@ public class TdManagerPriceListController {
 	                
 	                if (type.equalsIgnoreCase("pricelist"))
 	                {
-	                	tdPriceListService.delete(id);
+	                	tdPriceListItemService.delete(id);
 	                }
 	                
 	            }

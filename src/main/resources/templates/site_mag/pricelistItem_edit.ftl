@@ -125,7 +125,7 @@ function del_goods_gift(obj) {
         <dl>
             <dt>赠品</dt>
             <dd>
-                <a id="addGift" class="icon-btn add"><i></i><span>添加赠品</span></a>
+                <a id="addGift" class="icon-btn add"><i></i><span>选择商品</span></a>
                 <span class="Validform_checktip"></span>
             </dd>
         </dl>

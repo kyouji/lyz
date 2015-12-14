@@ -22,6 +22,10 @@ public class TdPriceList {
 	@Column
 	private String name;
 
+	// 排序号
+	@Column
+	private Long sortId;
+	
 	public Long getId() {
 		return id;
 	}
@@ -36,6 +40,14 @@ public class TdPriceList {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Long getSortId() {
+		return sortId;
+	}
+
+	public void setSortId(Long sortId) {
+		this.sortId = sortId;
 	}
 
 	@Override
