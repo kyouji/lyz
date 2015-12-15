@@ -14,7 +14,19 @@
             <ul class="colo_box">
                 <#if color_package_list??>
                     <#list color_package_list as item>
-                        <li onclick="getColor('${item.number!''}','<#if item.price??>${item.price?string('0.00')}<#else>0.00</#if>')"><img src="${item.imageUri!''}"></li>
+                        <li onclick="getColor('${item.number!''}',${item.id?c})"><img src="${item.imageUri!''}"></li>
+                        <#-- 指定调色包的库存 -->
+                        <#if item.inventory??>
+                            <input type="hidden" id="colorPackageInventory${item.id?c}" value="${item.inventory?c}">
+                        <#else>
+                            <input type="hidden" id="colorPackageInventory${item.id?c}" value="0">
+                        </#if>
+                        <#-- 指定调色包的价格 -->
+                        <#if ("colorPackagePriceListItem"+item_index)?eval??&&("colorPackagePriceListItem"+item_index)?eval.salePrice??>
+                            <input type="hidden" id="colorPackagePrice${item.id?c}" value="${("colorPackagePriceListItem"+item_index)?eval.salePrice?string("0.00")}">
+                        <#else>
+                            <input type="hidden" id="colorPackagePrice${item.id?c}" value="0.00">
+                        </#if>
                     </#list>
                 </#if>
             </ul>
@@ -29,12 +41,16 @@
                     </#if>
                 </p>
                 <div class="colo_add">
-                    <span onclick="changeColorNum('delete');">-</span>
+                    <span <#if color_package_list??&&color_package_list?size gt 0>onclick="changeColorNum('delete');"</#if>>-</span>
                     <input type="text" readonly="true" style="text-align:center;" id="select_color_quantity" value="0" />
-                    <span onclick="changeColorNum('add');">+</span>
+                    <span <#if color_package_list??&&color_package_list?size gt 0>onclick="changeColorNum('add');"</#if>>+</span>
                 </div>
-                <p id="color_price">￥0</p>
+                <#if unit_price??>
+                    <p id="color_price">￥${unit_price?string("0.00")}</p>
+                <#else>
+                    <p id="color_price">￥0.00</p>
+                </#if>
             </div>
-            <div class="down_buy" onclick="addColor()">确定</div>
+            <div class="down_buy" <#if color_package_list??&&color_package_list?size gt 0>onclick="addColor()"</#if>>确定</div>
         </div>
     </div>

@@ -16,24 +16,26 @@ import com.ynyes.lyz.entity.TdUserRecentVisit;
  *
  */
 
-public interface TdUserRecentVisitRepo extends
-		PagingAndSortingRepository<TdUserRecentVisit, Long>,
-		JpaSpecificationExecutor<TdUserRecentVisit> 
-{
-    Page<TdUserRecentVisit> findByUsernameOrderByVisitTimeDesc(String username, Pageable page);
-    
-    Page<TdUserRecentVisit> findByUsernameAndGoodsTitleContainingOrderByVisitTimeDesc(String username, String keywords, Pageable page);
-    
-    List<TdUserRecentVisit> findByUsername(String username);
-    
-    TdUserRecentVisit findByUsernameAndGoodsId(String username, Long goodsId);
-    
-    //根据用户id查找所有的浏览记录，按浏览时间倒序排序
-    List<TdUserRecentVisit> findByUserIdOrderByVisitTimeDesc(Long userId);
-    
-    //查找指定用户最早的一个浏览记录
-    TdUserRecentVisit findTopByUserIdOrderByVisitTimeAsc(Long userId);
-    
-    //根据用户id查找所有的浏览记录，按照浏览时间正序排序
-    List<TdUserRecentVisit> findByUserIdOrderByVisitTimeAsc(Long userId);
+public interface TdUserRecentVisitRepo
+		extends PagingAndSortingRepository<TdUserRecentVisit, Long>, JpaSpecificationExecutor<TdUserRecentVisit> {
+	Page<TdUserRecentVisit> findByUsernameOrderByVisitTimeDesc(String username, Pageable page);
+
+	Page<TdUserRecentVisit> findByUsernameAndGoodsTitleContainingOrderByVisitTimeDesc(String username, String keywords,
+			Pageable page);
+
+	List<TdUserRecentVisit> findByUsername(String username);
+
+	TdUserRecentVisit findByUsernameAndGoodsId(String username, Long goodsId);
+
+	// 根据用户id查找所有的浏览记录，按浏览时间倒序排序
+	List<TdUserRecentVisit> findByUserIdOrderByVisitTimeDesc(Long userId);
+
+	// 查找指定用户最早的一个浏览记录
+	TdUserRecentVisit findTopByUserIdOrderByVisitTimeAsc(Long userId);
+
+	// 根据用户id查找所有的浏览记录，按照浏览时间正序排序
+	List<TdUserRecentVisit> findByUserIdOrderByVisitTimeAsc(Long userId);
+
+	// 根据指定商品id和用户id查找浏览记录
+	TdUserRecentVisit findByGoodsIdAndUserId(Long goodsId, Long userId);
 }

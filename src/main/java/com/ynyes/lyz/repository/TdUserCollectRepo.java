@@ -16,21 +16,19 @@ import com.ynyes.lyz.entity.TdUserCollect;
  *
  */
 
-public interface TdUserCollectRepo extends
-		PagingAndSortingRepository<TdUserCollect, Long>,
-		JpaSpecificationExecutor<TdUserCollect> 
-{
-    Page<TdUserCollect> findByUsernameOrderByIdDesc(String username, Pageable page);
-    
-    Page<TdUserCollect> findByUsernameAndGoodsTitleContainingOrderByIdDesc(String username, String keywords, Pageable page);
-    
-    //不分页的findByUsernameAndGoodsTitleContainingOrderByIdDesc——by dengxiao
-    List<TdUserCollect> findByUsernameAndGoodsTitleContainingOrderByIdDesc(String username,String keywords);
-    
-    List<TdUserCollect> findByUsername(String username);
-    
-    TdUserCollect findByUsernameAndGoodsId(String username, Long goodsId);
-    
-    Long countByGoodsId(Long goodsId);
-    
+public interface TdUserCollectRepo
+		extends PagingAndSortingRepository<TdUserCollect, Long>, JpaSpecificationExecutor<TdUserCollect> {
+	Page<TdUserCollect> findByUsernameOrderByIdDesc(String username, Pageable page);
+
+	Page<TdUserCollect> findByUsernameAndGoodsTitleContainingOrderByIdDesc(String username, String keywords,
+			Pageable page);
+
+	// 不分页的findByUsernameAndGoodsTitleContainingOrderByIdDesc——by dengxiao
+	List<TdUserCollect> findByUsernameAndGoodsTitleContainingOrderByIdDesc(String username, String keywords);
+
+	List<TdUserCollect> findByUsername(String username);
+
+	TdUserCollect findByUsernameAndGoodsId(String username, Long goodsId);
+
+	Long countByGoodsId(Long goodsId);
 }

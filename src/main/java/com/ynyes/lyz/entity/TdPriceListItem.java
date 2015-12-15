@@ -57,6 +57,10 @@ public class TdPriceListItem {
 	// 该件商品的进货价
 	@Column(scale = 2)
 	private Double stockPrice;
+	
+	//发货地点
+	@Column(scale = 2)
+	private String dispatch;
 
 	// 该商品在本地区是否参与促销
 	@Column
@@ -153,6 +157,14 @@ public class TdPriceListItem {
 
 	public void setStockPrice(Double stockPrice) {
 		this.stockPrice = stockPrice;
+	}
+
+	public String getDispatch() {
+		return dispatch;
+	}
+
+	public void setDispatch(String dispatch) {
+		this.dispatch = dispatch;
 	}
 
 	public Boolean getIsPromotion() {

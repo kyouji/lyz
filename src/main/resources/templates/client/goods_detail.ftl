@@ -16,6 +16,14 @@
 		<script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
 		<script src="/client/js/rich_lee.js" type="text/javascript"></script>
 	</head>
+	<style>
+	   .isCollectTrue{
+	       background: url(/client/images/sec_footericon03.png) no-repeat center;
+	   }
+	   .isCollectFalse{
+	       background: url(/client/images/sec_footericon02.png) no-repeat center;
+	   }
+	</style>
 	<script type="text/javascript">
 		$(function(){
 			turn_hei($('.det_banner'),0.8) 
@@ -25,6 +33,10 @@
 	</script>
 	<body>
 		<div>
+            <#-- 引入警告提示样式 -->
+            <#include "/client/common_warn.ftl">
+            <#-- 引入等待提示样式 -->
+            <#include "/client/common_wait.ftl">
             
             <div id="color_package_select">
                 <#include "/client/color_package.ftl">            
@@ -58,7 +70,10 @@
 				    <#if goods??>
     					<p>${goods.name!''}</p>
     					<p>￥<#if goods.salePrice??>${goods.salePrice?string("0.00")}</#if></p>
-    					<p>销量：24534件</p>
+    					<p>销量：${goods.soldNumber!'0'}件</p>
+    					<#-- 该标签用以存储库存 -->
+    					<input type="hidden" id="inventory${goods.id?c}" value="<#if goods.leftNumber??>${goods.leftNumber?c}<#else>0</#if>">
+    					<p>库存：<#if goods.leftNumber??>${goods.leftNumber?c}<#else>0</#if></p>
 					</#if>
 				</div>
 				<div class="index_test_box"></div>
@@ -78,15 +93,18 @@
 					<li class="li03">
 						<div>数量：</div>
 						<a onclick="changeQuantity(${goods.id?c},'delete')">-</a>
-						<input type="text" id="quantity${goods.id?c}" value="${select_quantity!'0'}" />
+						<input type="text" class="goodsSelectedQuantity" id="quantity${goods.id?c}" value="${select_quantity!'0'}" />
 						<a onclick="changeQuantity(${goods.id?c},'add')">+</a>
-						<p>调色</p>
-						
+						<#if goods??&&goods.isColorful??&&goods.isColorful>
+                            <p>调色</p>
+						</#if>
 					</li>
+					<#--
 					<li class="li04">
 						<div>送至：</div>
 						<p>重庆市 渝中区 解放碑</p>
 					</li>
+					-->
 					<li class="li04">
 						<div>服务：</div>
 						<p>由“乐易装”售后和发货，并享受售后服务</p>
@@ -97,15 +115,21 @@
 					<dt>商品参数</dt>
 					<dd>
 						<span>品牌</span>
-						<p>欧丽缇</p>
+						<p>${goods.brandTitle!''}</p>
 					</dd>
+					<#--
 					<dd>
 						<span>产地</span>
 						<p>法国</p>
 					</dd>
+					-->
 					<dd>
 						<span>发货地</span>
-						<p>郑州一号仓库</p>
+						<p>
+						  <#if priceListItem??>
+    					      ${priceListItem.dispatch!''}
+						  </#if>
+						</p>
 					</dd>
 				</dl>
 				<div class="index_test_box"></div>
@@ -143,21 +167,22 @@
 				</div>
 				<ul class="sec_footer">
 					<li>
-						<span>
-							客服
-						</span>
+						<span>客服</span>
 					</li>
 					<li>
-						<span>收藏</span>
+                        <#if isCollect??&&isCollect>
+					       <span id="operate" class="isCollectTrue" onclick="operateCollect(<#if goods??&&goods.id??>${goods.id?c}</#if>)">收藏</span>
+				        <#else>
+				           <span id="operate" class="isCollectFalse" onclick="operateCollect(<#if goods??&&goods.id??>${goods.id?c}</#if>)">收藏</span>
+						</#if>
 					</li>
 					<li>
-						<span>加入已选</span>
+						<span onclick="addCart();">加入已选</span>
 					</li>
 					<li>
 						<span>立刻购买</span>
 					</li>	
 				</ul>
-				<div class="index_test_box02"></div>
 			</section>
 		</div>		
 	</body>

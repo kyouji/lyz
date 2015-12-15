@@ -410,6 +410,170 @@
     bottom: 0px;
 }
 
+/*05步骤下单*/
+.fen_testleft{
+    width: 20%;
+    height: 100px;
+    float: left;
+    position: relative;
+    overflow: auto;
+}
+.fen_testleft ul{
+    width: 100%;
+    line-height: 40px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: #f8f8f8;
+}
+.fen_testleft ul li{
+    width: 100%;
+    overflow: hidden;
+}
+.fen_testleft ul li a{
+    width: 99%;
+    display: block;
+    border-right: #e8e8e8 1px solid;
+    border-bottom: #e8e8e8 1px solid;
+}
+.fen_testtop{
+    width: 80%;
+    height: 41px;
+    float: left;
+    position: relative;
+    overflow: hidden;
+}
+.fen_testtop ul{
+    height: 41px;
+    line-height: 41px;
+    position: absolute;
+    overflow: hidden;
+    left: 0px;
+    top: 0px;
+    background: #f8f8f8;
+}
+.fen_testtop ul li{
+    float: left;
+    height: 41px;
+    line-height: 40px;
+    
+    
+}
+.fen_testtop ul li a{
+    height: 39px;
+    display: block;
+    padding: 0 16px;
+    border-right: #e8e8e8 1px solid;
+    border-bottom: #e8e8e8 1px solid;
+}
+.fen_goodbox{
+    width: 80%;
+    overflow:auto;
+    float: right;
+}
+.fen_goodbox dl dt .my_checkbox{
+    float: left;
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    border: #DDDDDD 1px solid;
+    margin-top: 54px;
+    margin: 4px;
+    background: #fbfbfb;
+}
+.fen_goodbox dl{
+    width: 100%;
+    overflow: hidden;
+    height: 100px;
+    margin: auto;
+
+}
+.fen_goodbox dl dt{
+    width: 86px;
+    float: left;
+    height: 100px;  
+}
+.fen_goodbox dl dt a{
+    float: left;
+    display: block;
+    width: 70px;
+    height: 70px;
+    border: #DDDDDD 1px solid; 
+    margin-top: 15px;
+    
+}
+.fen_goodbox dl dt a img{
+    width: 60px;
+    height: 60px;
+    margin-top: 7px;
+}
+.fen_goodbox dl dd{
+    max-width: 60%;
+    float: left;
+    padding:14px 0;
+
+}
+.fen_goodbox dl dd p{
+    width: 100%;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    -o-text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.fen_goodbox dl dd .fen_div01{
+    width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+}
+.fen_goodbox dl dd .fen_div01 span{
+    float: left;
+    width: 40px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background: #f43744;
+    color: white;
+    margin-left: 4px;
+}
+.fen_goodbox dl dd .fen_div01 a{
+    float: right;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background: #fafafa;
+    border: #DDDDDD 1px solid;
+}
+.fen_goodbox dl dd .fen_div01 a:nth-of-type(1){
+    border-left: none;
+    margin-right:4px;
+}
+.fen_goodbox dl dd .fen_div01 a:nth-of-type(2){
+    border-right: none;
+}
+.fen_goodbox dl dd .fen_div01 input{
+    float: right;
+    text-align: center;
+    width: 40px;
+    height: 20px;
+    border: #DDDDDD 1px solid;
+}
+.fen_goodbox dl dd .fen_div02{
+    width: 100%;
+    margin-top:9px;
+    overflow: hidden;
+}
+.fen_goodbox dl dd .fen_div02 a{
+    float: left;
+    color: #cc1421;
+    margin-left: 8px;
+}
+.fen_goodbox dl dd .fen_div02 span{
+    float:right;
+    margin-right: 8px;
+}
+
 /*04.清单*/
 .index_head .menu {
     width: 14%;
@@ -548,14 +712,14 @@
 
 .go_buy p {
     float: left;
-    width: 60%;
+    width: 40%;
     background: url(/client/images/lei_buy_bd.png);
     color: white;
 }
 
 .go_buy a {
     float: left;
-    width: 40%;
+    width: 30%;
     background: #e5373a;
     color: white;
 }
@@ -869,6 +1033,9 @@
 .det_pri p:nth-child(3){
     color: #999999;
 }
+.det_pri p:nth-child(4){
+    color: #999999;
+}
 .det_list{
     width: 100%;
     overflow: hidden;
@@ -975,7 +1142,8 @@
 .det_mes{
     width: 92%;
     padding: 0 4%;
-    height: auto;   
+    height: auto; 
+    margin-bottom:100px;  
 }
 .det_mestitle{
     width: 100%;
@@ -1171,7 +1339,7 @@
     margin-left: 5px;
 }
 .per_title dl dd{
-    width: 58%;
+    width: 50%;
     float: left;
     padding: 10px 10px;
 }
@@ -1205,7 +1373,7 @@
 }
 .per_title ul li{
     float: left;
-    width: 33%;
+    width: 33.3%;
 }
 .per_title ul li a{
     display: block;
@@ -1223,7 +1391,7 @@
     background: white;
 }
 .per_order{
-    width: 90%;
+    width: 80%;
     padding-left:50px;
     padding-bottom:2% ;
     height: 34px;
@@ -1293,7 +1461,7 @@
     padding: 2% 0;
 }
 .per_box ul li a{
-    width: 90%;
+    width: 80%;
     display: block;
     padding-left:50px;
     padding-bottom:2% ;

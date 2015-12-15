@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 
 /**
- * 购物车
+ * 已选商品
  * 
  * @author Sharon
  *
@@ -16,6 +16,17 @@ import javax.persistence.Id;
 
 @Entity
 public class TdCartGoods {
+	
+	public TdCartGoods(Long goodsId, Long quantity) {
+		super();
+		this.goodsId = goodsId;
+		this.quantity = quantity;
+	}
+
+	public TdCartGoods(){
+		super();
+	}
+	
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

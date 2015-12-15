@@ -91,7 +91,6 @@
                 $scope.smscode = function(){
                     var cityInfo = $("#my_box").html();
                     if(0 != $scope.time){
-                        console.debug("失效！");
                         return;
                     }
                     $scope.time = 60;
@@ -106,11 +105,11 @@
                         timeout:10000,
                         error:function(XMLHttpRequest, textStatus, errorThrown){
                             close(1);
-                            warning("亲，您的网速不给力啊！");
                             $scope.time = 0;
+                            warning("亲，您的网速不给力啊！");
                         },
                         success:function(res){
-                            close(1000);
+                            close(1);
                             if(0 == res.status){
                                 if(00==res.code){
                                     setTimeout($scope.changeSms,1000);

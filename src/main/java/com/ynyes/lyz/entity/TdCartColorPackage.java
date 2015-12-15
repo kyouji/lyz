@@ -7,58 +7,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 调色包实体类
- * 
- * @author dengxiao
+ * 已选调色包
+ * @auhor dengxiao
  */
-
 @Entity
-public class TdColorPackage {
+public class TdCartColorPackage {
 
-	// id
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	// 调色包名称
+	
+	//归属用户名
 	@Column
-	private String name;
-
-	// 调色包编号
+	private String username;
+	
+	//归属商品id
+	@Column
+	private Long goodsId;
+	
+	//调色包id
+	@Column
+	private Long colorPackageId;
+	
+	//调色包编号
 	@Column
 	private String number;
-
-	// 调色包图片
+	
+	//调色包图片
 	@Column
 	private String imageUri;
-
-	// 库存
-	@Column
-	private Long inventory;
-
-	// 当前销售价格
+	
+	//当前销售价格
 	@Column(scale = 2)
 	private Double salePrice;
-
-	// 当前进货价格
+	
+	//数量
 	@Column(scale = 2)
-	private Double stockPrice;
-
-	// 购买数量
-	@Column
 	private Long quantity;
 	
 	//总价
 	@Column
 	private Double totalPrice;
-
-	// 归属： 1 华润商品 2 乐意装商品
-	@Column
-	private Long belongTo;
-
-	// 排序号
-	@Column
-	private Long sortId;
 
 	public Long getId() {
 		return id;
@@ -68,12 +57,28 @@ public class TdColorPackage {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Long getGoodsId() {
+		return goodsId;
+	}
+
+	public void setGoodsId(Long goodsId) {
+		this.goodsId = goodsId;
+	}
+
+	public Long getColorPackageId() {
+		return colorPackageId;
+	}
+
+	public void setColorPackageId(Long colorPackageId) {
+		this.colorPackageId = colorPackageId;
 	}
 
 	public String getNumber() {
@@ -92,28 +97,12 @@ public class TdColorPackage {
 		this.imageUri = imageUri;
 	}
 
-	public Long getInventory() {
-		return inventory;
-	}
-
-	public void setInventory(Long inventory) {
-		this.inventory = inventory;
-	}
-
 	public Double getSalePrice() {
 		return salePrice;
 	}
 
 	public void setSalePrice(Double salePrice) {
 		this.salePrice = salePrice;
-	}
-
-	public Double getStockPrice() {
-		return stockPrice;
-	}
-
-	public void setStockPrice(Double stockPrice) {
-		this.stockPrice = stockPrice;
 	}
 
 	public Long getQuantity() {
@@ -131,20 +120,5 @@ public class TdColorPackage {
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-
-	public Long getBelongTo() {
-		return belongTo;
-	}
-
-	public void setBelongTo(Long belongTo) {
-		this.belongTo = belongTo;
-	}
-
-	public Long getSortId() {
-		return sortId;
-	}
-
-	public void setSortId(Long sortId) {
-		this.sortId = sortId;
-	}
 }
+

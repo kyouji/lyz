@@ -90,9 +90,11 @@ public class TdIndexController {
 
 		// 查找首页中部广告
 		TdAdType index_center_adType = tdAdTypeService.findByTitle("首页中部广告");
-		if (null != adType) {
+		if (null != index_center_adType) {
 			List<TdAd> index_center_list = tdAdService.findByTypeId(index_center_adType.getId());
-			map.addAttribute("index_center", index_center_list.get(0));
+			if (null != index_center_adType && index_center_list.size() > 0) {
+				map.addAttribute("index_center", index_center_list.get(0));
+			}
 		}
 
 		// 查找头条信息
@@ -159,7 +161,6 @@ public class TdIndexController {
 				}
 			}
 		}
-
 		return "/client/index";
 	}
 }

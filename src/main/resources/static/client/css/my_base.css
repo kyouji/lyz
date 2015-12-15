@@ -115,7 +115,7 @@ input[type="text"],input[type="password"],input[type="submit"],input[type="reset
     line-height: 100px;
 }
 .sec_footer li:nth-child(2) span{
-    background: url(/client/images/sec_footericon02.png) no-repeat center;
+    /*background: url(/client/images/sec_footericon02.png) no-repeat center;*/
     background-size:24px;
     line-height: 100px;
 }

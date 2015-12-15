@@ -160,41 +160,51 @@ function win_colo_temp() {
 
 function win_colo(obj,goodsId){
 	obj.click(function(){
-		//console.log(0)
-		var quantityElementId = "#quantity"+goodsId;
-		var quantity = $(quantityElementId).val();
-		$.post("/goods/get/color",{
-			"goodsId" : goodsId,
-			"quantity" : quantity
-		},function(res){
-			//进行局部刷新
-			$("#color_package_select").html(res);
-			$('.colo_choice').height($(window).height())
-			$('.colo_box').height($(window).height()-150)
-			$('.colo_box li').height($('.colo_box li').width()*1)
-			$('.colo_sec').height($(window).height()-50)
-			var hei = $(window).height()-100
-			$('.colo_sec dl').css({maxHeight:hei})
-			$('.colo_choice').css({left:'0px'})	
-			$('.colo_back').click(function(){
-				$('.colo_choice').css({left:'100%'})	
-			})
-			
-			$('.colo_test').click(function(){
-				$('.colo_choice').css({left:'100%'})	
-			})
-			
-			$('.colo_title a').click(function(){
-				if($('.colo_sec').css('display') == 'none'){
-					$('.colo_sec').slideDown()	
-				}else if($('.colo_sec').css('display') == 'block'){
-					$('.colo_sec').slideUp()
-				};			
-			})
-			$('.colo_clo').click(function(){
-				$('.colo_sec').slideUp()	
-			})
-		});
+		//开启等待图标
+		wait();
+		$.ajax({
+			url:"/goods/get/color",
+			method:"post",
+			timeout:10000,
+			data:{
+				"goodsId" : goodsId
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown){
+				close(1);
+				warning("亲，您的网速不给力啊");
+			},
+			success:function(res){
+				//关闭等待图标
+				close(1000);
+				//进行局部刷新
+				$("#color_package_select").html(res);
+				$('.colo_choice').height($(window).height())
+				$('.colo_box').height($(window).height()-150)
+				$('.colo_box li').height($('.colo_box li').width()*1)
+				$('.colo_sec').height($(window).height()-50)
+				var hei = $(window).height()-100
+				$('.colo_sec dl').css({maxHeight:hei})
+				$('.colo_choice').css({left:'0px'})	
+				$('.colo_back').click(function(){
+					$('.colo_choice').css({left:'100%'})	
+				})
+				
+				$('.colo_test').click(function(){
+					$('.colo_choice').css({left:'100%'})	
+				})
+				
+				$('.colo_title a').click(function(){
+					if($('.colo_sec').css('display') == 'none'){
+						$('.colo_sec').slideDown()	
+					}else if($('.colo_sec').css('display') == 'block'){
+						$('.colo_sec').slideUp()
+					};			
+				})
+				$('.colo_clo').click(function(){
+					$('.colo_sec').slideUp()	
+				})
+			}
+		})
 	});
 };
 

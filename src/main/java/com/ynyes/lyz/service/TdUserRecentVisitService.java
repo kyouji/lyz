@@ -156,40 +156,52 @@ public class TdUserRecentVisitService {
 
 	// 根据用户id查找所有的浏览记录，按浏览时间倒序排序
 	public List<TdUserRecentVisit> findByUserIdOrderByVisitTimeDesc(Long userId) {
-		if(null == userId){
+		if (null == userId) {
 			return null;
 		}
 		return repository.findByUserIdOrderByVisitTimeDesc(userId);
 	}
-	
-	//根据用户id查找所有的浏览记录，按照浏览时间正序排序
-    public List<TdUserRecentVisit> findByUserIdOrderByVisitTimeAsc(Long userId){
-    	if(null == userId){
-    		return null;
-    	}
-    	return repository.findByUserIdOrderByVisitTimeAsc(userId);
-    }
-	
-	//查找指定用户最早的一个浏览记录
-    public TdUserRecentVisit findTopByUserIdOrderByVisitTimeAsc(Long userId){
-    	if(null == userId){
-    		return null;
-    	}
-    	return repository.findTopByUserIdOrderByVisitTimeAsc(userId);
-    }
-    
-    //删除多个浏览记录方法
-    public void deleteAll(List<TdUserRecentVisit> list){
-    	if(null != list){
-    		repository.delete(list);
-    	}
-    }
-    
-    //存储多个浏览记录的方法
-    public List<TdUserRecentVisit> saveAll(List<TdUserRecentVisit> list){
-    	if(null == list){
-    		return null;
-    	}
-    	return (List<TdUserRecentVisit>) repository.save(list);
-    }
+
+	// 根据用户id查找所有的浏览记录，按照浏览时间正序排序
+	public List<TdUserRecentVisit> findByUserIdOrderByVisitTimeAsc(Long userId) {
+		if (null == userId) {
+			return null;
+		}
+		return repository.findByUserIdOrderByVisitTimeAsc(userId);
+	}
+
+	// 查找指定用户最早的一个浏览记录
+	public TdUserRecentVisit findTopByUserIdOrderByVisitTimeAsc(Long userId) {
+		if (null == userId) {
+			return null;
+		}
+		return repository.findTopByUserIdOrderByVisitTimeAsc(userId);
+	}
+
+	// 删除多个浏览记录方法
+	public void deleteAll(List<TdUserRecentVisit> list) {
+		if (null != list) {
+			repository.delete(list);
+		}
+	}
+
+	// 存储多个浏览记录的方法
+	public List<TdUserRecentVisit> saveAll(List<TdUserRecentVisit> list) {
+		if (null == list) {
+			return null;
+		}
+		return (List<TdUserRecentVisit>) repository.save(list);
+	}
+
+	/**
+	 * 根据指定商品的id和用户id查找浏览记录
+	 * 
+	 * @author dengxiao
+	 */
+	public TdUserRecentVisit findByGoodsIdAndUserId(Long goodsId, Long userId) {
+		if (null == goodsId || null == userId) {
+			return null;
+		}
+		return repository.findByGoodsIdAndUserId(goodsId, userId);
+	}
 }

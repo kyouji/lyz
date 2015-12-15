@@ -18,9 +18,9 @@
     </head>
     <script type="text/javascript">
         $(function(){
-                win_colo_temp();//颜色调理窗口窗口
-                win_cla();//分类弹窗        
-                my_check();//模拟checkbox
+            win_colo_temp();//颜色调理窗口窗口
+            win_cla();//分类弹窗        
+            my_check();//模拟checkbox
         });
     </script>
     <body>
@@ -50,8 +50,8 @@
             -->
             <header class="index_head">
                 <span><#if user??&&user.cityName??>${user.cityName!''}</#if></span>
-                <input type="" name="" id="" value="快速搜索商品" />
-                <div class="menu"></div>
+                <input type="" name="" id="" placeholder="快速搜索商品" />
+                <div class="menu" onClick="win_out();"></div>
             </header>
             <!--
                 作者：rich
@@ -72,9 +72,11 @@
                                         <#list ("goods_list"+level_one_index+level_two_index)?eval as goods>
                                             <dl>
                                                 <dt>
-                                                    <input type="hidden" id="inventory${goods.id?c}" value="<#if goods.inventory??>${goods.inventory?c}<#else>0</#if>">
-                                                    <h3 onclick="getGoodsDetail(${goods.id?c})">${goods.title!''}</h3>
-                                                    <#-- 后期会判断该商品是不是属于调色商品 -->
+                                                    <#-- 用户存储指定商品的库存 -->
+                                                    <input type="hidden" id="inventory${goods.id?c}" value="<#if goods.leftNumber??>${goods.leftNumber?c}<#else>0</#if>">
+                                                    <#-- 商品的标题，点击可跳转到详情页 -->
+                                                    <h3 onclick="window.location.href='/goods/detail/${goods.id?c}'">${goods.title!''}</h3>
+                                                    <#-- 判断该商品是不是属于调色商品 -->
                                                     <#if goods.isColorful??&&goods.isColorful>
                                                         <a id="color${goods.id?c}" href="javascript:changeColor(${goods.id?c});">调色></a>
                                                     </#if>
@@ -84,6 +86,7 @@
                                                         <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice??>
                                                             <p>￥${("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice?string("0.00")}</p>
                                                         </#if>
+                                                            
                                                         <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion??>
                                                             <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion>
                                                                 <a>促销</a>
@@ -92,7 +95,7 @@
                                                     </#if>
                                                     <div>
                                                         <span onclick="changeQuantity(${goods.id?c},'delete')">-</span>
-                                                        <input readonly="true" type="number" id="quantity${goods.id?c}" value="0">
+                                                        <input readonly="true" class="goodsSelectedQuantity" type="number" id="quantity${goods.id?c}" value="0">
                                                         <span onclick="changeQuantity(${goods.id?c},'add')">+</span>
                                                     </div>
                                                 </dd>
@@ -109,8 +112,8 @@
             
             
             <div class="go_buy">
-                <p>查看已选(<span id="select_num">${selected_goods_number!'0'}</span>)</p>
-                <a href="">加入已选</a>
+                <p>查看已选(<span id="select_num">${selected_number!'0'}</span>)</p>
+                <a style="background:#ffaa00;" href="javascript:addCart();">加入已选</a>
                 <a href="#">去结算</a>
             </div>
             <#include "/client/common_footer.ftl">

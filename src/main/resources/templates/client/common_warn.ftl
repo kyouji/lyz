@@ -5,7 +5,6 @@
         var he = ($(window).height()-$('.warning').height())/2;
         
         $('.warning').css({left:le,top:he});
-        console.log($('warning').width())
         $('.warning').fadeIn();
         warning_out();
     };
@@ -21,7 +20,7 @@
     padding: 6px 14px;
     background: black;
     color: white;
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     z-index: 99999;

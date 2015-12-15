@@ -1,7 +1,9 @@
 <div class="colo_sec">
+    <#-- 以下几个input标签全部用来存储一些变量的值 -->
     <input type="hidden" id="unit_price" value="${unit_price!'0'}">
     <input type="hidden" id="goods_id" value="<#if goodsId??>${goodsId?c}</#if>">
-    <input type="hidden" id="the_new_quantity" value="${quantity!'0'}">
+    <input type="hidden" id="color_package_inventory" value="<#if inventory??>${inventory?c}<#else>0</#if>">
+    <input type="hidden" id="selected_number" value="<#if selected_number??>${selected_number?c}<#else>0</#if>">
     <div class="my_close">
         <dl>
             <dt>
