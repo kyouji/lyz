@@ -121,6 +121,11 @@
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 			<version>2.5.2</version>
 		</dependency>
+		 <dependency>
+            <groupId>com.ceb</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+        </dependency>
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
 			</dependency> -->
 

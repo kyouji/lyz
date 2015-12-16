@@ -295,7 +295,7 @@ function del_goods_comb(obj) {
                     <li><a href="javascript:;" onclick="tabs(this);" class="">价格与库存</a></li>
                     <li><a href="javascript:;" onclick="tabs(this);" class="">促销</a></li>
                     <li><a href="javascript:;" onclick="tabs(this);" class="">赠品</a></li>
-                    <li><a href="javascript:;" onclick="tabs(this);" class="">组合商品</a></li>
+                    <#--<li><a href="javascript:;" onclick="tabs(this);" class="">组合商品</a></li> -->
                     <li><a href="javascript:;" onclick="tabs(this);" class="">SEO选项</a></li>
                 </ul>
             </div>
@@ -779,7 +779,7 @@ function del_goods_comb(obj) {
         </dl>
     </div>
     
-    <div class="tab-content" style="display: none;">
+  <#-->  <div class="tab-content" style="display: none;">
         <dl>
             <dt>商品组合</dt>
             <dd>
@@ -845,7 +845,7 @@ function del_goods_comb(obj) {
                 </table>
             </dd>
         </dl>
-    </div>
+    </div> -->
     
     <div class="tab-content" style="display: none;">
         <dl>
