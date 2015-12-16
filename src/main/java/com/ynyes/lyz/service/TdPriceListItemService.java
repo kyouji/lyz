@@ -45,6 +45,19 @@ public class TdPriceListItemService {
 	public List<TdPriceListItem> findAll() {
 		return (List<TdPriceListItem>) repository.findAll();
 	}
+	
+	public Page<TdPriceListItem> findAll(int page, int size){
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+		return repository.findAll(pageRequest);
+	}
+	
+	public Page<TdPriceListItem> searchAll(String keywords, int page, int size){		
+		if (null == keywords) {
+			return null;
+		}
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+		return repository.findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(keywords, keywords, keywords, keywords, pageRequest);
+	}
 
 	/**
 	 * 根据价目表编号和首页推荐查找价目表项（分页）
@@ -72,15 +85,15 @@ public class TdPriceListItemService {
 		return repository.findByPriceListIdAndIsPromotionTrueOrderBySortIdAsc(PriceListId);
 	};
 
-	public Page<TdPriceList> searchAll(String keywords, int page, int size) {
-		if (null == keywords) {
-			return null;
-		}
-		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
-		return repository
-				.findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(
-						keywords, keywords, keywords, keywords, pageRequest);
-	}
+//	public Page<TdPriceList> searchAll(String keywords, int page, int size) {
+//		if (null == keywords) {
+//			return null;
+//		}
+//		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
+//		return repository
+//				.findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(
+//						keywords, keywords, keywords, keywords, pageRequest);
+//	}
 
 	/**
 	 * 根据价目表名称和商品id查找价目表项

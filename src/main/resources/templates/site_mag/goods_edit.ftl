@@ -337,7 +337,7 @@ function del_goods_comb(obj) {
             <dd>
                 <div class="rule-multi-radio multi-radio">
                     <span>
-                        <input type="radio" name="belongTo" value="1" <#if goods??==false || goods.belongTo==1>checked="checked"</#if>>
+                        <input type="radio" name="belongTo" value="1" <#if goods??==false || goods.belongTo?? && goods.belongTo==1>checked="checked"</#if>>
                         <label>华润</label>
                         <input type="radio" name="belongTo" value="2" <#if goods?? && goods.belongTo?? && goods.belongTo==2>checked="checked"</#if>>
                         <label>乐意装</label>

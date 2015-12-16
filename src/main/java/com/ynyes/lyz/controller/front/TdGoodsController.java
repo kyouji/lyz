@@ -261,7 +261,9 @@ public class TdGoodsController {
 
 		tdCommonService.setHeader(req, map);
 		tdCommonService.getCategory(req, map);
-
+		Long number = tdCommonService.getSelectedNumber(req);
+		// 将已选商品的数量（包括调色包）添加到ModelMap中
+		map.addAttribute("selected_number", number);
 		return "/client/goods_list_step";
 	}
 

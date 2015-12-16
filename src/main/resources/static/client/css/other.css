@@ -1601,7 +1601,8 @@
     height: 41px;
     float: left;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
+        background: #f8f8f8;
 }
 .fen_testtop ul{
     height: 41px;
@@ -1610,7 +1611,7 @@
     overflow: hidden;
     left: 0px;
     top: 0px;
-    background: #f8f8f8;
+
 }
 .fen_testtop ul li{
     float: left;
@@ -1622,7 +1623,7 @@
 .fen_testtop ul li a{
     height: 39px;
     display: block;
-    padding: 0 16px;
+    width:80px;
     border-right: #e8e8e8 1px solid;
     border-bottom: #e8e8e8 1px solid;
 }
@@ -1650,7 +1651,7 @@
 
 }
 .fen_goodbox dl dt{
-    width: 102px;
+    width: 80px;
     float: left;
     height: 100px;  
 }
@@ -1669,7 +1670,7 @@
     margin-top: 7px;
 }
 .fen_goodbox dl dd{
-    max-width: 60%;
+    width: 65%;
     float: left;
     padding:14px 0;
 
@@ -1829,4 +1830,9 @@
     border-radius: 3px;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
+}
+
+.red{
+	background:#cc1421;
+	color:white;
 }

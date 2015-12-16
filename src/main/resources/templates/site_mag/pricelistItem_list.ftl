@@ -47,6 +47,7 @@ function __doPostBack(eventTarget, eventArgument) {
         <div id="floatHead" class="toolbar">
             <div class="l-list">
                 <ul class="icon-list">
+                    <li><a class="add" href="/Verwalter/pricelist/edit?__VIEWSTATE=${__VIEWSTATE!""}"><i></i><span>新增</span></a></li>
                     <li>
                         <a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a>
                     </li>

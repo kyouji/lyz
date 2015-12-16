@@ -132,6 +132,18 @@ public class TdUser {
 	@Column
 	private Boolean isEnable;
 
+	 // 排序号
+    @Column
+    private Long sortId;
+    
+	public Long getSortId() {
+		return sortId;
+	}
+
+	public void setSortId(Long sortId) {
+		this.sortId = sortId;
+	}
+
 	public Boolean getFirstOrder() {
 		return firstOrder;
 	}

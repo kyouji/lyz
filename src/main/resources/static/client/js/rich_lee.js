@@ -134,9 +134,9 @@ function win_colo_temp() {
 	})
 
 	$('.lei_box01 dl dt a').click(function() {
-//		$('.colo_choice').css({
-//			left : '0px'
-//		})
+// $('.colo_choice').css({
+// left : '0px'
+// })
 	})
 	$('.colo_back').click(function() {
 		$('.colo_choice').css({
@@ -160,7 +160,7 @@ function win_colo_temp() {
 
 function win_colo(obj,goodsId){
 	obj.click(function(){
-		//开启等待图标
+		// 开启等待图标
 		wait();
 		$.ajax({
 			url:"/goods/get/color",
@@ -174,9 +174,9 @@ function win_colo(obj,goodsId){
 				warning("亲，您的网速不给力啊");
 			},
 			success:function(res){
-				//关闭等待图标
+				// 关闭等待图标
 				close(1000);
-				//进行局部刷新
+				// 进行局部刷新
 				$("#color_package_select").html(res);
 				$('.colo_choice').height($(window).height())
 				$('.colo_box').height($(window).height()-150)
@@ -240,15 +240,15 @@ function my_check() {
 };
 
 function win_out(){
-	//$('.index_head div').click(function(){
-		//console.log(0)
+	// $('.index_head div').click(function(){
+		// console.log(0)
 		$('.win_cla').css({left:'0px'});			
 		$('.win_cla dd a').css({WebkitTransform:'translateX(0px)'});
 		$('.win_cla dd a').each(function(i){
 			$(this).css({WebkitTransition:'1s ' + i*200 +'ms'});				
 		});												
-	//});
-	//console.log(0)
+	// });
+	// console.log(0)
 };
 
 
@@ -266,7 +266,7 @@ function win_cla(){
 	});	
 	
 	var hei = ($(window).height() - $('.win_cla dt span').height())/2
-	//console.log(hei)
+	// console.log(hei)
 	$('.win_cla dt span').css({marginTop:''+hei+'px'})
 	$('.win_cla dt span').height($('.win_cla dt span').width())
 };
@@ -277,3 +277,62 @@ function footer(){
 	$('.footer_act').css({left:le});
 };
 
+
+function fen_scroll(){
+	$('.fen_testleft').height($(window).height());
+	var che = $('.fen_goodbox dl dt .my_checkbox');
+	var dlb = $('.fen_goodbox dl dt')
+	var hei = (dlb.height() - che.height())/2
+	che.css({marginTop:hei})
+	$('.fen_goodbox').height($(window).height()-150)
+	/////////////
+	var all_li = 0;
+	var all_ul = $('.fen_testtop ul');
+	//////循环ul
+	all_ul.each(function(i){
+		var len = all_ul.eq(i).children().size()*82;
+		all_ul.eq(i).width(len);
+		/*my_draf($('.fen_testtop ul').eq(i),$('.fen_testtop'),'left')*/
+	});
+	all_ul.css({display:'none'});
+	all_ul.eq(0).css({display:'block'});
+	$('.fen_testleft ul li a').eq(0).css({background:'#cc1421',color:'white' })
+	$('.fen_testleft ul li').each(function(i){
+		$('.fen_testleft ul li').eq(i).click(function(){
+			all_ul.css({display:'none'});
+			all_ul.eq(i).css({display:'block'});
+			$('.fen_testleft ul li a').css({background:'#f8f8f8',color:'#333333' })
+			$('.fen_testleft ul li a').eq(i).css({background:'#cc1421',color:'white' })
+		});
+	});
+};
+
+function my_draf(obj,obj_child,guide,page){
+	var go = window.screen.width;
+	var timer = null;
+	var iNow = 0 ;    // 记录 索引
+	var iScroll = 0;  // 滑动的距离 每次滑动的距离 相加 储存在myX里面
+	var straX = 0;  // 最开始的坐标位子
+	var myX = 0;// 用来储存滑动的距离
+	var len = -obj.width()+obj_child.width();
+	
+	obj.bind('touchstart',function(){
+		straX = event.changedTouches[0].pageX;				
+		myX	= iScroll;
+	});
+	obj.bind('touchmove',function(){
+		var disX =event.changedTouches[0].pageX - straX;				
+		iScroll= myX + disX;										
+		obj.animate({[guide]:''+iScroll+'px'},0)
+	});
+	obj.bind('touchend',function(){
+		var disX =event.changedTouches[0].pageX - straX;				
+		iScroll= myX + disX;
+		if(iScroll>0){
+			iScroll=0;
+		}else if(iScroll<len){
+			iScroll = len;
+		}
+		obj.animate({[guide]:''+iScroll+'px'},400)
+	});
+};

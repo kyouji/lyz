@@ -189,7 +189,7 @@ public class TdCommonService {
 		// 存储新的浏览记录
 		tdUserRecentVisitService.save(visit);
 	}
-
+	
 	public static String getIp(HttpServletRequest request) {
 		if (request == null)
 			return "";

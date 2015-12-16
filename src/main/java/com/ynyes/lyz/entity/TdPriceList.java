@@ -41,7 +41,7 @@ public class TdPriceList {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public Long getSortId() {
 		return sortId;
 	}

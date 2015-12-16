@@ -26,9 +26,6 @@ public class TdManagerPriceListController {
 	@Autowired
 	TdPriceListItemService tdPriceListItemService;
 	
-//	@Autowired
-//	TdPriceListService tdPriceListService;
-	
 	@Autowired
 	TdDiySiteService tdDiySiteService;
 	
@@ -100,7 +97,7 @@ public class TdManagerPriceListController {
 	     if (null == keywords)
          {
              map.addAttribute("pricelist_page", 
-                     tdPriceListService.findAll(page, size));
+            		 tdPriceListItemService.findAll(page, size));
          }
          else
          {
@@ -108,7 +105,7 @@ public class TdManagerPriceListController {
             		 tdPriceListItemService.searchAll(keywords, page, size));
          }
          
-         return "/site_mag/pricelist_list";
+         return "/site_mag/pricelistItem_list";
 	}
 	
 	@RequestMapping(value = "/edit")
@@ -124,15 +121,15 @@ public class TdManagerPriceListController {
         map.addAttribute("__EVENTARGUMENT", __EVENTARGUMENT);
         map.addAttribute("__VIEWSTATE", __VIEWSTATE);
         
-        // 参数类型表
+
 
        
         if (null != id) {
-            map.addAttribute("pricelist", tdPriceListService.findOne(id));
+            map.addAttribute("pricelist", tdPriceListItemService.findOne(id));
         }
         
 
-        return "/site_mag/pricelist_edit";
+        return "/site_mag/pricelistItem_edit";
 
     }
 	
@@ -191,7 +188,7 @@ public class TdManagerPriceListController {
 	                
 	                if (type.equalsIgnoreCase("pricelist"))
 	                {
-	                	tdPriceListService.delete(id);
+	                	tdPriceListItemService.delete(id);
 	                }
 	                
 	            }

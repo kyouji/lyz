@@ -45,8 +45,10 @@ public class TdPriceListService {
 		return (List<TdPriceList>) repository.findAll();
 	}
 
+
 	public Page<TdPriceList> findAll(int page, int size){
 		PageRequest pageRequest = new PageRequest(page, size, new Sort(Direction.ASC, "sortId"));
 		return repository.findAll(pageRequest);
 	}
+
 }

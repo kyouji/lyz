@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.ynyes.lyz.entity.TdPriceList;
 import com.ynyes.lyz.entity.TdPriceListItem;
 
 public interface TdPriceListItemRepo
@@ -26,13 +25,14 @@ public interface TdPriceListItemRepo
 	 * 
 	 * @author dengxiao
 	 */
+
 	List<TdPriceListItem> findByPriceListIdAndIsPromotionTrueOrderBySortIdAsc(Long PriceListId);
 
 	/**
 	 * @author lc
 	 * @注释：搜索
 	 */
-	Page<TdPriceList> findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(
+	Page<TdPriceListItem> findByPriceListIdContainingOrpriceListNameContainingOrcityNameContainingOrCompanyNameContaining(
 			String keyword, String keyword1, String keyword2, String keyword3, Pageable page);
 
 	/**
@@ -41,4 +41,5 @@ public interface TdPriceListItemRepo
 	 * @author dengxiao
 	 */
 	TdPriceListItem findByPriceListIdAndGoodsId(Long PriceListId, Long goodsId);
+
 }

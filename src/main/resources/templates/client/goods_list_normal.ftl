@@ -14,7 +14,7 @@
         
         <script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
         <script src="/client/js/rich_lee.js" type="text/javascript"></script>
-        <script src="/client/js/goods_list_normal.js" type="text/javascript"></script>
+        <script src="/client/js/goods_list.js" type="text/javascript"></script>
     </head>
     <script type="text/javascript">
         $(function(){
@@ -24,8 +24,10 @@
         });
     </script>
     <body>
-        <#include "/client/common_wait.ftl">
-        <#include "/client/common_warn.ftl">    
+        <#-- 引入警告提示样式 -->
+        <#include "/client/common_warn.ftl">
+        <#-- 引入等待提示样式 -->
+        <#include "/client/common_wait.ftl">   
         <div>
             <dl class="win_cla">
                 <dt>
@@ -78,7 +80,7 @@
                                                     <h3 onclick="window.location.href='/goods/detail/${goods.id?c}'">${goods.title!''}</h3>
                                                     <#-- 判断该商品是不是属于调色商品 -->
                                                     <#if goods.isColorful??&&goods.isColorful>
-                                                        <a id="color${goods.id?c}" href="javascript:changeColor(${goods.id?c});">调色></a>
+                                                        <a id="color${goods.id?c}" href="javascript:changeColor(${goods.id?c});">调色</a>
                                                     </#if>
                                                 </dt>
                                                 <dd>
