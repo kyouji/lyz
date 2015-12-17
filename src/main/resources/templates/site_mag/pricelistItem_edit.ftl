@@ -36,7 +36,7 @@ $(function () {
             lock: true,
             max: false,
             min: false,
-            title: "赠品",
+            title: "商品",
             content: 'url:/Verwalter/goods/list/dialog/gift?total=' + $("#var_box_gift").children("tr").length,
             width: 800,
             height: 350
@@ -123,7 +123,7 @@ function del_goods_gift(obj) {
     </div>
     <div id="id-first-tab" class="tab-content" style="display: block;">
         <dl>
-            <dt>赠品</dt>
+            <dt>选择商品</dt>
             <dd>
                 <a id="addGift" class="icon-btn add"><i></i><span>选择商品</span></a>
                 <span class="Validform_checktip"></span>
