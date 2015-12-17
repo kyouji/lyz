@@ -69,9 +69,9 @@
                             <#list ("level_two_categories"+level_one_index)?eval as level_two>
                                 <div class="lei_box01">
                                     <div class="box01_title">${level_two.title!''}</div>
-                                    <#if ("goods_list"+level_one_index+level_two_index)?eval??>
+                                    <#if ("goods_list"+level_one_index+"_"+level_two_index)?eval??>
                                         <#-- 遍历二级分类下的所有商品 -->
-                                        <#list ("goods_list"+level_one_index+level_two_index)?eval as goods>
+                                        <#list ("goods_list"+level_one_index+"_"+level_two_index)?eval as goods>
                                             <dl>
                                                 <dt>
                                                     <#-- 用户存储指定商品的库存 -->
@@ -84,13 +84,13 @@
                                                     </#if>
                                                 </dt>
                                                 <dd>
-                                                    <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval??>
-                                                        <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice??>
+                                                    <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval??>
+                                                        <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval.salePrice??>
                                                             <p>￥${("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice?string("0.00")}</p>
                                                         </#if>
                                                             
-                                                        <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion??>
-                                                            <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion>
+                                                        <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval.isPromotion??>
+                                                            <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval.isPromotion>
                                                                 <a>促销</a>
                                                             </#if>
                                                         </#if>
@@ -114,7 +114,7 @@
             
             
             <div class="go_buy">
-                <p>查看已选(<span id="select_num">${selected_number!'0'}</span>)</p>
+                <p onclick="window.location.href='/user/selected'">查看已选(<span id="select_num">${selected_number!'0'}</span>)</p>
                 <a style="background:#ffaa00;" href="javascript:addCart();">加入已选</a>
                 <a href="#">去结算</a>
             </div>

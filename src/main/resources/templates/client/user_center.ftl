@@ -54,7 +54,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="/user/selected">
 								<span>${number!'0'}</span>
 								<p>我的已选</p>
 							</a>

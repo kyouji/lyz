@@ -191,6 +191,9 @@ public class TdGoodsController {
 		tdCartColorPackage.setQuantity(quantity);
 		tdCartColorPackage.setSalePrice(colorPackagePriceListItem.getSalePrice());
 		tdCartColorPackage.setGoodsId(goodsId);
+		tdCartColorPackage.setColorPackageId(colorPackage.getId());
+		tdCartColorPackage.setImageUri(colorPackage.getImageUri());
+		tdCartColorPackage.setNumber(colorPackage.getNumber());
 		// ********************************设置属性结束*******************************************
 
 		// 获取所有已经选择的调色包
@@ -212,6 +215,23 @@ public class TdGoodsController {
 		// 如果没有包含，则将新选择的调色包添加到已选中
 		if (!isHave) {
 			all_color.add(tdCartColorPackage);
+		}
+
+		// 获取所有的已选商品
+		List<TdCartGoods> all_selected = tdCommonService.getSelectedGoods(req);
+		// 创建一个布尔类型变量，用于表示当前是否存在一个与当前已选调色包所对应的商品，其初始值为false，代表没有
+		Boolean isExist = false;
+		// 遍历所有已选的商品
+		for (TdCartGoods cartGoods : all_selected) {
+			if (null != cartGoods && null != cartGoods.getGoodsId() && cartGoods.getGoodsId() == goodsId) {
+				isExist = true;
+			}
+		}
+		// 如果没有与当前已选调色包所对应的已选商品，则创建一个，其数量为0
+		if (!isExist) {
+			TdCartGoods cartGoods = new TdCartGoods(goodsId, 0L);
+			all_selected.add(cartGoods);
+			req.getSession().setAttribute("all_selected", all_selected);
 		}
 		req.getSession().setAttribute("all_color", all_color);
 
@@ -270,15 +290,27 @@ public class TdGoodsController {
 	public Map<String, Object> addCart(HttpServletRequest req, String params) {
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
+		// 获取登陆用户的门店信息
+		TdDiySite diySite = tdCommonService.getDiySite(req);
 		List<TdCartGoods> selected_goods = tdCommonService.getSelectedGoods(req);
 		// param的格式为：goodsId+quantity
 		String[] param = params.split("\\-");
 		for (int i = 0; i < param.length; i++) {
 			String item = param[i];
 			String[] goodsId_quantity = item.split("\\+");
+			// 获取指定商品
+			TdGoods goods = tdGoodsService.findOne(Long.parseLong(goodsId_quantity[0]));
+			// 获取指定商品对于用户的价格
+			TdPriceListItem priceListItem = tdPriceListItemService.findByPriceListIdAndGoodsId(diySite.getPriceListId(),
+					goods.getId());
 			// 创建一个实体用于存储拆分好的goodsId和quantity
 			TdCartGoods cartGoods = new TdCartGoods(Long.parseLong(goodsId_quantity[0]),
 					Long.parseLong(goodsId_quantity[1]));
+			cartGoods.setGoodsTitle(goods.getTitle());
+			cartGoods.setGoodsCoverImageUri(goods.getCoverImageUri());
+			if (null != priceListItem) {
+				cartGoods.setPrice(priceListItem.getSalePrice());
+			}
 			Boolean isHave = false;
 			// 遍历已选商品的集合，判断新的商品是否已选
 			for (int j = 0; j < selected_goods.size(); j++) {

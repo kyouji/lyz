@@ -103,14 +103,14 @@ public class TdCommonService {
 				TdProductCategory two_category = level_two_categories.get(j);
 				List<TdGoods> goods_list = tdGoodsService
 						.findByCategoryIdAndIsOnSaleTrueOrderBySortIdAsc(two_category.getId());
-				map.addAttribute("goods_list" + i + j, goods_list);
+				map.addAttribute("goods_list" + i + "_" + j, goods_list);
 				// 遍历所有的商品，查询在指定城市的商品的价格
 				for (int k = 0; k < goods_list.size(); k++) {
 					TdGoods goods = goods_list.get(k);
 					if (null != goods) {
 						TdPriceListItem priceListItem = tdPriceListItemService.findByPriceListIdAndGoodsId(priceListId,
 								goods.getId());
-						map.addAttribute("priceListItem" + i + j + k, priceListItem);
+						map.addAttribute("priceListItem" + i + "_" + j + "_" + k, priceListItem);
 					}
 				}
 			}

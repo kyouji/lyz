@@ -73,7 +73,7 @@
             
             
             <div class="go_buy">
-                <p>查看已选(<span id="select_num">${selected_number!'0'}</span>)</p>
+                <p onclick="window.location.href='/user/selected'">查看已选(<span id="select_num">${selected_number!'0'}</span>)</p>
                 <a style="background:#ffaa00;" href="javascript:addCart();">加入已选</a>
                 <a href="#">去结算</a>
             </div>

@@ -3,9 +3,9 @@
         <#list level_one_categories as level_one>
             <#if ("level_two_categories"+level_one_index)?eval??>
                 <#list ("level_two_categories"+level_one_index)?eval as level_two>
-                    <#if ("goods_list"+level_one_index+level_two_index)?eval??>
+                    <#if ("goods_list"+level_one_index+"_"+level_two_index)?eval??>
                         <div class="ctrlGoods" id="goods${level_one.id?c}_${level_two.id?c}" <#if !(level_one_index==0&&level_two_index==0)>style="display:none;"</#if>>
-                            <#list ("goods_list"+level_one_index+level_two_index)?eval as goods>
+                            <#list ("goods_list"+level_one_index+"_"+level_two_index)?eval as goods>
                                 <dl>
                                     <dt>
                                         <a>
@@ -22,9 +22,9 @@
                                         <p onclick="window.location.href='/goods/detail/${goods.id?c}'">${goods.title!''}</p>
                                         <div class="fen_div01">
                                             <#-- 判断指定商品在该地区是否参与促销 -->
-                                            <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval??>
-                                                <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion??>
-                                                    <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.isPromotion>
+                                            <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval??>
+                                                <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval.isPromotion??>
+                                                    <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval.isPromotion>
                                                         <span>促销</span>
                                                     </#if>
                                                 </#if>
@@ -35,8 +35,8 @@
                                         </div>
                                         <div class="fen_div02">
                                             <#-- 显示指定商品在该地区的价格 -->
-                                            <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval??>
-                                                <#if ("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice??>
+                                            <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval??>
+                                                <#if ("priceListItem"+level_one_index+"_"+level_two_index+"_"+goods_index)?eval.salePrice??>
                                                     <a>￥${("priceListItem"+level_one_index+level_two_index+goods_index)?eval.salePrice?string("0.00")}</a>
                                                 </#if>
                                             </#if>

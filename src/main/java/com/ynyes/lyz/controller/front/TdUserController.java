@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ynyes.lyz.entity.TdCartColorPackage;
 import com.ynyes.lyz.entity.TdCartGoods;
+import com.ynyes.lyz.entity.TdColorPackagePriceListItem;
 import com.ynyes.lyz.entity.TdDiySite;
 import com.ynyes.lyz.entity.TdOrder;
 import com.ynyes.lyz.entity.TdPriceListItem;
@@ -23,6 +24,7 @@ import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.entity.TdUserCollect;
 import com.ynyes.lyz.entity.TdUserLevel;
 import com.ynyes.lyz.entity.TdUserRecentVisit;
+import com.ynyes.lyz.service.TdColorPackagePriceListItemService;
 import com.ynyes.lyz.service.TdCommonService;
 import com.ynyes.lyz.service.TdOrderService;
 import com.ynyes.lyz.service.TdPriceListItemService;
@@ -55,6 +57,9 @@ public class TdUserController {
 
 	@Autowired
 	private TdPriceListItemService tdPriceListItemService;
+
+	@Autowired
+	private TdColorPackagePriceListItemService tdColorPackagePriceListItemService;
 
 	/**
 	 * 跳转到个人中心的方法（后期会进行修改，根据不同的角色，跳转的页面不同）
@@ -284,40 +289,31 @@ public class TdUserController {
 		if (null == username) {
 			return "redirect:/login";
 		}
+
 		// 获取所有已选的商品
 		List<TdCartGoods> all_selected = tdCommonService.getSelectedGoods(req);
 		// 获取所有的调色包
 		List<TdCartColorPackage> selected_colors = tdCommonService.getSelectedColorPackage(req);
-		// 遍历已选调色包
-		for (int i = 0; i < selected_colors.size(); i++) {
-			TdCartColorPackage cartColorPackage = selected_colors.get(i);
-			// 遍历所有的已选商品，判断是否属于指定的调色包
-			if (null != cartColorPackage) {
-				// 创建一个布尔变量isHave来表示指定调色包是否存在对应的已选商品，其初始值为false，代表没有
-				Boolean isHave = false;
-				for (TdCartGoods cartGoods : all_selected) {
-					if (null != cartGoods && null != cartGoods.getGoodsId()
-							&& cartGoods.getGoodsId() == cartColorPackage.getGoodsId()) {
-						isHave = true;
-						map.addAttribute("goods" + i, cartGoods);
+
+		// 遍历所有的已选商品，获取以下数据：1. 与之对应的已选调色包
+		for (int i = 0; i < all_selected.size(); i++) {
+			TdCartGoods cartGoods = all_selected.get(i);
+			if (null != cartGoods) {
+				// 创建一个集合用于存储与之对应的已选调色包
+				List<TdCartColorPackage> goods_colors = new ArrayList<>();
+
+				// 完成第一个目的——遍历所有已选的调色包，找到与指定已选商品所对应的
+				for (int j = 0; j < selected_colors.size(); j++) {
+					TdCartColorPackage colorPackage = selected_colors.get(j);
+					if (null != colorPackage && null != colorPackage.getGoodsId()
+							&& colorPackage.getGoodsId() == cartGoods.getGoodsId()) {
+						goods_colors.add(colorPackage);
 					}
 				}
-				// 如果isHave的值还是为false，则创建一个数量为0的tdCartGoods作为其对应的已选商品
-				if (!isHave) {
-					TdCartGoods cartGoods = new TdCartGoods(cartColorPackage.getGoodsId(), 0L);
-					cartGoods.setUsername(username);
-					// 查找到指定商品对于用户的价格
-					TdDiySite diySite = tdCommonService.getDiySite(req);
-					TdPriceListItem priceListItem = tdPriceListItemService
-							.findByPriceListIdAndGoodsId(diySite.getPriceListId(), cartColorPackage.getGoodsId());
-					// 设置价格
-					cartGoods.setPrice(priceListItem.getSalePrice());
-					map.addAttribute("goods" + i, cartGoods);
-				}
-
+				map.addAttribute("goods_colors" + i, goods_colors);
 			}
 		}
-		map.addAttribute("selected_colors", selected_colors);
+		map.addAttribute("all_selected", all_selected);
 		return "/client/user_selected";
 	}
 }
