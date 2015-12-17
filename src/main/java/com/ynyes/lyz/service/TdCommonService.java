@@ -42,6 +42,11 @@ public class TdCommonService {
 	@Autowired
 	private TdUserRecentVisitService tdUserRecentVisitService;
 
+	/**
+	 * 获取登陆用户信息的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public void setHeader(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
 		if (null != username) {
@@ -51,7 +56,11 @@ public class TdCommonService {
 
 	}
 
-	// 获取登陆用户门店的方法
+	/**
+	 * 获取登陆用户所属门店信息的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public TdDiySite getDiySite(HttpServletRequest req) {
 		// 获取到登陆用户的用户名
 		String username = (String) req.getSession().getAttribute("username");
@@ -59,13 +68,17 @@ public class TdCommonService {
 		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
 		// 获取登陆用户的门店信息
 		TdDiySite diySite = tdDiySiteService.findOne(user.getUpperDiySiteId());
-		if(null == diySite){
+		if (null == diySite) {
 			diySite = new TdDiySite();
 		}
 		return diySite;
 	}
 
-	// 查找三级分类的方法并查找指定三级分类下的所有商品
+	/**
+	 * 查找三级分类的方法并查找指定三级分类下的所有商品及其价目表的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public void getCategory(HttpServletRequest req, ModelMap map) {
 		TdDiySite diySite = getDiySite(req);
 		// 根据门店信息获取到用户当前的价目表
@@ -104,7 +117,11 @@ public class TdCommonService {
 		}
 	}
 
-	// 获取所有已选商品的方法
+	/**
+	 * 获取所有已选商品的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public List<TdCartGoods> getSelectedGoods(HttpServletRequest req) {
 		@SuppressWarnings("unchecked")
 		List<TdCartGoods> all_selected = (ArrayList<TdCartGoods>) req.getSession().getAttribute("all_selected");
@@ -114,7 +131,11 @@ public class TdCommonService {
 		return all_selected;
 	}
 
-	// 获取所有已选调色包的方法
+	/**
+	 * 获取所有已选调色包的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public List<TdCartColorPackage> getSelectedColorPackage(HttpServletRequest req) {
 		@SuppressWarnings("unchecked")
 		List<TdCartColorPackage> all_color = (ArrayList<TdCartColorPackage>) req.getSession().getAttribute("all_color");
@@ -124,7 +145,11 @@ public class TdCommonService {
 		return all_color;
 	}
 
-	// 获取已选数量（包括商品和调色包）的方法
+	/**
+	 * 获取已选数量（包括商品和调色包）的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public Long getSelectedNumber(HttpServletRequest req) {
 		Long selected_number = 0L;
 		List<TdCartGoods> selected_goods_list = this.getSelectedGoods(req);
@@ -138,7 +163,11 @@ public class TdCommonService {
 		return selected_number;
 	}
 
-	// 获取指定商品已选的调色包的方法
+	/**
+	 * 获取指定商品已选的调色包的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public List<TdCartColorPackage> getSelectedColorPakcageByGoodsId(HttpServletRequest req, Long goodsId) {
 		// 获取所有已经选择的调色包
 		List<TdCartColorPackage> all_color = this.getSelectedColorPackage(req);
@@ -154,7 +183,11 @@ public class TdCommonService {
 		return colors;
 	}
 
-	// 获取指定id商品和添加登陆用户浏览记录的方法
+	/**
+	 * 获取指定id商品和添加登陆用户浏览记录的方法
+	 * 
+	 * @author dengxiao
+	 */
 	public void addUserRecentVisit(HttpServletRequest req, ModelMap map, Long goodsId) {
 		// 获取登陆用户的用户名
 		String username = (String) req.getSession().getAttribute("username");
@@ -173,13 +206,13 @@ public class TdCommonService {
 		// 默认排序号1
 		visit.setSortId(1L);
 
-		//查看是否有重复的浏览记录
-		TdUserRecentVisit user_visit = tdUserRecentVisitService.findByGoodsIdAndUserId(goodsId,user.getId());
-		//如果有此件商品的浏览记录，则删除它
-		if(null != user_visit){
+		// 查看是否有重复的浏览记录
+		TdUserRecentVisit user_visit = tdUserRecentVisitService.findByGoodsIdAndUserId(goodsId, user.getId());
+		// 如果有此件商品的浏览记录，则删除它
+		if (null != user_visit) {
 			tdUserRecentVisitService.delete(user_visit);
 		}
-		
+
 		// 查找当前用户所有的浏览记录
 		List<TdUserRecentVisit> all_visit = tdUserRecentVisitService.findByUserIdOrderByVisitTimeAsc(user.getId());
 		// 查询当前存储的浏览记录数量是否大于最大数量
@@ -189,7 +222,7 @@ public class TdCommonService {
 		// 存储新的浏览记录
 		tdUserRecentVisitService.save(visit);
 	}
-	
+
 	public static String getIp(HttpServletRequest request) {
 		if (request == null)
 			return "";

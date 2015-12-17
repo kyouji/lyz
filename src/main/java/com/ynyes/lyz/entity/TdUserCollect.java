@@ -104,4 +104,11 @@ public class TdUserCollect {
 	public void setGoodsCoverImageUri(String goodsCoverImageUri) {
 		this.goodsCoverImageUri = goodsCoverImageUri;
 	}
+
+	@Override
+	public String toString() {
+		return "TdUserCollect [id=" + id + ", username=" + username + ", goodsId=" + goodsId + ", goodsTitle="
+				+ goodsTitle + ", goodsCoverImageUri=" + goodsCoverImageUri + ", collectTime=" + collectTime
+				+ ", sortId=" + sortId + "]";
+	}
 }

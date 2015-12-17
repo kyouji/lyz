@@ -204,4 +204,76 @@ public class TdUserRecentVisitService {
 		}
 		return repository.findByGoodsIdAndUserId(goodsId, userId);
 	}
+
+	/**
+	 * 根据用户名查找所有的浏览记录，按时间倒序排序
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdUserRecentVisit> findByUsernameOrderByVisitTimeDesc(String username) {
+		if (null == username) {
+			return null;
+		}
+		return repository.findByUsernameOrderByVisitTimeDesc(username);
+	}
+
+	/**
+	 * 根据用户名查找所有的浏览记录，按时间正序排序
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdUserRecentVisit> findByUsernameOrderByVisitTimeAsc(String username) {
+		if (null == username) {
+			return null;
+		}
+		return repository.findByUsernameOrderByVisitTimeAsc(username);
+	};
+
+	/**
+	 * 根据用户名查找所有的浏览记录，按照价格反序排序
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdUserRecentVisit> findByUsernameOrderBySalePriceDesc(String username, Long priceListId) {
+		if (null == username) {
+			return null;
+		}
+		return repository.findByUsernameOrderBySalePriceDesc(username, priceListId);
+	}
+
+	/**
+	 * 根据用户名查找所有的浏览记录，按照价格正序排序
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdUserRecentVisit> findByUsernameOrderBySalePriceAsc(String username, Long priceListId) {
+		if (null == username) {
+			return null;
+		}
+		return repository.findByUsernameOrderBySalePriceAsc(username, priceListId);
+	}
+
+	/**
+	 * 根据用户名查找所有的浏览记录，按照销量反序排序
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdUserRecentVisit> findByUsernameOrderBySoldNumberDesc(String username) {
+		if (null == username) {
+			return null;
+		}
+		return repository.findByUsernameOrderBySoldNumberDesc(username);
+	}
+
+	/**
+	 * 根据用户名查找所有的浏览记录，按照销量正序排序
+	 * 
+	 * @author dengxiao
+	 */
+	public List<TdUserRecentVisit> findByUsernameOrderBySoldNumberAsc(String username) {
+		if (null == username) {
+			return null;
+		}
+		return repository.findByUsernameOrderBySoldNumberAsc(username);
+	}
 }

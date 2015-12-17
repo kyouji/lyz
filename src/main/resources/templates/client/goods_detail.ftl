@@ -12,7 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="/client/css/main.css"/>
 		<link rel="stylesheet" type="text/css" href="/client/css/other.css"/>
 		
-		<script src="/client/js/goods_list_normal.js" type="text/javascript"></script>
+		<script src="/client/js/goods_list.js" type="text/javascript"></script>
 		<script src="/client/js/jquery-1.11.0.js" type="text/javascript"></script>
 		<script src="/client/js/rich_lee.js" type="text/javascript"></script>
 	</head>

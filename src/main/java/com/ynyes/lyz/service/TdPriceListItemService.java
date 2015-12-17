@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.ynyes.lyz.entity.TdPriceList;
 import com.ynyes.lyz.entity.TdPriceListItem;
 import com.ynyes.lyz.repository.TdPriceListItemRepo;
 
@@ -100,10 +99,10 @@ public class TdPriceListItemService {
 	 * 
 	 * @author dengxiao
 	 */
-	public TdPriceListItem findByPriceListIdAndGoodsId(Long PriceListId, Long goodsId) {
-		if (null == PriceListId || null == goodsId) {
+	public TdPriceListItem findByPriceListIdAndGoodsId(Long priceListId, Long goodsId) {
+		if (null == priceListId || null == goodsId) {
 			return null;
 		}
-		return repository.findByPriceListIdAndGoodsId(PriceListId, goodsId);
+		return repository.findByPriceListIdAndGoodsId(priceListId, goodsId);
 	}
 }

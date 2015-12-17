@@ -58,9 +58,14 @@ public class TdGoodsController {
 	private TdColorPackagePriceListItemService tdColorPackagePriceListItemService;
 
 	/*
-	 *********************************** 普通下单模式的控制器和方法*****************************************************
+	 *********************************** 普通下单模式的控制器和方法********************************************
 	 */
 
+	/**
+	 * 跳转到普通下单（一键下单）页面的方法
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping(value = "/normal/list")
 	public String goodsListNormal(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
@@ -75,8 +80,47 @@ public class TdGoodsController {
 		map.addAttribute("selected_number", number);
 		return "/client/goods_list_normal";
 	}
+	/*
+	 *********************************** 普通下单结束******************************************************
+	 */
 
-	// 获取调色包的方法
+	/*
+	 *********************************** 步骤下单模式的控制器和方法*******************************************
+	 */
+
+	/**
+	 * 跳转到步骤下单页面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/step/list")
+	public String goodsListStep(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		if (null == username) {
+			return "redirect:/login";
+		}
+
+		tdCommonService.setHeader(req, map);
+		tdCommonService.getCategory(req, map);
+		Long number = tdCommonService.getSelectedNumber(req);
+		// 将已选商品的数量（包括调色包）添加到ModelMap中
+		map.addAttribute("selected_number", number);
+		return "/client/goods_list_step";
+	}
+
+	/*
+	 *********************************** 步骤下单结束******************************************************
+	 */
+
+	/*
+	 *********************************** 公共************************************************************
+	 */
+
+	/**
+	 * 获取调色包的方法
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping(value = "/get/color")
 	public String getColor(HttpServletRequest req, Long goodsId, Long quantity, ModelMap map) {
 		// 根据goodsId获取指定的商品
@@ -123,7 +167,11 @@ public class TdGoodsController {
 		return "/client/color_package";
 	}
 
-	// 添加已选调色包的方法
+	/**
+	 * 添加已选调色包的方法
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping(value = "/color/add")
 	public String colorAdd(String colorName, Long goodsId, Long quantity, ModelMap map, HttpServletRequest req) {
 		colorName = colorName.trim();
@@ -178,7 +226,11 @@ public class TdGoodsController {
 		return "/client/selected_color_package";
 	}
 
-	// 删除已选调色包的方法
+	/**
+	 * 删除已选调色包的方法
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping(value = "/delete/color")
 	@ResponseBody
 	public Map<String, Object> deleteColor(HttpServletRequest req, Long colorPackageId, Long goodsId) {
@@ -207,6 +259,11 @@ public class TdGoodsController {
 		return res;
 	}
 
+	/**
+	 * 将商品加入已选的方法
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping(value = "/add/cart")
 	@ResponseBody
 	// params的格式为：goodsId + quantity - goodsId +quantity - ......
@@ -239,46 +296,16 @@ public class TdGoodsController {
 			}
 		}
 		req.getSession().setAttribute("all_selected", selected_goods);
-		System.err.println(tdCommonService.getSelectedNumber(req));
 		res.put("selected_number", tdCommonService.getSelectedNumber(req));
 		res.put("stauts", 0);
 		return res;
 	}
 
-	/*
-	 *********************************** 普通下单结束*****************************************************
+	/**
+	 * 查看商品详情的方法（跳转到详情页）
+	 * 
+	 * @author dengxiao
 	 */
-
-	/*
-	 *********************************** 步骤下单模式的控制器和方法*******************************************
-	 */
-	@RequestMapping(value = "/step/list")
-	public String goodsListStep(HttpServletRequest req, ModelMap map) {
-		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
-			return "redirect:/login";
-		}
-
-		tdCommonService.setHeader(req, map);
-		tdCommonService.getCategory(req, map);
-		Long number = tdCommonService.getSelectedNumber(req);
-		// 将已选商品的数量（包括调色包）添加到ModelMap中
-		map.addAttribute("selected_number", number);
-		return "/client/goods_list_step";
-	}
-
-	/*
-	 *********************************** 步骤下单结束******************************************************
-	 */
-
-	
-	
-	
-	/*
-	 *********************************** 公共************************************************************
-	 */
-
-	// 查看商品详情的方法
 	@RequestMapping(value = "/detail/{goodsId}")
 	public String goodsDetail(HttpServletRequest req, ModelMap map, @PathVariable Long goodsId) {
 		String username = (String) req.getSession().getAttribute("username");
@@ -303,25 +330,29 @@ public class TdGoodsController {
 		Boolean isCollect = false;
 		TdUserCollect collect = tdUserCollectService.findByUsernameAndGoodsId(username, goodsId);
 		System.err.println(collect);
-		if(null != collect){
+		if (null != collect) {
 			isCollect = true;
 		}
 		map.addAttribute("isCollect", isCollect);
 		return "/client/goods_detail";
 	}
 
-	// 添加收藏的方法
+	/**
+	 * 添加收藏的方法
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping(value = "/operate/collection")
 	@ResponseBody
 	public Map<String, Object> addCollection(HttpServletRequest req, Long goodsId) {
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
-		//获取登陆用户名
+		// 获取登陆用户名
 		String username = (String) req.getSession().getAttribute("username");
-		//查找指定商品是否收藏
+		// 查找指定商品是否收藏
 		TdUserCollect userCollect = tdUserCollectService.findByUsernameAndGoodsId(username, goodsId);
-		if(null == userCollect){
-			//如果没有收藏则添加收藏
+		if (null == userCollect) {
+			// 如果没有收藏则添加收藏
 			userCollect = new TdUserCollect();
 			TdGoods goods = tdGoodsService.findOne(goodsId);
 			userCollect.setUsername(username);
@@ -330,8 +361,8 @@ public class TdGoodsController {
 			userCollect.setGoodsCoverImageUri(goods.getCoverImageUri());
 			userCollect.setCollectTime(new Date());
 			tdUserCollectService.save(userCollect);
-		}else{
-			//如果已经收藏则取消收藏
+		} else {
+			// 如果已经收藏则取消收藏
 			tdUserCollectService.delete(userCollect);
 		}
 		res.put("status", 0);

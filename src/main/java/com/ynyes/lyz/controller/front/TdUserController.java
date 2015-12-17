@@ -1,6 +1,9 @@
 package com.ynyes.lyz.controller.front;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,15 +12,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ynyes.lyz.entity.TdCartColorPackage;
 import com.ynyes.lyz.entity.TdCartGoods;
+import com.ynyes.lyz.entity.TdDiySite;
 import com.ynyes.lyz.entity.TdOrder;
+import com.ynyes.lyz.entity.TdPriceListItem;
 import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.entity.TdUserCollect;
 import com.ynyes.lyz.entity.TdUserLevel;
 import com.ynyes.lyz.entity.TdUserRecentVisit;
-import com.ynyes.lyz.service.TdCartGoodsService;
+import com.ynyes.lyz.service.TdCommonService;
 import com.ynyes.lyz.service.TdOrderService;
+import com.ynyes.lyz.service.TdPriceListItemService;
 import com.ynyes.lyz.service.TdUserCollectService;
 import com.ynyes.lyz.service.TdUserLevelService;
 import com.ynyes.lyz.service.TdUserRecentVisitService;
@@ -37,14 +45,22 @@ public class TdUserController {
 	private TdUserCollectService tdUserCollectService;
 
 	@Autowired
-	private TdCartGoodsService tdCartGoodsService;
-
-	@Autowired
 	private TdUserLevelService tdUserLevelService;
 
 	@Autowired
 	private TdOrderService tdOrderService;
 
+	@Autowired
+	private TdCommonService tdCommonService;
+
+	@Autowired
+	private TdPriceListItemService tdPriceListItemService;
+
+	/**
+	 * 跳转到个人中心的方法（后期会进行修改，根据不同的角色，跳转的页面不同）
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping
 	public String userCenter(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
@@ -62,9 +78,9 @@ public class TdUserController {
 		List<TdUserCollect> collect_list = tdUserCollectService.findByUsername(username);
 		map.addAttribute("collect_list", collect_list);
 
-		// 获取已选（从购物车中获取已选）
-		List<TdCartGoods> cart_list = tdCartGoodsService.findByUsername(username);
-		map.addAttribute("cart_list", cart_list);
+		// 获取已选
+		Long number = tdCommonService.getSelectedNumber(req);
+		map.addAttribute("number", number);
 
 		// 获取用户的等级
 		TdUserLevel level = tdUserLevelService.findOne(tdUser.getUserLevelId());
@@ -73,8 +89,13 @@ public class TdUserController {
 		return "/client/user_center";
 	}
 
+	/**
+	 * 查看我的订单的方法
+	 * 
+	 * @author dengxiao
+	 */
 	@RequestMapping(value = "/order/{typeId}")
-	public String orderList(HttpServletRequest req, ModelMap map,@PathVariable Long typeId) {
+	public String orderList(HttpServletRequest req, ModelMap map, @PathVariable Long typeId) {
 		String username = (String) req.getSession().getAttribute("username");
 		if (null == username) {
 			return "redirect:/login";
@@ -103,5 +124,200 @@ public class TdUserController {
 
 		map.addAttribute("typeId", typeId);
 		return "/client/user_order_list";
+	}
+
+	/**
+	 * 跳转到我的收藏页面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/collect")
+	public String userCollect(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		if (null == username) {
+			return "redirect:/login";
+		}
+		List<TdUserCollect> collect_list = tdUserCollectService.findByUsernameOrderByCollectTimeDesc(username);
+		map.addAttribute("collect_list", collect_list);
+		TdDiySite diySite = tdCommonService.getDiySite(req);
+		// 查找收藏的商品当前的价格
+		if (null != collect_list && null != diySite) {
+			for (int i = 0; i < collect_list.size(); i++) {
+				TdUserCollect userCollect = collect_list.get(i);
+				if (null != userCollect) {
+					TdPriceListItem priceListItem = tdPriceListItemService
+							.findByPriceListIdAndGoodsId(diySite.getPriceListId(), userCollect.getGoodsId());
+					map.addAttribute("priceListItem" + i, priceListItem);
+				}
+			}
+		}
+		return "/client/user_collect_list";
+	}
+
+	/**
+	 * 删除收藏商品的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/delete/collect")
+	@ResponseBody
+	public Map<String, Object> deleteCollect(HttpServletRequest req, Long id) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+		// 查找到指定id的用户收藏
+		TdUserCollect collect = tdUserCollectService.findOne(id);
+		if (null == collect) {
+			res.put("messag", "为查找到指定id的收藏");
+			return res;
+		}
+		tdUserCollectService.delete(collect);
+		res.put("status", 0);
+		return res;
+	}
+
+	/**
+	 * 跳转到浏览记录的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/recent")
+	// param为【排序字段】-【规则1】-【规则2】-【规则3】
+	public String userRecent(HttpServletRequest req, ModelMap map, String param) {
+		String username = (String) req.getSession().getAttribute("username");
+		if (null == username) {
+			return "redirect:/login";
+		}
+
+		if (null == param) {
+			param = "0-0-0-0";
+		}
+
+		// 拆分排序字段
+		String[] strs = param.split("-");
+		String sortFiled = strs[0];
+		String rule1 = strs[1];
+		String rule2 = strs[2];
+		String rule3 = strs[3];
+
+		// 新建一个集合用于接收用户的浏览记录
+		List<TdUserRecentVisit> recent_list = new ArrayList<>();
+
+		// 获取用户归属门店的信息
+		TdDiySite diySite = tdCommonService.getDiySite(req);
+
+		if ("0".equals(sortFiled)) {
+			if ("0".equals(rule1)) {
+				recent_list = tdUserRecentVisitService.findByUsernameOrderByVisitTimeDesc(username);
+				rule1 = "1";
+			} else if ("1".equals(rule1)) {
+				recent_list = tdUserRecentVisitService.findByUsernameOrderByVisitTimeAsc(username);
+				rule1 = "0";
+			}
+		} else if ("1".equals(sortFiled)) {
+			if ("0".equals(rule2)) {
+				recent_list = tdUserRecentVisitService.findByUsernameOrderBySalePriceDesc(username,
+						diySite.getPriceListId());
+				rule2 = "1";
+			} else if ("1".equals(rule2)) {
+				recent_list = tdUserRecentVisitService.findByUsernameOrderBySalePriceAsc(username,
+						diySite.getPriceListId());
+				rule2 = "0";
+			}
+		} else if ("2".equals(sortFiled)) {
+			if ("0".equals(rule3)) {
+				recent_list = tdUserRecentVisitService.findByUsernameOrderBySoldNumberDesc(username);
+				rule3 = "1";
+			} else if ("1".equals(rule3)) {
+				recent_list = tdUserRecentVisitService.findByUsernameOrderBySoldNumberAsc(username);
+				rule3 = "0";
+			}
+		}
+
+		map.addAttribute("selected_rule", Long.parseLong(sortFiled));
+		map.addAttribute("rule1", rule1);
+		map.addAttribute("rule2", rule2);
+		map.addAttribute("rule3", rule3);
+
+		// 遍历所有的浏览记录，获取所有浏览记录的价格
+		for (int i = 0; i < recent_list.size(); i++) {
+			TdUserRecentVisit recentVisit = recent_list.get(i);
+			if (null != recentVisit) {
+				// 获取指定商品的价目表项
+				TdPriceListItem priceListItem = tdPriceListItemService
+						.findByPriceListIdAndGoodsId(diySite.getPriceListId(), recentVisit.getGoodsId());
+				map.addAttribute("priceListItem" + i, priceListItem);
+			}
+		}
+		map.addAttribute("recent_list", recent_list);
+		return "/client/user_recent_list";
+	}
+
+	/**
+	 * 删除我的浏览记录的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/delete/recent")
+	@ResponseBody
+	public Map<String, Object> deleteRecent(HttpServletRequest req, Long id) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+		// 查找到指定id的浏览记录
+		TdUserRecentVisit recentVisit = tdUserRecentVisitService.findOne(id);
+		if (null == recentVisit) {
+			res.put("messag", "为查找到指定id的收藏");
+			return res;
+		}
+		tdUserRecentVisitService.delete(recentVisit);
+		res.put("status", 0);
+		return res;
+	}
+
+	/**
+	 * 跳转到我的已选页面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/selected")
+	public String mySelected(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		if (null == username) {
+			return "redirect:/login";
+		}
+		// 获取所有已选的商品
+		List<TdCartGoods> all_selected = tdCommonService.getSelectedGoods(req);
+		// 获取所有的调色包
+		List<TdCartColorPackage> selected_colors = tdCommonService.getSelectedColorPackage(req);
+		// 遍历已选调色包
+		for (int i = 0; i < selected_colors.size(); i++) {
+			TdCartColorPackage cartColorPackage = selected_colors.get(i);
+			// 遍历所有的已选商品，判断是否属于指定的调色包
+			if (null != cartColorPackage) {
+				// 创建一个布尔变量isHave来表示指定调色包是否存在对应的已选商品，其初始值为false，代表没有
+				Boolean isHave = false;
+				for (TdCartGoods cartGoods : all_selected) {
+					if (null != cartGoods && null != cartGoods.getGoodsId()
+							&& cartGoods.getGoodsId() == cartColorPackage.getGoodsId()) {
+						isHave = true;
+						map.addAttribute("goods" + i, cartGoods);
+					}
+				}
+				// 如果isHave的值还是为false，则创建一个数量为0的tdCartGoods作为其对应的已选商品
+				if (!isHave) {
+					TdCartGoods cartGoods = new TdCartGoods(cartColorPackage.getGoodsId(), 0L);
+					cartGoods.setUsername(username);
+					// 查找到指定商品对于用户的价格
+					TdDiySite diySite = tdCommonService.getDiySite(req);
+					TdPriceListItem priceListItem = tdPriceListItemService
+							.findByPriceListIdAndGoodsId(diySite.getPriceListId(), cartColorPackage.getGoodsId());
+					// 设置价格
+					cartGoods.setPrice(priceListItem.getSalePrice());
+					map.addAttribute("goods" + i, cartGoods);
+				}
+
+			}
+		}
+		map.addAttribute("selected_colors", selected_colors);
+		return "/client/user_selected";
 	}
 }

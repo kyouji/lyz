@@ -48,19 +48,19 @@
 					</dl>
 					<ul>
 						<li>
-							<a href="#">
+							<a href="/user/collect">
 								<span><#if collect_list??>${collect_list?size}<#else>0</#if></span>
 								<p>我的收藏</p>
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<span><#if cart_list??>${cart_list?size}<#else>0</#if></span>
+								<span>${number!'0'}</span>
 								<p>我的已选</p>
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="/user/recent">
 								<span><#if recent_list??>${recent_list?size}<#else>0</#if></span>
 								<p>我的足迹</p>
 							</a>
