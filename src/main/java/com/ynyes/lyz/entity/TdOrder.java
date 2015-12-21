@@ -222,7 +222,7 @@ public class TdOrder {
     
     // 排序号
     @Column
-    private Long sortId;    
+    private Double sortId;    
     
     // 是否在线付款
     @Column
@@ -560,11 +560,11 @@ public class TdOrder {
         this.totalPrice = totalPrice;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

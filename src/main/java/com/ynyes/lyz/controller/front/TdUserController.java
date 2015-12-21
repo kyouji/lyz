@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ynyes.lyz.entity.TdCartColorPackage;
 import com.ynyes.lyz.entity.TdCartGoods;
-import com.ynyes.lyz.entity.TdColorPackagePriceListItem;
 import com.ynyes.lyz.entity.TdDiySite;
 import com.ynyes.lyz.entity.TdOrder;
 import com.ynyes.lyz.entity.TdPriceListItem;
@@ -24,7 +23,6 @@ import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.entity.TdUserCollect;
 import com.ynyes.lyz.entity.TdUserLevel;
 import com.ynyes.lyz.entity.TdUserRecentVisit;
-import com.ynyes.lyz.service.TdColorPackagePriceListItemService;
 import com.ynyes.lyz.service.TdCommonService;
 import com.ynyes.lyz.service.TdOrderService;
 import com.ynyes.lyz.service.TdPriceListItemService;
@@ -57,9 +55,6 @@ public class TdUserController {
 
 	@Autowired
 	private TdPriceListItemService tdPriceListItemService;
-
-	@Autowired
-	private TdColorPackagePriceListItemService tdColorPackagePriceListItemService;
 
 	/**
 	 * 跳转到个人中心的方法（后期会进行修改，根据不同的角色，跳转的页面不同）
@@ -315,5 +310,90 @@ public class TdUserController {
 		}
 		map.addAttribute("all_selected", all_selected);
 		return "/client/user_selected";
+	}
+
+	/**
+	 * 更改已选数量的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/selected/change/quantity")
+	@ResponseBody
+	public Map<String, Object> selectedChangeQuantity(HttpServletRequest req, Long operation, Long type, Long goodsId,
+			Long colorId) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+
+		// 判断参数是否接收成功
+		if (null == operation) {
+			res.put("message", "operation参数接收失败！");
+			res.put("status", -2);
+			return res;
+		}
+		if (null == type) {
+			res.put("message", "type参数接收失败！");
+			res.put("status", -2);
+			return res;
+		}
+		if (null == goodsId) {
+			res.put("message", "goodsId参数接收失败！");
+			res.put("status", -2);
+			return res;
+		}
+		if (1L == type && null == colorId) {
+			res.put("message", "colorId参数接收失败！");
+			res.put("status", -2);
+			return res;
+		}
+
+		// 操作已选商品的情况
+		if (0 == type) {
+			List<TdCartGoods> selected_goods = tdCommonService.getSelectedGoods(req);
+
+		}
+
+		// 操作已选调色包的情况
+		if (1 == type) {
+
+		}
+		res.put("status", 0);
+		return res;
+	}
+
+	/**
+	 * 跳转到咨询投诉页面的方法
+	 * 
+	 * @auhor dengxiao
+	 */
+	@RequestMapping(value = "/suggestion")
+	public String userSuggestion(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		if (null == username) {
+			return "redirect:/login";
+		}
+		map.addAttribute("username", username);
+		return "/client/user_suggestion";
+	}
+
+	/**
+	 * 保存咨询投诉的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/suggestion/save")
+	@ResponseBody
+	public Map<String, Object> userSuggestionSave(HttpServletRequest req, String phone, String suggestion) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+		
+		String username = (String) req.getSession().getAttribute("username");
+		if(null == username){
+			res.put("status", -2);
+			return res;
+		}
+		
+		
+		res.put("status", 0);
+		return res;
 	}
 }

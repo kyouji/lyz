@@ -7,29 +7,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 价目表实体类
+ * 行政街道实体类
  * 
  * @author dengxiao
  */
+
 @Entity
-public class TdPriceList {
+public class TdSubdistrict {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	// 价目表名称
+	// 行政街道名称
 	@Column
 	private String name;
-	
-	//所属城市id
-	@Column
-	private Long cityId;
 
-	//创建者名称
+	// 所属区域id
 	@Column
-	private String username;
-	
+	private Long districtId;
+
 	// 排序号
 	@Column
 	private Double sortId;
@@ -49,7 +46,15 @@ public class TdPriceList {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
 	public Double getSortId() {
 		return sortId;
 	}
@@ -57,25 +62,10 @@ public class TdPriceList {
 	public void setSortId(Double sortId) {
 		this.sortId = sortId;
 	}
-	public Long getCityId() {
-		return cityId;
-	}
-
-	public void setCityId(Long cityId) {
-		this.cityId = cityId;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	@Override
 	public String toString() {
-		return "TdPriceList [id=" + id + ", name=" + name + ", cityId=" + cityId + ", username=" + username
-				+ ", sortId=" + sortId + "]";
+		return "TdSubDistrict [id=" + id + ", name=" + name + ", districtId=" + districtId + ", sortId=" + sortId + "]";
 	}
+	
 }

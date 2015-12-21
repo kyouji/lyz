@@ -165,7 +165,7 @@ public class TdManagerProductCategoryController {
             TdProductCategory category = tdProductCategoryService.findOne(id);
 
             if (sortIds.length > i) {
-                category.setSortId(sortIds[i]);
+                category.setSortId(new Double(sortIds[i]));
                 tdProductCategoryService.save(category);
             }
         }

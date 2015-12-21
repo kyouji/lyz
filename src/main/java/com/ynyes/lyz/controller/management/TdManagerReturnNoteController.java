@@ -214,7 +214,7 @@ public class TdManagerReturnNoteController {
 		                {
 		                    if (sortIds.length > i)
 		                    {
-		                        e.setSortId(sortIds[i]);
+		                        e.setSortId(new Double(sortIds[i]));
 		                    	tdReturnNoteService.save(e);
 		                    }
 		                }

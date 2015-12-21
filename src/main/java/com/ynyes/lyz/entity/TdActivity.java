@@ -24,30 +24,30 @@ public class TdActivity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	//活动名称
+
+	// 活动名称
 	@Column(unique = true)
 	private String name;
-	
-	//是否属于首页推荐活动
+
+	// 是否属于首页推荐活动
 	@Column
 	private Boolean isCommendIndex;
-	
-	//活动开始时间
+
+	// 活动开始时间
 	@Column
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date beginDate;
-	
-	//活动结束时间
+
+	// 活动结束时间
 	@Column
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date finishDate;
-	
-	//排序号
+
+	// 排序号
 	@Column
-	private Long sortId;
+	private Double sortId;
 
 	public Long getId() {
 		return id;
@@ -89,11 +89,11 @@ public class TdActivity {
 		this.finishDate = finishDate;
 	}
 
-	public Long getSortId() {
+	public Double getSortId() {
 		return sortId;
 	}
 
-	public void setSortId(Long sortId) {
+	public void setSortId(Double sortId) {
 		this.sortId = sortId;
 	}
 
@@ -102,5 +102,5 @@ public class TdActivity {
 		return "TdActivity [id=" + id + ", name=" + name + ", isCommendIndex=" + isCommendIndex + ", beginDate="
 				+ beginDate + ", finishDate=" + finishDate + ", sortId=" + sortId + "]";
 	}
-	
+
 }

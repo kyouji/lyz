@@ -592,7 +592,7 @@ public class TdManagerArticleController {
 	                
 	                TdArticle article = tdArticleService.findOne(id);
 	                
-	                article.setSortId(sortIds[chkId]);
+	                article.setSortId(new Double(sortIds[chkId]));
 	                
 	                tdArticleService.save(article);
 	            }
@@ -621,7 +621,7 @@ public class TdManagerArticleController {
 	                
 	            if (sortIds.length > i)
 	            {
-	                category.setSortId(sortIds[i]);
+	                category.setSortId(new Double(sortIds[i]));
 	                tdArticleCategoryService.save(category);
 	            }
 	        }
@@ -688,7 +688,7 @@ public class TdManagerArticleController {
 	                    
 	                if (sortIds.length > i)
 	                {
-	                    article.setSortId(sortIds[i]);
+	                    article.setSortId(new Double(sortIds[i]));
 	                    tdArticleService.save(article);
 	                }
 	            }

@@ -15,71 +15,70 @@ import javax.persistence.Id;
 
 @Entity
 public class TdServiceItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
-    // 服务名称
-    @Column
-    private String title;
-    
-    // 服务logo
-    @Column
-    private String logo;
-    
-    // 是否启用
-    @Column
-    private Boolean isEnable;
-    
-    /**
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	// 服务名称
+	@Column
+	private String title;
+
+	// 服务logo
+	@Column
+	private String logo;
+
+	// 是否启用
+	@Column
+	private Boolean isEnable;
+
+	/**
 	 * @author lc
 	 * @注释：添加服务类型判断 如果为true则是商品服务否则为整个商城服务
 	 */
-    @Column
-    private Boolean isGoodsService;
-    
+	@Column
+	private Boolean isGoodsService;
 
 	// 排序数字
-    @Column
-    private Long sortId;
-    
-    // 服务描述
-    @Column
-    private String description;
+	@Column
+	private Double sortId;
 
-    public Long getId() {
-        return id;
-    }
+	// 服务描述
+	@Column
+	private String description;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getLogo() {
-        return logo;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
+	public String getLogo() {
+		return logo;
+	}
 
-    public Boolean getIsEnable() {
-        return isEnable;
-    }
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 
-    public void setIsEnable(Boolean isEnable) {
-        this.isEnable = isEnable;
-    }
-    
-    public Boolean getIsGoodsService() {
+	public Boolean getIsEnable() {
+		return isEnable;
+	}
+
+	public void setIsEnable(Boolean isEnable) {
+		this.isEnable = isEnable;
+	}
+
+	public Boolean getIsGoodsService() {
 		return isGoodsService;
 	}
 
@@ -87,19 +86,19 @@ public class TdServiceItem {
 		this.isGoodsService = isGoodsService;
 	}
 
-    public Long getSortId() {
-        return sortId;
-    }
+	public Double getSortId() {
+		return sortId;
+	}
 
-    public void setSortId(Long sortId) {
-        this.sortId = sortId;
-    }
+	public void setSortId(Double sortId) {
+		this.sortId = sortId;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

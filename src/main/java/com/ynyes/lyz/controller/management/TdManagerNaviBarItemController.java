@@ -141,7 +141,7 @@ public class TdManagerNaviBarItemController {
             {
                 if (sortIds.length > i)
                 {
-                    e.setSortId(sortIds[i]);
+                    e.setSortId(new Double(sortIds[i]));
                     tdNaviBarItemService.save(e);
                 }
             }

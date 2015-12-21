@@ -50,15 +50,23 @@ public class TdPriceListItem {
 	@Column
 	private Long goodsId;
 
-	// 该件商品的销售价
+	// 该件商品的虚拟销售价
 	@Column(scale = 2)
 	private Double salePrice;
 
-	// 该件商品的进货价
+	// 该件商品名的实际销售价
+	@Column(scale = 2)
+	private Double realSalePrice;
+
+	// 该件商品的虚拟进货价
 	@Column(scale = 2)
 	private Double stockPrice;
-	
-	//发货地点
+
+	// 该件商品的实际进货价
+	@Column(scale = 2)
+	private Double realStockPrice;
+
+	// 发货地点
 	@Column(scale = 2)
 	private String dispatch;
 
@@ -197,5 +205,21 @@ public class TdPriceListItem {
 
 	public void setSortId(Long sortId) {
 		this.sortId = sortId;
+	}
+
+	public Double getRealSalePrice() {
+		return realSalePrice;
+	}
+
+	public void setRealSalePrice(Double realSalePrice) {
+		this.realSalePrice = realSalePrice;
+	}
+
+	public Double getRealStockPrice() {
+		return realStockPrice;
+	}
+
+	public void setRealStockPrice(Double realStockPrice) {
+		this.realStockPrice = realStockPrice;
 	}
 }

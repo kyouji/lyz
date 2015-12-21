@@ -66,7 +66,7 @@ public class TdSms {
 	
 	//短信状态（01-未发送；02-发送成功）
 	@Column
-	private Long statusId;
+	private Double statusId;
 
 	public Long getId() {
 		return id;
@@ -140,11 +140,11 @@ public class TdSms {
 		this.context = context;
 	}
 
-	public Long getStatusId() {
+	public Double getStatusId() {
 		return statusId;
 	}
 
-	public void setStatusId(Long statusId) {
+	public void setStatusId(Double statusId) {
 		this.statusId = statusId;
 	}
 

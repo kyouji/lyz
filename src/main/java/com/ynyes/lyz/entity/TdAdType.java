@@ -44,7 +44,7 @@ public class TdAdType {
     
     // 排序号
     @Column
-    private Long sortId;
+    private Double sortId;
 
     // 是否在新窗口显示
     @Column
@@ -106,11 +106,11 @@ public class TdAdType {
         this.createTime = createTime;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

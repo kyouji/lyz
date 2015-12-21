@@ -56,7 +56,7 @@ public class TdUserRecentVisit {
     
     // 排序号
     @Column
-    private Long sortId;
+    private Double sortId;
 
     public Long getId() {
         return id;
@@ -106,11 +106,11 @@ public class TdUserRecentVisit {
         this.visitTime = visitTime;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

@@ -188,7 +188,7 @@ public class TdManagerSettingController {
             {
                 if (sortIds.length > i)
                 {
-                    e.setSortId(sortIds[i]);
+                    e.setSortId(new Double(sortIds[i]));
                     tdServiceItemService.save(e);
                 }
             }

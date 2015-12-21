@@ -29,7 +29,7 @@ public class TdColorPackagePriceListItem {
 
 	// 所属区域id
 	@Column
-	private Long regionId;
+	private Long cityId;
 
 	// 所属区域城市名称
 	@Column
@@ -47,14 +47,22 @@ public class TdColorPackagePriceListItem {
 	@Column
 	private Long colorPackageId;
 
-	// 该件调色包的销售价
+	// 该件调色包的虚拟销售价
 	@Column(scale = 2)
 	private Double salePrice;
+	
+	//该件调色包的实际销售价
+	@Column(scale = 2)
+	private Double realSalePrice;
 
-	// 该件调色包的进货价
+	// 该件调色包的虚拟进货价
 	@Column(scale = 2)
 	private Double stockPrice;
 
+	//该件调色包的实际进货价
+	@Column(scale = 2)
+	private Double realStockPrice;
+	
 	public Long getId() {
 		return id;
 	}
@@ -79,12 +87,12 @@ public class TdColorPackagePriceListItem {
 		this.colorPackagePriceListName = colorPackagePriceListName;
 	}
 
-	public Long getRegionId() {
-		return regionId;
+	public Long getCityId() {
+		return cityId;
 	}
 
-	public void setRegionId(Long regionId) {
-		this.regionId = regionId;
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
 	}
 
 	public String getCityName() {
@@ -135,12 +143,19 @@ public class TdColorPackagePriceListItem {
 		this.stockPrice = stockPrice;
 	}
 
-	@Override
-	public String toString() {
-		return "TdColorPackagePriceListItem [id=" + id + ", colorPackagePriceListId=" + colorPackagePriceListId
-				+ ", colorPackagePriceListName=" + colorPackagePriceListName + ", regionId=" + regionId + ", cityName="
-				+ cityName + ", companyName=" + companyName + ", companyId=" + companyId + ", colorPackageId="
-				+ colorPackageId + ", salePrice=" + salePrice + ", stockPrice=" + stockPrice + "]";
+	public Double getRealSalePrice() {
+		return realSalePrice;
 	}
-	
+
+	public void setRealSalePrice(Double realSalePrice) {
+		this.realSalePrice = realSalePrice;
+	}
+
+	public Double getRealStockPrice() {
+		return realStockPrice;
+	}
+
+	public void setRealStockPrice(Double realStockPrice) {
+		this.realStockPrice = realStockPrice;
+	}
 }

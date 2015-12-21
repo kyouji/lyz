@@ -42,7 +42,7 @@ public class TdArticleCategory {
     
     // 排序号
     @Column
-    private Long sortId;
+    private Double sortId;
     
     // 链接地址
     @Column
@@ -112,11 +112,11 @@ public class TdArticleCategory {
         this.callIndex = callIndex;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

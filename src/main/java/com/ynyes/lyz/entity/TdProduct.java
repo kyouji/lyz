@@ -60,7 +60,7 @@ public class TdProduct {
     
     // 排序号
     @Column
-    private Long sortId;
+    private Double sortId;
     
     // 调用别名
     @Column
@@ -118,11 +118,11 @@ public class TdProduct {
         this.productCategoryTree = productCategoryTree;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

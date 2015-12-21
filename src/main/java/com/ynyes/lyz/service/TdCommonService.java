@@ -204,7 +204,7 @@ public class TdCommonService {
 		visit.setGoodsCoverImageUri(goods.getCoverImageUri());
 		visit.setVisitTime(new Date());
 		// 默认排序号1
-		visit.setSortId(1L);
+		visit.setSortId(1.00);
 
 		// 查看是否有重复的浏览记录
 		TdUserRecentVisit user_visit = tdUserRecentVisitService.findByGoodsIdAndUserId(goodsId, user.getId());

@@ -33,7 +33,7 @@ public class TdProductCategory {
     
     // 排序号
     @Column
-    private Long sortId;
+    private Double sortId;
     
     // 是否推荐类型
     @Column
@@ -111,11 +111,11 @@ public class TdProductCategory {
         this.parentTree = parentTree;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

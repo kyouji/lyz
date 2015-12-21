@@ -107,7 +107,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="/user/suggestion">
 								<p>投诉建议</p>							
 								<img src="/client/images/per_boxicon09.png" />
 							</a>

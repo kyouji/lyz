@@ -52,7 +52,7 @@ public class TdArticle {
     
     // 排序号
     @Column
-    private Long sortId;
+    private Double sortId;
     
     // 浏览次数
     @Column
@@ -194,11 +194,11 @@ public class TdArticle {
         this.recommendId = recommendId;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

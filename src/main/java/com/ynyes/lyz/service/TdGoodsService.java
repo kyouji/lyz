@@ -1284,7 +1284,7 @@ public class TdGoodsService {
 			}
 
 			newPriceLog.setPrice(e.getSalePrice());
-			newPriceLog.setSortId(99L);
+			newPriceLog.setSortId(99.00);
 
 			tdPriceChangeLogService.save(newPriceLog);
 		}

@@ -781,7 +781,7 @@ public class TdManagerOrderController {
                 {
                     if (sortIds.length > i)
                     {
-                        e.setSortId(sortIds[i]);
+                        e.setSortId(new Double(sortIds[i]));
                         tdPayTypeService.save(e);
                     }
                 }
@@ -794,7 +794,7 @@ public class TdManagerOrderController {
                 {
                     if (sortIds.length > i)
                     {
-                        e.setSortId(sortIds[i]);
+                        e.setSortId(new Double(sortIds[i]));
                         tdDeliveryTypeService.save(e);
                     }
                 }
@@ -807,7 +807,7 @@ public class TdManagerOrderController {
                 {
                     if (sortIds.length > i)
                     {
-                        e.setSortId(sortIds[i]);
+                        e.setSortId(new Double(sortIds[i]));
                         tdDiySiteService.save(e);
                     }
                 }

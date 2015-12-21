@@ -244,7 +244,7 @@ public class TdGoods {
 
 	// 排序号
 	@Column
-	private Long sortId;
+	private Double sortId;
 
 	// 是否支持限时抢购
 	@Column
@@ -361,6 +361,10 @@ public class TdGoods {
 	// 商品编码
 	@Column
 	private String code;
+	
+	//是否是调色包
+	@Column
+	private Boolean isColorPackage;
 
 	// 是否调色产品
 	@Column
@@ -814,11 +818,11 @@ public class TdGoods {
 		this.combList = combList;
 	}
 
-	public Long getSortId() {
+	public Double getSortId() {
 		return sortId;
 	}
 
-	public void setSortId(Long sortId) {
+	public void setSortId(Double sortId) {
 		this.sortId = sortId;
 	}
 
@@ -1044,5 +1048,13 @@ public class TdGoods {
 
 	public void setIsColorful(Boolean isColorful) {
 		this.isColorful = isColorful;
+	}
+
+	public Boolean getIsColorPackage() {
+		return isColorPackage;
+	}
+
+	public void setIsColorPackage(Boolean isColorPackage) {
+		this.isColorPackage = isColorPackage;
 	}
 }

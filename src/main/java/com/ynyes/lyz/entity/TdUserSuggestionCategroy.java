@@ -7,32 +7,29 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 消息类型实体类
+ * 咨询/投诉/回复类别实体类
+ * 
  * @author dengxiao
  */
 
 @Entity
-public class TdMessageType {
+public class TdUserSuggestionCategroy {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	//类型名称
+
+	// 分类名称
 	@Column
 	private String name;
-	
-    // 图片地址
-    @Column
-    private String imgUrl;
-    
-    //是否使能
-    @Column
-    private Boolean isEnable;
-    
-    //排序号
-    @Column
-    private Double sortId;
+
+	// 分类备注
+	@Column
+	private String remark;
+
+	// 排序号
+	@Column
+	private Double sortId;
 
 	public Long getId() {
 		return id;
@@ -50,20 +47,12 @@ public class TdMessageType {
 		this.name = name;
 	}
 
-	public String getImgUrl() {
-		return imgUrl;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
-
-	public Boolean getIsEnable() {
-		return isEnable;
-	}
-
-	public void setIsEnable(Boolean isEnable) {
-		this.isEnable = isEnable;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public Double getSortId() {
@@ -73,4 +62,5 @@ public class TdMessageType {
 	public void setSortId(Double sortId) {
 		this.sortId = sortId;
 	}
+	
 }

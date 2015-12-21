@@ -31,7 +31,7 @@ public class TdNaviBarItem {
     
     // 排序号
     @Column
-    private Long sortId;
+    private Double sortId;
 
     // 是否使能
     @Column
@@ -65,11 +65,11 @@ public class TdNaviBarItem {
         this.iconUri = iconUri;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

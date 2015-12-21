@@ -64,8 +64,10 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="app">
-        <#include "/client/common_wait.ftl">
+        <#-- 引入警告提示样式 -->
         <#include "/client/common_warn.ftl">
+        <#-- 引入等待提示样式 -->
+        <#include "/client/common_wait.ftl">  
         <header class="top_head">
             <div class="head_back" style="background:none;"></div>
             <div class="head_title">登陆</div>

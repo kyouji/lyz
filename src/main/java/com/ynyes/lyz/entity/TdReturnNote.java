@@ -17,85 +17,85 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class TdReturnNote {
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	// 退货单编号
-	@Column(unique=true)
-    private String returnNumber;
-	
+	@Column(unique = true)
+	private String returnNumber;
+
 	// 订单商品
-    @OneToMany
-    @JoinColumn(name="tdReturnId")
-    private List<TdOrderGoods> returnGoodsList;
-    
-    // 订单号
-    @Column
-    private String orderNumber;
-    
-    // 退货单状态  1:待审核  2: 已完成 3: 已取消 
-    @Column
-    private Long statusId;
-    
-    // 支付方式
-    @Column
-    private Long payTypeId;
-    
-    // 支付方式名称
-    @Column
-    private String payTypeTitle;
-    
-    // 门店id
-    @Column
-    private Long diySiteId;
-    
-    // 门店名称
-    @Column
-    private String diySiteTitle;
-    
-    // 门店地址
-    @Column
-    private String diySiteAddress;
-    
-    // 门店电话
-    @Column
-    private String diySiteTel;
-    
-    // 客户备注
-    @Column
-    private String remarkInfo;
-    
-    // 后台备注
-    @Column
-    private String managerRemarkInfo;
-    
-    // 申请用户
-    @Column
-    private String username;
-    
-    // 下单时间
-    @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date orderTime;
-    
-    // 取消时间
-    @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date cancelTime;
-    
-    // 确认时间
-    @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date checkTime;
-    
-    // 退款时间
-    @Column
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date returnTime;
-    
- // 排序号
-    @Column
-    private Long sortId;
+	@OneToMany
+	@JoinColumn(name = "tdReturnId")
+	private List<TdOrderGoods> returnGoodsList;
+
+	// 订单号
+	@Column
+	private String orderNumber;
+
+	// 退货单状态 1:待审核 2: 已完成 3: 已取消
+	@Column
+	private Long statusId;
+
+	// 支付方式
+	@Column
+	private Long payTypeId;
+
+	// 支付方式名称
+	@Column
+	private String payTypeTitle;
+
+	// 门店id
+	@Column
+	private Long diySiteId;
+
+	// 门店名称
+	@Column
+	private String diySiteTitle;
+
+	// 门店地址
+	@Column
+	private String diySiteAddress;
+
+	// 门店电话
+	@Column
+	private String diySiteTel;
+
+	// 客户备注
+	@Column
+	private String remarkInfo;
+
+	// 后台备注
+	@Column
+	private String managerRemarkInfo;
+
+	// 申请用户
+	@Column
+	private String username;
+
+	// 下单时间
+	@Column
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date orderTime;
+
+	// 取消时间
+	@Column
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date cancelTime;
+
+	// 确认时间
+	@Column
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date checkTime;
+
+	// 退款时间
+	@Column
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date returnTime;
+
+	// 排序号
+	@Column
+	private Double sortId;
 
 	public Long getId() {
 		return id;
@@ -241,13 +241,12 @@ public class TdReturnNote {
 		this.returnTime = returnTime;
 	}
 
-	public Long getSortId() {
+	public Double getSortId() {
 		return sortId;
 	}
 
-	public void setSortId(Long sortId) {
+	public void setSortId(Double sortId) {
 		this.sortId = sortId;
-	} 
-    
-    
+	}
+
 }

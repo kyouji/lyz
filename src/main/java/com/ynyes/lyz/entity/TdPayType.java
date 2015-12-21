@@ -35,7 +35,7 @@ public class TdPayType {
     
     // 排序数字
     @Column
-    private Long sortId;
+    private Double sortId;
     
     // 手续费类型
     @Column
@@ -85,11 +85,11 @@ public class TdPayType {
         this.isEnable = isEnable;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

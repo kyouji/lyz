@@ -43,7 +43,7 @@ public class TdDeliveryType {
     
     // 排序数字
     @Column
-    private Long sortId;
+    private Double sortId;
     
     // 描述说明
     @Column
@@ -98,11 +98,11 @@ public class TdDeliveryType {
         this.fee = fee;
     }
 
-    public Long getSortId() {
+    public Double getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Double sortId) {
         this.sortId = sortId;
     }
 

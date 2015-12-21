@@ -65,7 +65,7 @@ public class TdDiySite {
 
 	// 排序数字
 	@Column
-	private Long sortId;
+	private Double sortId;
 
 	// 经度
 	@Column
@@ -247,11 +247,11 @@ public class TdDiySite {
 		this.isEnable = isEnable;
 	}
 
-	public Long getSortId() {
+	public Double getSortId() {
 		return sortId;
 	}
 
-	public void setSortId(Long sortId) {
+	public void setSortId(Double sortId) {
 		this.sortId = sortId;
 	}
 

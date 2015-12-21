@@ -176,8 +176,10 @@
         document.getElementsByTagName('html')[0].style.fontSize = window.screen.width/10+'px';
     </script>
     <body ng-app="regist">
-        <#include "/client/common_wait.ftl">
+        <#-- 引入警告提示样式 -->
         <#include "/client/common_warn.ftl">
+        <#-- 引入等待提示样式 -->
+        <#include "/client/common_wait.ftl">  
         <div id="mapContainer" style="display:none;"></div>
         <header class="top_head">
             <a href="javascript:history.go(-1);"><div class="head_back"></div></a>

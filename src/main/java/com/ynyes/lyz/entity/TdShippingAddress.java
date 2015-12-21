@@ -29,6 +29,10 @@ public class TdShippingAddress {
 	@Column
 	private String disctrict;
 	
+	//街道
+	@Column
+	private String subdistrict;
+	
 	// 详细地址
 	@Column
 	private String detailAddress;
@@ -151,6 +155,14 @@ public class TdShippingAddress {
 
 	public void setSortId(Long sortId) {
 		this.sortId = sortId;
+	}
+
+	public String getSubdistrict() {
+		return subdistrict;
+	}
+
+	public void setSubdistrict(String subdistrict) {
+		this.subdistrict = subdistrict;
 	}
     
 }
