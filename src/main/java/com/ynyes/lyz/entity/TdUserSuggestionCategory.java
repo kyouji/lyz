@@ -13,7 +13,7 @@ import javax.persistence.Id;
  */
 
 @Entity
-public class TdUserSuggestionCategroy {
+public class TdUserSuggestionCategory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +27,10 @@ public class TdUserSuggestionCategroy {
 	@Column
 	private String remark;
 
+	//是否使能
+	@Column
+	private Boolean isEnable;
+	
 	// 排序号
 	@Column
 	private Double sortId;
@@ -53,6 +57,14 @@ public class TdUserSuggestionCategroy {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Boolean getIsEnable() {
+		return isEnable;
+	}
+
+	public void setIsEnable(Boolean isEnable) {
+		this.isEnable = isEnable;
 	}
 
 	public Double getSortId() {

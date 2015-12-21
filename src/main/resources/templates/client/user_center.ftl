@@ -17,8 +17,8 @@
 	</head>
 	<script type="text/javascript">
 		$(function(){
-			turn_hei($('.det_banner'),0.8) 
-			$('.det_banner img').width($(window).width())
+			turn_hei($('.det_banner'),0.8); 
+			$('.det_banner img').width($(window).width());
 		});
 	</script>
 	<body>
@@ -26,7 +26,7 @@
 			<div class="sec_header">
 				<a href="javascript:history.go(-1);"></a>
 				<p>个人中心</p>
-				<span class="per_header"></span>
+				<span class="per_header" onclick="window.location.href='/user/info'"></span>
 			</div>
 			<section class="per_center">
 				<div class="per_title">

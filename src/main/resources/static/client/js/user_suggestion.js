@@ -1,4 +1,5 @@
 function submitTheSuggestion() {
+	var categoryId = $("#suggestion_category  option:selected").val();
 	var suggestion = $("#suggestion").val();
 	var phone = $("#phone").val();
 	if ("" == suggestion) {
@@ -25,6 +26,7 @@ function submitTheSuggestion() {
 		type : "post",
 		timeout : 10000,
 		data : {
+			categoryId : categoryId,
 			suggestion : suggestion,
 			phone : phone
 		},
@@ -33,7 +35,7 @@ function submitTheSuggestion() {
 			close(1);
 			warning("亲，您的网速不给力啊");
 			// 恢复提交功能
-			$("#button").attr("onclick","submitTheSuggestion();");
+			$("#button").attr("onclick", "submitTheSuggestion();");
 		},
 		success : function(res) {
 			// 未登陆的情况下直接跳转到登陆页面

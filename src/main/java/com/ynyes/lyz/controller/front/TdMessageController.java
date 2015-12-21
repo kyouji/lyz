@@ -30,15 +30,18 @@ public class TdMessageController {
 	@Autowired
 	private TdUserService tdUserService;
 
+	/**
+	 * 跳转到消息分类的方法
+	 * @author dengxiao
+	 */
 	@RequestMapping
 	public String message(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
-			return "redirect:/login";
-		}
-
 		// 通过用户名查找未冻结的用户
 		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
 
 		// 获取所有的消息类别
 		List<TdMessageType> message_type_list = tdMessageTypeService.findByIsEnableTrueOrderBySortIdAsc();
@@ -64,10 +67,10 @@ public class TdMessageController {
 	@RequestMapping(value = "/list/{id}")
 	public String list(HttpServletRequest req, ModelMap map, @PathVariable Long id) {
 		String username = (String) req.getSession().getAttribute("username");
-		if(null == username){
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
-		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
 		//根据用户id和消息类型查找消息
 		List<TdMessage> all_message_list = tdMessageService.findByTypeIdAndUserIdOrderByCreateTimeDesc(id, user.getId());
 		map.addAttribute("all_message_list", all_message_list);

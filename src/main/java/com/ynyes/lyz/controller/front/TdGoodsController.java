@@ -22,6 +22,7 @@ import com.ynyes.lyz.entity.TdColorPackagePriceListItem;
 import com.ynyes.lyz.entity.TdDiySite;
 import com.ynyes.lyz.entity.TdGoods;
 import com.ynyes.lyz.entity.TdPriceListItem;
+import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.entity.TdUserCollect;
 import com.ynyes.lyz.entity.TdUserComment;
 import com.ynyes.lyz.service.TdColorPackagePriceListItemService;
@@ -31,6 +32,7 @@ import com.ynyes.lyz.service.TdGoodsService;
 import com.ynyes.lyz.service.TdPriceListItemService;
 import com.ynyes.lyz.service.TdUserCollectService;
 import com.ynyes.lyz.service.TdUserCommentService;
+import com.ynyes.lyz.service.TdUserService;
 
 @Controller
 @RequestMapping(value = "/goods")
@@ -39,6 +41,9 @@ public class TdGoodsController {
 	@Autowired
 	private TdCommonService tdCommonService;
 
+	@Autowired
+	private TdUserService tdUserService;
+	
 	@Autowired
 	private TdGoodsService tdGoodsService;
 
@@ -69,7 +74,8 @@ public class TdGoodsController {
 	@RequestMapping(value = "/normal/list")
 	public String goodsListNormal(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
 
@@ -96,7 +102,8 @@ public class TdGoodsController {
 	@RequestMapping(value = "/step/list")
 	public String goodsListStep(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
 
@@ -341,7 +348,8 @@ public class TdGoodsController {
 	@RequestMapping(value = "/detail/{goodsId}")
 	public String goodsDetail(HttpServletRequest req, ModelMap map, @PathVariable Long goodsId) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
 

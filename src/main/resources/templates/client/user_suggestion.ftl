@@ -19,7 +19,15 @@
             $(function(){
                 win_cla();
             });
-    </script>
+        </script>
+        <style type="text/css">
+            input{
+                -webkit-appearance:none;            
+            }
+            select{
+                -webkit-appearance:none;
+            }
+        </style>
     </head>
     <body class="bgc-f3f4f6">
         <#-- 引入警告提示样式 -->
@@ -28,19 +36,23 @@
         <#include "/client/common_wait.ftl">  
         <!-- 头部 -->
         <header>
-            <a class="back" href="#"></a>
+            <a class="back" href="javascript:history.go(-1);"></a>
             <p>投诉建议</p>
         </header>
         <!-- 头部 END -->
         
         <!-- 投诉建议 -->
         <article class="suggest">
-            <div class="title">送货、退换货及咨询请联系<a href="http://wpa.qq.com/msgrd?V=1&uin=894559632&exe=qq&Site=qq&menu=yes">电话客服</a></div>
-            <div class="title">
-                <select style="padding:0 2%; width:96%;height:35px;-webkit-appearance:none;" placeholder="123">
-                    <option>请选择咨询分类</option>
-                </select>
-            </div>
+            <div class="title">送货、退换货及咨询请联系<a href="tel://18580494867">电话客服</a></div>
+            <#if category_list??&&category_list?size gt 0>
+                <div class="title">
+                    <select name="categoryId" id="suggestion_category">
+                        <#list category_list as item>
+                            <option value="${item.id?c}">${item.name!''}</option>
+                        </#list>
+                    </select>
+                </div>
+            </#if>
             <div class="textarea">
                 <div class="headline">我们存在哪些不足</div>
                 <textarea id="suggestion" name="suggestion"></textarea>

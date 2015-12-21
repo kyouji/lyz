@@ -39,7 +39,7 @@ public class TdLoginController {
 		if (null != user) {
 			res.put("status", 0);
 			user.setLastLoginTime(new Date());
-			req.getSession().setMaxInactiveInterval((60 * 60 * 60 * 24));
+			req.getSession().setMaxInactiveInterval((60 * 60 * 24));
 			req.getSession().setAttribute("username", username);
 			// 创建一个虚拟的购物车（已选）添加到session中
 			List<TdCartGoods> all = new ArrayList<>();

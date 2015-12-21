@@ -43,6 +43,9 @@ public class TdRegistController {
 	@Autowired
 	private TdSmsAccountService tdSmsAccountService;
 
+	@Autowired
+	private TdCityService tdCityService;
+
 	@RequestMapping
 	public String regist(HttpServletRequest req, ModelMap map) {
 		List<TdCity> regions = tdRegionService.findAll();
@@ -98,6 +101,9 @@ public class TdRegistController {
 			password = "123456";
 		}
 
+		// 根据城市的名称获取指定城市的信息
+		TdCity city = tdCityService.findByCityName(cityInfo);
+
 		TdUser new_user = new TdUser();
 		new_user.setUsername(phone);
 		new_user.setPassword(MD5.md5(password, 32));
@@ -108,10 +114,13 @@ public class TdRegistController {
 		new_user.setAllPayed(0.00);
 		new_user.setUserType(0L);
 		new_user.setCityName(cityInfo);
+		new_user.setCityId(city.getId());
 		new_user.setFirstOrder(true);
 		new_user.setIsOld(false);
 		new_user.setLastLoginTime(new Date());
 		new_user.setDiyName(cityInfo + "默认门店");
+		// 设置默认头像
+		new_user.setHeadImageUri("/client/images/per_titleimg01.png");
 		new_user.setIsEnable(true);
 
 		TdUser refer_user = tdUserService.findByUsernameAndCityNameAndIsEnableTrue(referPhone, cityInfo);
@@ -122,7 +131,7 @@ public class TdRegistController {
 		}
 
 		tdUserService.save(new_user);
-		req.getSession().setMaxInactiveInterval((60 * 60 * 60 * 24));
+		req.getSession().setMaxInactiveInterval((60 * 60 * 24));
 		req.getSession().setAttribute("username", phone);
 
 		res.put("status", 0);
@@ -185,23 +194,18 @@ public class TdRegistController {
 				while ((tempLine = reader.readLine()) != null) {
 					resultBuffer.append(tempLine);
 				}
-
 				return_code = resultBuffer;
 
 			} finally {
-
 				if (reader != null) {
 					reader.close();
 				}
-
 				if (inputStreamReader != null) {
 					inputStreamReader.close();
 				}
-
 				if (inputStream != null) {
 					inputStream.close();
 				}
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -66,6 +66,35 @@ input[type="datetime-local"] {font-family:"Microsoft YaHei";-webkit-appearance:n
 	border: none;
 	border-radius: 3px;
 }
+
+.valid{
+    display: block;
+    margin: 4% auto;
+    width: 96%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+    color: #fff;
+    text-align: center;
+    background: #cc1421;
+    border: none;
+    border-radius: 3px;	
+}
+
+.invalid{
+	display: block;
+    margin: 4% auto;
+    width: 96%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+    color: #fff;
+    text-align: center;
+    background: #c7c7c7;
+    border: none;
+    border-radius: 3px; 
+}
+
 .btn-bgc-ddd {
 	display: block;
 	margin: 4% auto;

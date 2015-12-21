@@ -11,6 +11,6 @@ function clickLevelTwo(elementId) {
 	});
 
 	// 显示出正确的商品栏
-	$(".ctrlGoods").css("display","none");
+	$(".ctrlGoods").css("display", "none");
 	$("#goods" + elementId).css("display", "block");
 }

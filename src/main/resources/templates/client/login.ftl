@@ -34,14 +34,14 @@
                     wait();
                     $.ajax({
                         url:"/login/check",
-                        method:"post",
+                        type:"post",
                         timeout:10000,
                         data:{
                             username:$scope.user.username,
                             password:$scope.user.password
                         },
                         error:function(XMLHttpRequest, textStatus, errorThrown){
-                            colse(1);
+                           colse(1);
                            warning("亲，您的网速不给力啊");   
                         },
                         success:function(res){

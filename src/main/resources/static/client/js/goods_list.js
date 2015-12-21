@@ -48,6 +48,7 @@ function changeColor(goodsId) {
 	$.ajax({
 		url : "/goods/get/color",
 		type : "post",
+		timeout : 10000,
 		data : {
 			"goodsId" : goodsId,
 			"quantity" : quantity
@@ -165,7 +166,7 @@ function addColor() {
 	$.ajax({
 		url : "/goods/color/add",
 		timeout : 10000,
-		method : "post",
+		type : "post",
 		data : {
 			"colorName" : colorName,
 			"goodsId" : goodsId,
@@ -236,7 +237,7 @@ function deleteSelectedColorPackage(id, goodsId) {
 	wait();
 	$.ajax({
 		url : "/goods/delete/color",
-		method : "post",
+		type : "post",
 		data : {
 			"colorPackageId" : id,
 			"goodsId" : goodsId
@@ -280,7 +281,7 @@ function addCart() {
 
 	$.ajax({
 		url : "/goods/add/cart",
-		method : "post",
+		type : "post",
 		timeout : 10000,
 		data : {
 			params : params,
@@ -305,26 +306,27 @@ function addCart() {
 // 添加或删除收藏的方法
 function operateCollect(goodsId) {
 	var element = $("#operate");
-	//开启等待图标
+	// 开启等待图标
 	wait();
 	$.ajax({
 		url : "/goods/operate/collection",
+		type : "post",
 		timeout : 10000,
 		data : {
 			goodsId : goodsId
 		},
-		error:function(XMLHttpRequest, textStatus, errorThrown){
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			close(1);
 			warning("亲，您的网速不给力啊");
 		},
-		success:function(res){
+		success : function(res) {
 			close(100);
-			//取消收藏的情况
+			// 取消收藏的情况
 			if (element.hasClass("isCollectTrue")) {
 				element.removeClass("isCollectTrue");
 				element.addClass("isCollectFalse");
 			}
-			//添加收藏的情况下
+			// 添加收藏的情况下
 			else if (element.hasClass("isCollectFalse")) {
 				element.removeClass("isCollectFalse");
 				element.addClass("isCollectTrue");

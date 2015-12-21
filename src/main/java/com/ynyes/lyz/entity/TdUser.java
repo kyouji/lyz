@@ -58,6 +58,11 @@ public class TdUser {
 	@Column
 	private String sex;
 
+	//生日
+	@Column
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date birthday;
+	
 	// 注册时间
 	@Column
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -322,6 +327,14 @@ public class TdUser {
 
 	public Double getAllBalance() {
 		return allBalance;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public void setAllBalance(Double allBalance) {

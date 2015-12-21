@@ -97,7 +97,7 @@
                     wait();
                     $.ajax({
                         url:"/regist/send/code",
-                        method:"post",
+                        type:"post",
                         data:{
                             cityInfo:cityInfo,
                             phone:$scope.infos.phone
@@ -134,7 +134,7 @@
                     wait();
                     $.ajax({
                         url:"/regist/save",
-                        method:"post",
+                        type:"post",
                         data:{
                             cityInfo:cityInfo,
                             phone:$scope.infos.phone,
@@ -159,15 +159,6 @@
                         }
                         
                     });
-                    <#--
-                    $.post("/regist/save",data,function(res){
-                        if(0==res.status){
-                            window.location.href="/";
-                        }else{
-                            warning(res.message);
-                        }
-                    });
-                    -->
                 }
             });
         </script>

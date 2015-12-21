@@ -1,6 +1,9 @@
 package com.ynyes.lyz.controller.front;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,20 +19,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ynyes.lyz.entity.TdCartColorPackage;
 import com.ynyes.lyz.entity.TdCartGoods;
+import com.ynyes.lyz.entity.TdCity;
+import com.ynyes.lyz.entity.TdDistrict;
 import com.ynyes.lyz.entity.TdDiySite;
 import com.ynyes.lyz.entity.TdOrder;
 import com.ynyes.lyz.entity.TdPriceListItem;
+import com.ynyes.lyz.entity.TdShippingAddress;
+import com.ynyes.lyz.entity.TdSubdistrict;
 import com.ynyes.lyz.entity.TdUser;
 import com.ynyes.lyz.entity.TdUserCollect;
 import com.ynyes.lyz.entity.TdUserLevel;
 import com.ynyes.lyz.entity.TdUserRecentVisit;
+import com.ynyes.lyz.entity.TdUserSuggestion;
+import com.ynyes.lyz.entity.TdUserSuggestionCategory;
+import com.ynyes.lyz.service.TdCityService;
 import com.ynyes.lyz.service.TdCommonService;
+import com.ynyes.lyz.service.TdDistrictService;
 import com.ynyes.lyz.service.TdOrderService;
 import com.ynyes.lyz.service.TdPriceListItemService;
+import com.ynyes.lyz.service.TdSubdistrictService;
 import com.ynyes.lyz.service.TdUserCollectService;
 import com.ynyes.lyz.service.TdUserLevelService;
 import com.ynyes.lyz.service.TdUserRecentVisitService;
 import com.ynyes.lyz.service.TdUserService;
+import com.ynyes.lyz.service.TdUserSuggestionCategoryService;
+import com.ynyes.lyz.service.TdUserSuggestionService;
+import com.ynyes.lyz.util.MD5;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -54,7 +69,22 @@ public class TdUserController {
 	private TdCommonService tdCommonService;
 
 	@Autowired
+	private TdUserSuggestionCategoryService tdUserSuggestionCategoryService;
+
+	@Autowired
 	private TdPriceListItemService tdPriceListItemService;
+
+	@Autowired
+	private TdUserSuggestionService tdUserSuggestionService;
+
+	@Autowired
+	private TdDistrictService tdDistrictService;
+
+	@Autowired
+	private TdSubdistrictService tdSubdistrictService;
+
+	@Autowired
+	private TdCityService tdCityService;
 
 	/**
 	 * 跳转到个人中心的方法（后期会进行修改，根据不同的角色，跳转的页面不同）
@@ -64,11 +94,11 @@ public class TdUserController {
 	@RequestMapping
 	public String userCenter(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
-		TdUser tdUser = tdUserService.findByUsernameAndIsEnableTrue(username);
-		map.addAttribute("user", tdUser);
+		map.addAttribute("user", user);
 
 		// 获取浏览记录
 		List<TdUserRecentVisit> recent_list = tdUserRecentVisitService.findByUsername(username);
@@ -83,7 +113,7 @@ public class TdUserController {
 		map.addAttribute("number", number);
 
 		// 获取用户的等级
-		TdUserLevel level = tdUserLevelService.findOne(tdUser.getUserLevelId());
+		TdUserLevel level = tdUserLevelService.findOne(user.getUserLevelId());
 		map.addAttribute("level", level);
 
 		return "/client/user_center";
@@ -97,7 +127,8 @@ public class TdUserController {
 	@RequestMapping(value = "/order/{typeId}")
 	public String orderList(HttpServletRequest req, ModelMap map, @PathVariable Long typeId) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
 
@@ -134,9 +165,11 @@ public class TdUserController {
 	@RequestMapping(value = "/collect")
 	public String userCollect(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
+
 		List<TdUserCollect> collect_list = tdUserCollectService.findByUsernameOrderByCollectTimeDesc(username);
 		map.addAttribute("collect_list", collect_list);
 		TdDiySite diySite = tdCommonService.getDiySite(req);
@@ -184,7 +217,8 @@ public class TdUserController {
 	// param为【排序字段】-【规则1】-【规则2】-【规则3】
 	public String userRecent(HttpServletRequest req, ModelMap map, String param) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
 
@@ -281,7 +315,8 @@ public class TdUserController {
 	@RequestMapping(value = "/selected")
 	public String mySelected(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
 
@@ -368,9 +403,15 @@ public class TdUserController {
 	@RequestMapping(value = "/suggestion")
 	public String userSuggestion(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
+
+		// 查询得到所有能用的咨询分类
+		List<TdUserSuggestionCategory> category_list = tdUserSuggestionCategoryService.findAll();
+
+		map.addAttribute("category_list", category_list);
 		map.addAttribute("username", username);
 		return "/client/user_suggestion";
 	}
@@ -382,18 +423,356 @@ public class TdUserController {
 	 */
 	@RequestMapping(value = "/suggestion/save")
 	@ResponseBody
-	public Map<String, Object> userSuggestionSave(HttpServletRequest req, String phone, String suggestion) {
+	public Map<String, Object> userSuggestionSave(HttpServletRequest req, String phone, String suggestion,
+			Long categoryId) {
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
-		
+
+		// 判断用户是否登陆
 		String username = (String) req.getSession().getAttribute("username");
-		if(null == username){
+		// 获取登陆用户的信息
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			res.put("status", -2);
 			return res;
 		}
-		
-		
+
+		// 创建一个实体用于存储咨询/投诉的信息
+		TdUserSuggestion userSuggestion = new TdUserSuggestion();
+		userSuggestion.setCategoryId(categoryId);
+		userSuggestion.setContent(suggestion);
+		userSuggestion.setUserId(user.getId());
+		userSuggestion.setIsAnswered(false);
+		userSuggestion.setCreateTime(new Date());
+		tdUserSuggestionService.save(userSuggestion);
+
 		res.put("status", 0);
 		return res;
+	}
+
+	/**
+	 * 跳转到用户信息界面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/info")
+	public String userInfo(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
+		map.addAttribute("user", user);
+		return "/client/user_info";
+	}
+
+	/**
+	 * 修改登陆用户生日或性别的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/change")
+	@ResponseBody
+	public Map<String, Object> userChangeInfo(HttpServletRequest req, Long type, String param) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+
+		// 判断用户是否登陆
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			res.put("status", -2);
+			return res;
+		}
+
+		// 如果是修改性别
+		if (0L == type) {
+			user.setSex(param);
+		}
+
+		// 如果是修改生日
+		if (1L == type) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date birthday = null;
+			try {
+				birthday = sdf.parse(param + " 00:00:00");
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return res;
+			}
+			user.setBirthday(birthday);
+		}
+
+		tdUserService.save(user);
+		res.put("status", 0);
+		return res;
+	}
+
+	/**
+	 * 跳转到修改密码界面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/edit/password")
+	public String userEditPassword(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
+		return "/client/edit_password";
+	}
+
+	/**
+	 * 验证并保存修改密码的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/edit/password/save")
+	@ResponseBody
+	public Map<String, Object> userEditPasswordSave(HttpServletRequest req, String oldPassword, String newPassword) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+
+		// 判断是否登陆
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			res.put("status", -2);
+			return res;
+		}
+
+		if (null == oldPassword || !MD5.md5(oldPassword, 32).equals(user.getPassword())) {
+			res.put("message", "亲，您输入的原密码不正确");
+			return res;
+		}
+
+		if (MD5.md5(oldPassword, 32).equals(user.getPassword())) {
+			user.setPassword(MD5.md5(newPassword, 32));
+			tdUserService.save(user);
+			res.put("status", 0);
+		}
+
+		return res;
+	}
+
+	/**
+	 * 跳转到收货页面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/address")
+	public String userAddress(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
+		List<TdShippingAddress> address_list = user.getShippingAddressList();
+		// 遍历集合获取默认收货地址
+		if (null != address_list) {
+			for (TdShippingAddress shippingAddress : address_list) {
+				if (null != shippingAddress && null != shippingAddress.getIsDefaultAddress()
+						&& shippingAddress.getIsDefaultAddress()) {
+					map.addAttribute("default", shippingAddress);
+				}
+			}
+		}
+		map.addAttribute("address_list", address_list);
+		return "/client/user_address";
+	}
+
+	/**
+	 * 跳转到新增收货页面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/address/add/{type}")
+	public String userAddressAdd(HttpServletRequest req, ModelMap map, @PathVariable Long type, Long id,
+			String receiver, String receiverMobile, String detailAddress) {
+		// 判断用户是否登陆
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
+
+		// 创建一系列变量用于存储收货地址信息
+		String receiverName = (String) req.getSession().getAttribute("new_addresss_receiverName");
+		String mobile = (String) req.getSession().getAttribute("new_addresss_mobile");
+		String city = (String) req.getSession().getAttribute("new_address_city");
+		String district = (String) req.getSession().getAttribute("new_address_district");
+		String subdistrict = (String) req.getSession().getAttribute("new_address_subdistrict");
+		String detail = (String) req.getSession().getAttribute("new_address_detail");
+
+		// 如果目前没有填写收件人电话号码，则默认为当前登陆用户的电话号码
+		if (null == mobile) {
+			mobile = username;
+		}
+
+		// 城市永远为用户所在城市，不可更改
+		if (null == city) {
+			city = user.getCityName();
+			req.getSession().setAttribute("new_address_city", city);
+		}
+
+		// 如果有填写的收件人姓名，则将其放入session中
+		if (null != receiver) {
+			req.getSession().setAttribute("new_addresss_receiverName", receiver);
+		}
+
+		// 如果有填写的电话号码，则将其放入到session中
+		if (null != receiverMobile) {
+			req.getSession().setAttribute("new_addresss_mobile", receiverMobile);
+		}
+
+		// 如果有填写的详细地址，则将其放入到session中
+		if (null != detailAddress) {
+			req.getSession().setAttribute("new_address_detail", detailAddress);
+		}
+
+		map.addAttribute("receiverName", receiverName);
+		map.addAttribute("mobile", mobile);
+		map.addAttribute("city", city);
+		map.addAttribute("district", district);
+		map.addAttribute("subdistrict", subdistrict);
+		map.addAttribute("detail", detail);
+
+		// type代表的目前进行的选择：0. 代表基础信息
+		if (0 == type) {
+			map.addAttribute("type", 1);
+			return "/client/add_address_base";
+		}
+		// type代表的目前进行的选择：1. 代表行政区划选择
+		else if (1 == type) {
+			map.addAttribute("type", 2);
+			List<TdDistrict> region_list = tdDistrictService.findByCityIdOrderBySortIdAsc(user.getCityId());
+			map.addAttribute("region_list", region_list);
+			return "/client/add_address_detail";
+		}
+		// type代表的目前进行的选择：1. 代表行政区划选择
+		else if (2 == type) {
+			map.addAttribute("type", 3);
+			// 根据指定的id获取所选择的行政区划
+			TdDistrict tdDistrict = tdDistrictService.findOne(id);
+			req.getSession().setAttribute("new_address_district", tdDistrict.getName());
+			// 根据指定的行政区划，获取其下属所有的行政街道
+			List<TdSubdistrict> region_list = tdSubdistrictService.findByDistrictIdOrderBySortIdAsc(id);
+			map.addAttribute("region_list", region_list);
+			return "/client/add_address_detail";
+		}
+		// 其他情况只有一种：3. 代表选择完毕，返回添加地址基础页面
+		else {
+			map.addAttribute("type", 0);
+			// 根据指定的id获取所选择的行政街道
+			TdSubdistrict tdSubdistrict = tdSubdistrictService.findOne(id);
+			req.getSession().setAttribute("new_address_subdistrict", tdSubdistrict);
+			map.addAttribute("subdistrict", subdistrict);
+			return "/client/add_address_base";
+		}
+	}
+
+	/**
+	 * 保存新增的收货地址的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/address/add/save")
+	@ResponseBody
+	public Map<String, Object> userAddressAddSave(HttpServletRequest req, String receiver, String receiverMobile,
+			String detailAddress) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+
+		// 判断用户是否登陆
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			res.put("status", -2);
+			return res;
+		}
+
+		String city = (String) req.getSession().getAttribute("new_address_city");
+		String district = (String) req.getSession().getAttribute("new_address_district");
+		String subdistrict = (String) req.getSession().getAttribute("new_address_subdistrict");
+
+		if (null == receiver) {
+			res.put("message", "亲，请添加收货人姓名");
+			return res;
+		}
+
+		if (null == receiverMobile) {
+			res.put("message", "亲，请添加收件人联系电话");
+			return res;
+		}
+
+		if (null == district) {
+			res.put("message", "亲，请选择收件地址的行政区划");
+			return res;
+		}
+
+		if (null == subdistrict) {
+			res.put("message", "亲，请选择收件地址的行政街道");
+			return res;
+		}
+
+		if (null == detailAddress) {
+			res.put("message", "亲，请添加详细地址");
+			return res;
+		}
+
+		TdCity tdCity = tdCityService.findByCityName(city);
+		TdShippingAddress address = new TdShippingAddress();
+		address.setProvince(tdCity.getProvince());
+		address.setCity(city);
+		address.setDisctrict(district);
+		address.setSubdistrict(subdistrict);
+		address.setDetailAddress(detailAddress);
+		address.setReceiverName(receiver);
+		address.setReceiverMobile(receiverMobile);
+
+		// 获取登陆用户的收货地址
+		List<TdShippingAddress> address_list = user.getShippingAddressList();
+		if (null == address_list) {
+			address_list = new ArrayList<>();
+			address.setIsDefaultAddress(true);
+		}
+		address_list.add(address);
+		user.setShippingAddressList(address_list);
+		tdUserService.save(user);
+
+		res.put("status", 0);
+		return res;
+	}
+
+	/**
+	 * 跳转到用户门店归属的页面
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/diysite")
+	public String userDiysite(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
+		map.addAttribute("user", user);
+
+		// 获取用户所在城市的所有行政区划
+		List<TdDistrict> district_list = tdDistrictService.findByCityIdOrderBySortIdAsc(user.getCityId());
+		// 遍历集合，获取第一项行政区划下的所有行政街道
+		if (null != district_list) {
+			for (int i = 0; i < district_list.size(); i++) {
+				if (0 == i) {
+					TdDistrict district = district_list.get(i);
+					// 获取指定行政区划下的行政街道
+					List<TdSubdistrict> subdistrict_list = tdSubdistrictService
+							.findByDistrictIdOrderBySortIdAsc(district.getId());
+					map.addAttribute("subdistrict_list", subdistrict_list);
+				}
+			}
+		}
+		return "/client/user_diy_site";
 	}
 }

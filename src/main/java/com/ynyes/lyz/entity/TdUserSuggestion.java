@@ -43,6 +43,10 @@ public class TdUserSuggestion {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
+	//是否回复
+	@Column
+	private Boolean isAnswered;
+	
 	// 排序号
 	@Column
 	private Double sortId;
@@ -93,6 +97,14 @@ public class TdUserSuggestion {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Boolean getIsAnswered() {
+		return isAnswered;
+	}
+
+	public void setIsAnswered(Boolean isAnswered) {
+		this.isAnswered = isAnswered;
 	}
 
 	public Double getSortId() {

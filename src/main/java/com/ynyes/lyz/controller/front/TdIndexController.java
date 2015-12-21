@@ -71,13 +71,13 @@ public class TdIndexController {
 	@RequestMapping
 	public String index(HttpServletRequest req, ModelMap map) {
 		String username = (String) req.getSession().getAttribute("username");
-		if (null == username) {
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
 			return "redirect:/login";
 		}
 
 		tdCommonService.setHeader(req, map);
 
-		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
 		// 查找指定用户所属的门店
 		TdDiySite diySite = tdDiySiteService.findOne(user.getUpperDiySiteId());
 
