@@ -172,7 +172,16 @@ public class TdProductCategoryService {
         else
         {
             TdProductCategory parent = repository.findOne(e.getParentId());
-            e.setLayerCount(parent.getLayerCount() + 1L);
+//            e.setLayerCount(parent.getLayerCount() + 1L);
+            
+            //zhangji 设置最大3层
+			Long layerCount = parent.getLayerCount() + 1L;
+			if(layerCount > 3L)
+			{
+				layerCount = 3L;
+			}
+			e.setLayerCount(layerCount);
+            
             e.setParentTree(parent.getParentTree() + ",[" + e.getId() + "]");
         }
         

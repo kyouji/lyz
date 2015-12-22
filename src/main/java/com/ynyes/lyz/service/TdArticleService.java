@@ -76,6 +76,30 @@ public class TdArticleService {
         return repository.findByMenuIdOrderBySortIdAsc(menuId, pageRequest);
     }
     
+    /*------------zhangji 文章列表搜索  begin-------*/
+    public Page<TdArticle> findByMenuIdAndSearch(Long menuId, String keywords ,int page, int size)
+    {
+        if (null == menuId || null == keywords)
+        {
+            return null;
+        }
+        
+        PageRequest pageRequest = new PageRequest(page, size);
+        
+        return repository.findByMenuIdAndTitleContainingOrderBySortIdAsc(menuId, keywords ,pageRequest);
+    }
+    public Page<TdArticle> findByMenuIdAndCategoryIdAndSearch(Long menuId, Long catId, String keywords ,int page, int size)
+    {
+        if (null == menuId && null == catId || null == keywords)
+        {
+            return null;
+        }
+        
+        PageRequest pageRequest = new PageRequest(page, size);
+        
+        return repository.findByMenuIdAndCategoryIdAndTitleContainingOrderBySortIdAsc(menuId, catId, keywords ,pageRequest);
+    }
+    /*------------zhangji 文章列表搜索  end-------*/
     public Page<TdArticle> findByMenuIdAndIsEnableOrderByIdDesc(Long menuId, int page, int size)
     {
         if (null == menuId)

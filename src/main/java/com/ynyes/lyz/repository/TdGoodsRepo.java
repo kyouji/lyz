@@ -317,4 +317,7 @@ public interface TdGoodsRepo extends PagingAndSortingRepository<TdGoods, Long>, 
 	 */
 	List<TdGoods> findByCategoryIdAndIsOnSaleTrueOrderBySortIdAsc(Long categoryId);
 	
+	//更新商品类别信息，查找该类别所有。  zhangji
+	List<TdGoods> findByCategoryIdOrderBySortIdAsc(Long categoryId);
+	
 }

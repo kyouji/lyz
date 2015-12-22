@@ -97,6 +97,13 @@ function __doPostBack(eventTarget, eventArgument) {
         theForm.submit();
     }
 }
+
+   document.onkeydown = function(event){
+	    if((event.keyCode || event.which) == 13){
+	    	__doPostBack('btnSearch','')
+	    }
+   }
+   
 function confirmCopy(id)
 {
     $.dialog.confirm("确定复制该商品吗？", function () {

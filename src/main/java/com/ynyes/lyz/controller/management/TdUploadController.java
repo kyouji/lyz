@@ -30,6 +30,8 @@ import net.sf.json.JSONObject;
 
 
 
+
+
 /**
  * 后台首页控制器
  * 
@@ -99,30 +101,30 @@ public class TdUploadController {
             res.put("status", 0);
             res.put("msg", "上传文件失败！");
         }
-//        response.reset();
-//        response.setCharacterEncoding("UTF-8");
-//        response.setContentType("text/html");
-//        PrintWriter writer = null;
-//        try {
-//            writer = response.getWriter();
-//            JSONObject jsonObject = JSONObject.fromObject(res);
-//            writer.println(jsonObject);  //想办法把map转成json
-//            writer.flush();
-//        } catch (IOException e) {
-//            System.err.println(e);
-//        } finally {
-//            if (writer != null) {
-//                try {
-//                    writer.close();
-//                } catch (Exception e) {
-//                    System.err.println(e);
-//                }
-//            }
-//        }
-//
-//        return null;
+        response.reset();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html");
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject jsonObject = JSONObject.fromObject(res);
+            writer.println(jsonObject);  //想办法把map转成json
+            writer.flush();
+        } catch (IOException e) {
+            System.err.println(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
+        }
 
-        return res;
+        return null;
+
+//        return res;
 
     }
     @RequestMapping(value = "/upload/client", method = RequestMethod.POST)
@@ -184,7 +186,7 @@ public class TdUploadController {
     @RequestMapping(value = "/editor/upload", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> editorUpload(String action,
-            @RequestParam MultipartFile imgFile, HttpServletRequest req) {
+            @RequestParam MultipartFile imgFile, HttpServletRequest req , HttpServletResponse response) {
         Map<String, Object> res = new HashMap<String, Object>();
 
         res.put("error", 1);
@@ -227,7 +229,30 @@ public class TdUploadController {
             res.put("msg", "上传文件失败！");
         }
 
-        return res;
+        response.reset();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html");
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject jsonObject = JSONObject.fromObject(res);
+            writer.println(jsonObject);  //想办法把map转成json
+            writer.flush();
+        } catch (IOException e) {
+            System.err.println(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
+        }
+
+        return null;
+        
+//        return res;
 
     }
 

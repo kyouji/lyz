@@ -169,8 +169,17 @@ public class TdArticleCategoryService {
 		if (null == e.getParentId() || e.getParentId().equals(0L)) {
 			e.setLayerCount(1L);
 		} else {
+//			TdArticleCategory parent = repository.findOne(e.getParentId());
+//			e.setLayerCount(parent.getLayerCount() + 1L);
+			
+			//zhangji  设置最大3层
 			TdArticleCategory parent = repository.findOne(e.getParentId());
-			e.setLayerCount(parent.getLayerCount() + 1L);
+			Long layerCount = parent.getLayerCount() + 1L;
+			if(layerCount > 3L)
+			{
+				layerCount = 3L;
+			}
+			e.setLayerCount(layerCount);
 		}
 
 		return repository.save(e);
