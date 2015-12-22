@@ -256,5 +256,7 @@
             </section>
             <div class="index_test_box02"></div>
             <#include "/client/common_footer.ftl">
+            </div>      
+        </div>
     </body>
 </html>

@@ -70,7 +70,7 @@
 				<div class="per_box">
 					<div class="per_order" onclick="window.location.href='/user/order/0'">
 						<p>我的订单</p>						
-						<img src="/client/images/per_boxicon09.png" />
+						<img src="/client/images/index_guide_right.png" />
 						<span>查看全部订单</span>
 					</div>
 					<div class="per_icon">
@@ -94,29 +94,29 @@
 					<div class="index_test_box"></div>
 					<ul>
 						<li>
-							<a href="#">
+							<a href="/user/fortune">
 								<p>我的财富</p>							
-								<img src="/client/images/per_boxicon09.png" />
+								<img src="/client/images/index_guide_right.png" />
 								<span>钱包、优惠券、代金券</span>
 							</a>
 						</li>
 						<li>
 							<a href="#">
 								<p>在线咨询</p>							
-								<img src="/client/images/per_boxicon09.png" />
+								<img src="/client/images/index_guide_right.png" />
 							</a>
 						</li>
 						<li>
 							<a href="/user/suggestion">
 								<p>投诉建议</p>							
-								<img src="/client/images/per_boxicon09.png" />
+								<img src="/client/images/index_guide_right.png" />
 							</a>
 						</li>
 					</ul>
 				</div>
 			</section>
-			<div class="index_test_box02"></div>
+			<div class="index_test_box02" style="height:42px;"></div>
 			<#include "/client/common_footer.ftl">
-		</div>		
+        </div>      
 	</body>
 </html>

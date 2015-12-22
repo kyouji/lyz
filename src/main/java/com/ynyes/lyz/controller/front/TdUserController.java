@@ -11,12 +11,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ynyes.lyz.entity.TdBalanceLog;
 import com.ynyes.lyz.entity.TdCartColorPackage;
 import com.ynyes.lyz.entity.TdCartGoods;
 import com.ynyes.lyz.entity.TdCity;
@@ -32,11 +35,14 @@ import com.ynyes.lyz.entity.TdUserLevel;
 import com.ynyes.lyz.entity.TdUserRecentVisit;
 import com.ynyes.lyz.entity.TdUserSuggestion;
 import com.ynyes.lyz.entity.TdUserSuggestionCategory;
+import com.ynyes.lyz.service.TdBalanceLogService;
 import com.ynyes.lyz.service.TdCityService;
 import com.ynyes.lyz.service.TdCommonService;
 import com.ynyes.lyz.service.TdDistrictService;
+import com.ynyes.lyz.service.TdDiySiteService;
 import com.ynyes.lyz.service.TdOrderService;
 import com.ynyes.lyz.service.TdPriceListItemService;
+import com.ynyes.lyz.service.TdShippingAddressService;
 import com.ynyes.lyz.service.TdSubdistrictService;
 import com.ynyes.lyz.service.TdUserCollectService;
 import com.ynyes.lyz.service.TdUserLevelService;
@@ -44,7 +50,10 @@ import com.ynyes.lyz.service.TdUserRecentVisitService;
 import com.ynyes.lyz.service.TdUserService;
 import com.ynyes.lyz.service.TdUserSuggestionCategoryService;
 import com.ynyes.lyz.service.TdUserSuggestionService;
+import com.ynyes.lyz.util.ClientConstant;
 import com.ynyes.lyz.util.MD5;
+
+import ch.qos.logback.core.net.server.Client;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -85,6 +94,15 @@ public class TdUserController {
 
 	@Autowired
 	private TdCityService tdCityService;
+
+	@Autowired
+	private TdShippingAddressService tdShippingAddressService;
+
+	@Autowired
+	private TdDiySiteService tdDiySiteService;
+
+	@Autowired
+	private TdBalanceLogService tdBalanceLogService;
 
 	/**
 	 * 跳转到个人中心的方法（后期会进行修改，根据不同的角色，跳转的页面不同）
@@ -666,7 +684,7 @@ public class TdUserController {
 			map.addAttribute("type", 0);
 			// 根据指定的id获取所选择的行政街道
 			TdSubdistrict tdSubdistrict = tdSubdistrictService.findOne(id);
-			req.getSession().setAttribute("new_address_subdistrict", tdSubdistrict);
+			req.getSession().setAttribute("new_address_subdistrict", tdSubdistrict.getName());
 			map.addAttribute("subdistrict", subdistrict);
 			return "/client/add_address_base";
 		}
@@ -733,13 +751,64 @@ public class TdUserController {
 
 		// 获取登陆用户的收货地址
 		List<TdShippingAddress> address_list = user.getShippingAddressList();
-		if (null == address_list) {
+		if (null == address_list || 0 == address_list.size()) {
 			address_list = new ArrayList<>();
 			address.setIsDefaultAddress(true);
 		}
+
+		address = tdShippingAddressService.save(address);
 		address_list.add(address);
 		user.setShippingAddressList(address_list);
 		tdUserService.save(user);
+
+		res.put("status", 0);
+		return res;
+	}
+
+	/**
+	 * 操作用户收货地址删除/设为默认的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/address/operate")
+	@ResponseBody
+	public Map<String, Object> userAddressOperate(HttpServletRequest req, Long id, Long type) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+
+		// 判断用户是否登陆
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			res.put("status", -2);
+			return res;
+		}
+
+		// type的值为1的时候执行删除操作
+		if (1L == type) {
+			// 直接进行删除操作
+			tdShippingAddressService.delete(id);
+		}
+
+		// type的值为2的时候执行设为默认操作
+		if (2L == type) {
+			// 获取用户所有的收货地址
+			List<TdShippingAddress> address_list = user.getShippingAddressList();
+			if (null != address_list) {
+				for (int i = 0; i < address_list.size(); i++) {
+					if (null != address_list.get(i) && null != address_list.get(i).getIsDefaultAddress()
+							&& address_list.get(i).getIsDefaultAddress()) {
+						address_list.get(i).setIsDefaultAddress(false);
+					}
+					if (null != address_list.get(i) && null != address_list.get(i).getId()
+							&& id == address_list.get(i).getId()) {
+						address_list.get(i).setIsDefaultAddress(true);
+					}
+				}
+			}
+			user.setShippingAddressList(address_list);
+			tdUserService.save(user);
+		}
 
 		res.put("status", 0);
 		return res;
@@ -766,13 +835,114 @@ public class TdUserController {
 			for (int i = 0; i < district_list.size(); i++) {
 				if (0 == i) {
 					TdDistrict district = district_list.get(i);
-					// 获取指定行政区划下的行政街道
-					List<TdSubdistrict> subdistrict_list = tdSubdistrictService
-							.findByDistrictIdOrderBySortIdAsc(district.getId());
-					map.addAttribute("subdistrict_list", subdistrict_list);
+					// 获取指定行政区划下的所有门店
+					if (null != district) {
+						List<TdDiySite> all_site = tdDiySiteService.findByDisctrictIdOrderBySortIdAsc(district.getId());
+						map.addAttribute("all_site", all_site);
+					}
 				}
 			}
 		}
+		map.addAttribute("district_list", district_list);
 		return "/client/user_diy_site";
+	}
+
+	/**
+	 * 根据选择的行政区划获取其下属的所有门店信息
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/diysite/get")
+	public String getDiySite(ModelMap map, Long districtId) {
+		// 根据行政区划的id获取指定行政区划下的所有门店
+		List<TdDiySite> all_site = tdDiySiteService.findByDisctrictIdOrderBySortIdAsc(districtId);
+		map.addAttribute("all_site", all_site);
+		return "/client/site_in_district";
+	}
+
+	/**
+	 * 用户选择门店的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/select/diysite")
+	@ResponseBody
+	public Map<String, Object> selectDiySite(HttpServletRequest req, Long id) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("status", -1);
+
+		// 判断用户是否登陆
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			res.put("status", -2);
+			return res;
+		}
+
+		// 获取指定id的门店信息
+		TdDiySite diySite = tdDiySiteService.findOne(id);
+		// 更改用户的归属门店
+		user.setUpperDiySiteId(diySite.getId());
+		user.setDiyName(diySite.getTitle());
+		tdUserService.save(user);
+
+		res.put("status", 0);
+		return res;
+	}
+
+	/**
+	 * 跳转到我的财富的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/fortune")
+	public String userFortune(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
+
+		// 此处应该获取用户所有的优惠券（包括产品券和现金券）
+
+		map.addAttribute("user", user);
+
+		return "/client/user_fortune";
+	}
+
+	/**
+	 * 跳转到我的钱包的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/wallet")
+	public String userWallet(HttpServletRequest req, ModelMap map) {
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if (null == user) {
+			return "redirect:/login";
+		}
+
+		// 查询到登陆用户所有的钱包操作记录
+		Page<TdBalanceLog> balance_log_page = tdBalanceLogService
+				.findByUserIdAndIsSuccessTrueOrderByCreateTimeDesc(user.getId(), 0, ClientConstant.MAXRECENTNUM);
+		map.addAttribute("balance_log_page", balance_log_page);
+		map.addAttribute("user", user);
+		return "/client/user_wallet";
+	}
+
+	/**
+	 * 跳转到充值页面的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/recharge")
+	public String userRecharge(HttpServletRequest req){
+		String username = (String) req.getSession().getAttribute("username");
+		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+		if(null == user){
+			return "redirect:/login";
+		}
+		return "/client/user_recharge";
 	}
 }

@@ -125,10 +125,6 @@ public class TdUser {
 	@Column(scale = 2)
 	private Double unCashBalance;
 
-	// 总余额
-	@Column(scale = 2)
-	private Double allBalance;
-
 	// 是否是老会员
 	@Column
 	private Boolean isOld;
@@ -325,20 +321,12 @@ public class TdUser {
 		this.unCashBalance = unCashBalance;
 	}
 
-	public Double getAllBalance() {
-		return allBalance;
-	}
-
 	public Date getBirthday() {
 		return birthday;
 	}
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-	}
-
-	public void setAllBalance(Double allBalance) {
-		this.allBalance = allBalance;
 	}
 
 	public String getEmail() {

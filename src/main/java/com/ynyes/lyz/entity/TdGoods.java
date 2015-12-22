@@ -358,7 +358,7 @@ public class TdGoods {
 	@Column
 	private Long totalCollects;
 
-	// 商品编码
+	// 商品编码（sku）
 	@Column
 	private String code;
 	

@@ -51,9 +51,9 @@ public class TdDiySite {
 	@Column
 	private String city;
 
-	// 门店城市地区
+	// 门店城市地区id
 	@Column
-	private String disctrict;
+	private Long disctrictId;
 
 	// 门店区域Id
 	@Column
@@ -190,13 +190,13 @@ public class TdDiySite {
 	public void setCity(String city) {
 		this.city = city;
 	}
-
-	public String getDisctrict() {
-		return disctrict;
+	
+	public Long getDisctrictId() {
+		return disctrictId;
 	}
 
-	public void setDisctrict(String disctrict) {
-		this.disctrict = disctrict;
+	public void setDisctrictId(Long disctrictId) {
+		this.disctrictId = disctrictId;
 	}
 
 	public Double getLongitude() {

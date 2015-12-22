@@ -106,7 +106,7 @@
                 <div class="messagebox">
                     <label>门店归属</label>
                     <div class="editable-info no-icon-next">
-                        <a class="jump c999" href="/user/diysite">默认</a>
+                        <a class="jump c999" href="/user/diysite"></a>
                     </div>
                 </div>
             </section>

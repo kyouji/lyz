@@ -124,30 +124,33 @@ public class TdIndexController {
 			// 所有的促销商品价目表项
 			List<TdPriceListItem> promotion_list = new ArrayList<>();
 			// 首页特别推荐促销商品的价目表项
-			for (TdPriceListItem tdPriceList : promotion_list_temp) {
-				// 如果指定价目表项的活动列表不为null，且数据量大于0，则遍历活动列表，判断参加的活动是否过期
-				if (null != tdPriceList && null != tdPriceList.getActivities()
-						&& tdPriceList.getActivities().size() > 0) {
-					// 设置一个基础布尔值，其值为false，表示活动已经过期
-					Boolean outDate = false;
-					// 遍历活动，判断活动是否过期
-					for (TdActivity activity : tdPriceList.getActivities()) {
-						if (null != activity.getBeginDate() && null != activity.getFinishDate()) {
-							// 获取当前时间的毫秒数
-							Long now = new Date().getTime();
-							if (now > activity.getBeginDate().getTime() && now < activity.getFinishDate().getTime()) {
-								outDate = true;
+			if (null != promotion_list_temp) {
+				for (TdPriceListItem tdPriceList : promotion_list_temp) {
+					// 如果指定价目表项的活动列表不为null，且数据量大于0，则遍历活动列表，判断参加的活动是否过期
+					if (null != tdPriceList && null != tdPriceList.getActivities()
+							&& tdPriceList.getActivities().size() > 0) {
+						// 设置一个基础布尔值，其值为false，表示活动已经过期
+						Boolean outDate = false;
+						// 遍历活动，判断活动是否过期
+						for (TdActivity activity : tdPriceList.getActivities()) {
+							if (null != activity.getBeginDate() && null != activity.getFinishDate()) {
+								// 获取当前时间的毫秒数
+								Long now = new Date().getTime();
+								if (now > activity.getBeginDate().getTime()
+										&& now < activity.getFinishDate().getTime()) {
+									outDate = true;
+								}
 							}
 						}
-					}
-					// 如果活动没有过期，则将价目表项添加到之前准备的集合中
-					if (outDate) {
-						if (promotion_list.size() < 15) {
-							promotion_list.add(tdPriceList);
+						// 如果活动没有过期，则将价目表项添加到之前准备的集合中
+						if (outDate) {
+							if (promotion_list.size() < 15) {
+								promotion_list.add(tdPriceList);
+							}
+						} else {
+							tdPriceList.setIsPromotion(outDate);
+							tdPriceListService.save(tdPriceList);
 						}
-					} else {
-						tdPriceList.setIsPromotion(outDate);
-						tdPriceListService.save(tdPriceList);
 					}
 				}
 			}
