@@ -1,5 +1,7 @@
 package com.ynyes.lyz.controller.management;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -321,11 +323,23 @@ public class TdManagerArticleController {
 	            
 	            if (null == categoryId)
 	            {
-	                map.addAttribute("content_page", tdArticleService.findByMenuId(mid, page, size));
+	            	if (null == keywords || keywords.equals(""))
+	            	{
+	            		map.addAttribute("content_page", tdArticleService.findByMenuId(mid, page, size));
+	            	}
+	            	else{
+	            		map.addAttribute("content_page", tdArticleService.findByMenuIdAndSearch(mid , keywords , page , size));
+	            	}
 	            }
 	            else
 	            {
-	                map.addAttribute("content_page", tdArticleService.findByMenuIdAndCategoryId(mid, categoryId, page, size));
+	            	if(null == keywords || keywords.equals(""))
+	            	{
+	            		map.addAttribute("content_page", tdArticleService.findByMenuIdAndCategoryId(mid, categoryId, page, size));
+	            	}
+	            	else{
+	            		map.addAttribute("content_page", tdArticleService.findByMenuIdAndCategoryIdAndSearch(mid , categoryId , keywords , page ,size));
+	            	}
 	            }
 	        }
 
@@ -334,6 +348,7 @@ public class TdManagerArticleController {
 	        map.addAttribute("mid", mid);
 	        map.addAttribute("page", page);
 	        map.addAttribute("size", size);
+	        map.addAttribute("keywords",keywords);
 	        map.addAttribute("__EVENTTARGET", __EVENTTARGET);
 	        map.addAttribute("__EVENTARGUMENT", __EVENTARGUMENT);
 	        map.addAttribute("__VIEWSTATE", __VIEWSTATE);
@@ -451,7 +466,22 @@ public class TdManagerArticleController {
 	            tdManagerLogService.addLog("edit", "用户修改文章分类", req);
 	        }
 	        
+	        
 	        tdArticleCategoryService.save(cat);
+	        
+	        //zhangji 子类相关修改
+	        Long id = cat.getId();
+	        if (null != id)
+	        {
+//	        	Long i = tdArticleCategoryService.findOne(id).getLayerCount() - (tdArticleCategoryService.findOne(cat.getParentId()).getLayerCount()+1L); 
+	        	List<TdArticleCategory> acList =  tdArticleCategoryService.findByParentId(cat.getId());
+	        	for (TdArticleCategory item : acList)
+	        	{
+//	        		item.setParentId(item.getLayerCount()+i);
+//	        		item.setLayerCount(item.getLayerCount()+i);
+	        		tdArticleCategoryService.save(item);
+	        	}
+	        }
 	        
 	        return "redirect:/Verwalter/category/list?cid=" + cat.getChannelId() 
 	                + "&mid=" + cat.getMenuId()
@@ -650,6 +680,14 @@ public class TdManagerArticleController {
 	                Long id = ids[chkId];
 	                
 	                tdArticleCategoryService.delete(id);
+	                
+	                //删除该类别相关文章  zhangji
+	                List<TdArticle> articleList = tdArticleService.findByCategoryId(id);
+	                for (TdArticle item : articleList)
+	                {
+	                	tdArticleService.delete(item.getId());
+	                }
+	                
 	            }
 	        }
 	    }

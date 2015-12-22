@@ -90,7 +90,9 @@
             <option value="" <#if cat?? && cat.parentId?? && cat.parentId==0>selected="selected"</#if>>无父级分类</option>
         	<#if category_list??>
         	   <#list category_list as c>
-        	       <option value="${c.id!""}" <#if cat?? && cat.parentId?? && cat.parentId==c.id || fatherCat?? && fatherCat.id==c.id>selected="selected"</#if>><#if c.layerCount?? && c.layerCount gt 1><#list 1..(c.layerCount-1) as a>　</#list>├ </#if>${c.title!""}</option>
+        	   		<#if c.layerCount?? && c.layerCount lt 3 && (!cat?? || cat?? && cat.id != c.id)>
+        	       		<option value="${c.id!""}" <#if cat?? && cat.parentId?? && cat.parentId==c.id || fatherCat?? && fatherCat.id==c.id>selected="selected"</#if>><#if c.layerCount?? && c.layerCount gt 1><#list 1..(c.layerCount-1) as a>　</#list>├ </#if>${c.title!""}</option>
+        	   		</#if>
         	   </#list>
         	</#if>
         </select>
@@ -139,7 +141,7 @@
   <dl>
     <dt>SEO标题</dt>
     <dd>
-      <input name="seoTitle" type="text" maxlength="255" value="<#if cat??>${cat.seoTitle!""}</#if>" id="txtSeoTitle" class="input normal" datatype="s0-100" sucmsg=" ">
+      <input name="seoTitle" type="text" maxlength="255" value="<#if cat??>${cat.seoTitle!""}</#if>" id="txtSeoTitle" class="input normal" datatype="*0-100" sucmsg=" ">
       <span class="Validform_checktip">255个字符以内</span>
     </dd>
   </dl>

@@ -69,6 +69,12 @@ function __doPostBack(eventTarget, eventArgument) {
         theForm.submit();
     }
 }
+
+   document.onkeydown = function(event){
+	    if((event.keyCode || event.which) == 13){
+	    	__doPostBack('btnSearch','')
+	    }
+   }
 </script>
 <!--导航栏-->
 <#include "/site_mag/content_list_navi_bar.ftl" />

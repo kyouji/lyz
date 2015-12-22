@@ -53,7 +53,7 @@
 
 <body class="mainbody">
 <div style="left: 0px; top: 0px; visibility: hidden; position: absolute;" class=""><table class="ui_border"><tbody><tr><td class="ui_lt"></td><td class="ui_t"></td><td class="ui_rt"></td></tr><tr><td class="ui_l"></td><td class="ui_c"><div class="ui_inner"><table class="ui_dialog"><tbody><tr><td colspan="2"><div class="ui_title_bar"><div class="ui_title" unselectable="on" style="cursor: move;"></div><div class="ui_title_buttons"><a class="ui_min" href="javascript:void(0);" title="最小化" style="display: inline-block;"><b class="ui_min_b"></b></a><a class="ui_max" href="javascript:void(0);" title="最大化" style="display: inline-block;"><b class="ui_max_b"></b></a><a class="ui_res" href="javascript:void(0);" title="还原"><b class="ui_res_b"></b><b class="ui_res_t"></b></a><a class="ui_close" href="javascript:void(0);" title="关闭(esc键)" style="display: inline-block;">×</a></div></div></td></tr><tr><td class="ui_icon" style="display: none;"></td><td class="ui_main" style="width: auto; height: auto;"><div class="ui_content" style="padding: 10px;"></div></td></tr><tr><td colspan="2"><div class="ui_buttons" style="display: none;"></div></td></tr></tbody></table></div></td><td class="ui_r"></td></tr><tr><td class="ui_lb"></td><td class="ui_b"></td><td class="ui_rb" style="cursor: se-resize;"></td></tr></tbody></table></div>
-<form name="form1" method="post" action="/Verwalter/content/list?cid=${cid!""}&mid=${mid!""}" id="form1">
+<form name="form1"  action="/Verwalter/content/list?cid=${cid!""}&mid=${mid!""}" id="form1">
 <div>
 <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="${__EVENTTARGET!""}" />
 <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="${__EVENTARGUMENT!""}" />
@@ -72,6 +72,12 @@ function __doPostBack(eventTarget, eventArgument) {
         theForm.submit();
     }
 }
+
+   document.onkeydown = function(event){
+	    if((event.keyCode || event.which) == 13){
+	    	__doPostBack('btnSearch','')
+	    }
+   }
 </script>
 
 <!--导航栏-->
@@ -93,7 +99,7 @@ function __doPostBack(eventTarget, eventArgument) {
         <th align="left" width="12%">所属类别</th>
         <th align="left" width="16%">发布时间</th>
         <th align="left" width="65">排序</th>
-        <th align="left" width="110">属性</th>
+        <#--<th align="left" width="110">属性</th>-->
         <th width="8%">操作</th>
     </tr>
     
@@ -122,17 +128,19 @@ function __doPostBack(eventTarget, eventArgument) {
             <td>
                 <input name="listSortId" type="text" value="${content.sortId!""}" id="listSortId" class="sort" onkeydown="return checkNumber(event);">
             </td>
+            <#--
             <td>
               <div class="btn-tools">
-                <#--
+                
                 <a id="rptList1_ctl01_lbtnIsMsg" title="取消评论" class="msg selected" href="javascript:__doPostBack('rptList1$ctl01$lbtnIsMsg','')"></a>
                 <a id="rptList1_ctl01_lbtnIsTop" title="设置置顶" class="top" href="javascript:__doPostBack('rptList1$ctl01$lbtnIsTop','')"></a>
                 <a id="rptList1_ctl01_lbtnIsRed" title="设置推荐" class="red" href="javascript:__doPostBack('rptList1$ctl01$lbtnIsRed','')"></a>
                 <a id="rptList1_ctl01_lbtnIsHot" title="设置热门" class="hot" href="javascript:__doPostBack('rptList1$ctl01$lbtnIsHot','')"></a>
                 <a id="rptList1_ctl01_lbtnIsSlide" title="设置幻灯片" class="pic" href="javascript:__doPostBack('rptList1$ctl01$lbtnIsSlide','')"></a>
-                -->
+                
               </div>
             </td>
+            -->
             <td align="center">
                 <a href="/Verwalter/article/edit?cid=${cid!""}&mid=${mid!""}&id=${content.id!""}&__VIEWSTATE=${__VIEWSTATE!""}">修改</a>
             </td>

@@ -102,7 +102,9 @@
             <option value="0" <#if cat?? && cat.parentId==0>selected="selected"</#if>>无父级分类</option>
         	<#if category_list??>
         	   <#list category_list as c>
-        	       <option value="${c.id!""}" <#if cat?? && cat.parentId==c.id || fatherCat?? && fatherCat.id==c.id>selected="selected"</#if>><#if c.layerCount?? && c.layerCount gt 1><#list 1..(c.layerCount-1) as a>　</#list>├ </#if>${c.title!""}</option>
+        	   		<#if c.layerCount?? && c.layerCount lt 3	 && (!cat?? || cat?? && cat.id != c.id)>
+        	       		<option value="${c.id!""}" <#if cat?? && cat.parentId==c.id || fatherCat?? && fatherCat.id==c.id>selected="selected"</#if>><#if c.layerCount?? && c.layerCount gt 1><#list 1..(c.layerCount-1) as a>　</#list>├ </#if>${c.title!""}</option>
+        	   		</#if>
         	   </#list>
         	</#if>
         </select>

@@ -1312,5 +1312,18 @@ public class TdGoodsService {
 		}
 		return repository.findByCategoryIdAndIsOnSaleTrueOrderBySortIdAsc(categoryId);
 	}
+	
+	/**
+	 * //更新商品类别信息，查找该类别所有。  zhangji
+	 * @author Zhangji
+	 * @param categoryId
+	 * @return
+	 */
+	public List<TdGoods> findByCategoryIdOrderBySortIdAsc(Long categoryId) {
+		if (null == categoryId) {
+			return null;
+		}
+		return repository.findByCategoryIdOrderBySortIdAsc(categoryId);
+	}
 
 }

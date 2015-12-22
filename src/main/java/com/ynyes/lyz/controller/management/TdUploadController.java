@@ -99,30 +99,30 @@ public class TdUploadController {
             res.put("status", 0);
             res.put("msg", "上传文件失败！");
         }
-//        response.reset();
-//        response.setCharacterEncoding("UTF-8");
-//        response.setContentType("text/html");
-//        PrintWriter writer = null;
-//        try {
-//            writer = response.getWriter();
-//            JSONObject jsonObject = JSONObject.fromObject(res);
-//            writer.println(jsonObject);  //想办法把map转成json
-//            writer.flush();
-//        } catch (IOException e) {
-//            System.err.println(e);
-//        } finally {
-//            if (writer != null) {
-//                try {
-//                    writer.close();
-//                } catch (Exception e) {
-//                    System.err.println(e);
-//                }
-//            }
-//        }
-//
-//        return null;
+        response.reset();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html");
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject jsonObject = JSONObject.fromObject(res);
+            writer.println(jsonObject);  //想办法把map转成json
+            writer.flush();
+        } catch (IOException e) {
+            System.err.println(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
+        }
 
-        return res;
+        return null;
+
+//        return res;
 
     }
     @RequestMapping(value = "/upload/client", method = RequestMethod.POST)

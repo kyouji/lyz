@@ -1,6 +1,7 @@
 package com.ynyes.lyz.controller.management;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ynyes.lyz.entity.TdGoods;
 import com.ynyes.lyz.entity.TdProductCategory;
+import com.ynyes.lyz.service.TdGoodsService;
 import com.ynyes.lyz.service.TdManagerLogService;
 import com.ynyes.lyz.service.TdProductCategoryService;
 
@@ -31,6 +34,9 @@ public class TdManagerProductCategoryController {
 
     @Autowired
     TdManagerLogService tdManagerLogService;
+    
+    @Autowired
+    TdGoodsService tdGoodsService;    //add by zhangji
     
 //    @Autowired
 //    TdParameterCategoryService tdParameterCategoryService;
@@ -116,9 +122,25 @@ public class TdManagerProductCategoryController {
             tdManagerLogService.addLog("add", "用户修改产品分类", req);
         } else {
             tdManagerLogService.addLog("edit", "用户修改产品分类", req);
+            
+            //更新商品类别的信息
+            List<TdGoods> goodsList = tdGoodsService.findByCategoryIdOrderBySortIdAsc(cat.getId());
+            for(TdGoods item : goodsList)
+            {
+            	item.setCategoryTitle(cat.getTitle());
+            	tdGoodsService.save(item, username);  //应该是记录用的用户名吧？ zhangji
+            }
+            
         }
-
+        
         tdProductCategoryService.save(cat);
+        
+        //下一级类别刷新一下层数 zhangji
+        List<TdProductCategory> pcList = tdProductCategoryService.findByParentIdOrderBySortIdAsc(cat.getId());
+        for(TdProductCategory item : pcList)
+        {
+        	tdProductCategoryService.save(item);
+        }
 
         return "redirect:/Verwalter/product/category/list";
     }
