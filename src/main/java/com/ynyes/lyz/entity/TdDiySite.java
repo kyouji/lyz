@@ -58,6 +58,10 @@ public class TdDiySite {
 	// 门店区域Id
 	@Column
 	private Long regionId;
+	
+	//门店区域名称
+	@Column
+	private String regionName;
 
 	// 是否启用
 	@Column
@@ -98,10 +102,6 @@ public class TdDiySite {
 	// 门店所使用的价目表编号
 	@Column
 	private Long priceListId;
-
-	// 门店所使用的调色包价目表编号
-	@Column
-	private Long colorPackagePriceListId;
 
 	public Long getRegionId() {
 		return regionId;
@@ -271,12 +271,11 @@ public class TdDiySite {
 		this.priceListId = priceListId;
 	}
 
-	public Long getColorPackagePriceListId() {
-		return colorPackagePriceListId;
+	public String getRegionName() {
+		return regionName;
 	}
 
-	public void setColorPackagePriceListId(Long colorPackagePriceListId) {
-		this.colorPackagePriceListId = colorPackagePriceListId;
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
 	}
-
 }

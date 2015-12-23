@@ -37,9 +37,6 @@ function changeQuantity(goodsId, operation) {
 
 // 选择调色包的方法
 function changeColor(goodsId) {
-	// 获取当前商品的数量
-	var quantityElementId = "#quantity" + goodsId;
-	var quantity = $(quantityElementId).val();
 
 	// 开启等待响应的图标
 	wait();
@@ -51,10 +48,8 @@ function changeColor(goodsId) {
 		timeout : 10000,
 		data : {
 			"goodsId" : goodsId,
-			"quantity" : quantity
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			console.debug(textStatus);
 			// 关闭等待响应的图标
 			close(1);
 			warning("亲，您的网速不给力啊");
@@ -154,8 +149,6 @@ function addColor() {
 	if (0 == nowNum) {
 		return;
 	}
-	// 获取当前的商品id
-	var goodsId = $("#goods_id").val();
 	// 获取当前的颜色编号
 	var colorName = $("#color_name").html();
 
@@ -169,7 +162,6 @@ function addColor() {
 		type : "post",
 		data : {
 			"colorName" : colorName,
-			"goodsId" : goodsId,
 			"quantity" : nowNum
 		},
 		success : function(res) {
@@ -228,7 +220,8 @@ function addColor() {
 	});
 }
 
-function deleteSelectedColorPackage(id, goodsId) {
+// 删除已选调色包的方法
+function deleteSelectedColorPackage(id) {
 	// 获取节点元素的id
 	var docElementId = "#colorPackage" + id;
 	// 获取节点元素
@@ -239,8 +232,7 @@ function deleteSelectedColorPackage(id, goodsId) {
 		url : "/goods/delete/color",
 		type : "post",
 		data : {
-			"colorPackageId" : id,
-			"goodsId" : goodsId
+			"colorPackageGoodsId" : id,
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			// 关闭等待响应的图标
@@ -294,7 +286,6 @@ function addCart() {
 		success : function(res) {
 			// 关闭等待图标
 			close(100);
-			console.debug(res);
 			if (0 != res.selected_number) {
 				// 将已选商品的数量正确显示
 				$("#select_num").text(res.selected_number);

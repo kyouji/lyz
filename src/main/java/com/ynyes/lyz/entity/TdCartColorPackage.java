@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 /**
  * 已选调色包
+ * 
  * @auhor dengxiao
  */
 @Entity
@@ -16,36 +17,36 @@ public class TdCartColorPackage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	//归属用户名
+
+	// 归属用户名
 	@Column
 	private String username;
-	
-	//归属商品id
+
+	// 调色包商品的id
 	@Column
 	private Long goodsId;
-	
-	//调色包id
+
+	// 调色包id
 	@Column
 	private Long colorPackageId;
-	
-	//调色包编号
+
+	// 调色包编号（sku）
 	@Column
 	private String number;
-	
-	//调色包图片
+
+	// 调色包图片
 	@Column
 	private String imageUri;
-	
-	//当前销售价格
+
+	// 当前销售价格
 	@Column(scale = 2)
 	private Double salePrice;
-	
-	//数量
+
+	// 数量
 	@Column(scale = 2)
 	private Long quantity;
-	
-	//总价
+
+	// 总价
 	@Column
 	private Double totalPrice;
 
@@ -121,4 +122,3 @@ public class TdCartColorPackage {
 		this.totalPrice = totalPrice;
 	}
 }
-

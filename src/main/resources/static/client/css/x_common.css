@@ -403,4 +403,11 @@ footer .btn-clearing {
 	-webkit-flex: 1;            /*flexbox弹性布局*/
 }
 /*底部 END*/
-
+.win_add{
+    position: fixed;
+    width:100%;
+    left: 0px;
+    top: 0px;
+    z-index: 999;
+    -webkit-transform: translateX(100%);
+}

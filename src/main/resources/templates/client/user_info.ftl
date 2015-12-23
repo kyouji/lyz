@@ -39,7 +39,7 @@
         <div id="datePlugin"></div>
         <!-- 头部 -->
         <header>
-            <a class="back" href="javascript:history.go(-1);"></a>
+            <a class="back" href="/user"></a>
             <p>账号设置</p>
         </header>
         <!-- 头部 END -->

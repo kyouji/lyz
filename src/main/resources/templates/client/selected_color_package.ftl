@@ -23,7 +23,7 @@
                             </#if>
                         </span>
                         <span>
-                            <a href="javascript:deleteSelectedColorPackage(${item.id?c},${goodsId?c})">删除</a>
+                            <a href="javascript:deleteSelectedColorPackage(${item.goodsId?c})">删除</a>
                         </span>
                     </dd>
                 </#list>

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +24,7 @@ import com.ynyes.lyz.entity.TdCartGoods;
 import com.ynyes.lyz.entity.TdCity;
 import com.ynyes.lyz.entity.TdDistrict;
 import com.ynyes.lyz.entity.TdDiySite;
+import com.ynyes.lyz.entity.TdGoods;
 import com.ynyes.lyz.entity.TdOrder;
 import com.ynyes.lyz.entity.TdPriceListItem;
 import com.ynyes.lyz.entity.TdShippingAddress;
@@ -40,6 +40,7 @@ import com.ynyes.lyz.service.TdCityService;
 import com.ynyes.lyz.service.TdCommonService;
 import com.ynyes.lyz.service.TdDistrictService;
 import com.ynyes.lyz.service.TdDiySiteService;
+import com.ynyes.lyz.service.TdGoodsService;
 import com.ynyes.lyz.service.TdOrderService;
 import com.ynyes.lyz.service.TdPriceListItemService;
 import com.ynyes.lyz.service.TdShippingAddressService;
@@ -52,8 +53,6 @@ import com.ynyes.lyz.service.TdUserSuggestionCategoryService;
 import com.ynyes.lyz.service.TdUserSuggestionService;
 import com.ynyes.lyz.util.ClientConstant;
 import com.ynyes.lyz.util.MD5;
-
-import ch.qos.logback.core.net.server.Client;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -103,6 +102,9 @@ public class TdUserController {
 
 	@Autowired
 	private TdBalanceLogService tdBalanceLogService;
+
+	@Autowired
+	private TdGoodsService tdGoodsService;
 
 	/**
 	 * 跳转到个人中心的方法（后期会进行修改，根据不同的角色，跳转的页面不同）
@@ -340,28 +342,42 @@ public class TdUserController {
 
 		// 获取所有已选的商品
 		List<TdCartGoods> all_selected = tdCommonService.getSelectedGoods(req);
-		// 获取所有的调色包
-		List<TdCartColorPackage> selected_colors = tdCommonService.getSelectedColorPackage(req);
-
-		// 遍历所有的已选商品，获取以下数据：1. 与之对应的已选调色包
 		for (int i = 0; i < all_selected.size(); i++) {
 			TdCartGoods cartGoods = all_selected.get(i);
+			// 获取已选商品的库存
 			if (null != cartGoods) {
-				// 创建一个集合用于存储与之对应的已选调色包
-				List<TdCartColorPackage> goods_colors = new ArrayList<>();
-
-				// 完成第一个目的——遍历所有已选的调色包，找到与指定已选商品所对应的
-				for (int j = 0; j < selected_colors.size(); j++) {
-					TdCartColorPackage colorPackage = selected_colors.get(j);
-					if (null != colorPackage && null != colorPackage.getGoodsId()
-							&& colorPackage.getGoodsId() == cartGoods.getGoodsId()) {
-						goods_colors.add(colorPackage);
+				TdGoods goods = tdGoodsService.findOne(cartGoods.getGoodsId());
+				if (null != goods) {
+					map.addAttribute("goods" + i, goods.getLeftNumber());
+					// 如果已选数量大于了最大库存，则消减已选数量
+					if (null != cartGoods.getQuantity() && cartGoods.getQuantity() > goods.getLeftNumber()) {
+						cartGoods.setQuantity(goods.getLeftNumber());
 					}
+
 				}
-				map.addAttribute("goods_colors" + i, goods_colors);
 			}
 		}
+		// 获取所有的调色包
+		List<TdCartColorPackage> selected_colors = tdCommonService.getSelectedColorPackage(req);
+		for (int i = 0; i < selected_colors.size(); i++) {
+			TdCartColorPackage cartColorPackage = selected_colors.get(i);
+			// 获取已选调色包的库存
+			if (null != cartColorPackage) {
+				TdGoods goods = tdGoodsService.findOne(cartColorPackage.getGoodsId());
+				if (null != goods) {
+					map.addAttribute("color" + i, goods.getLeftNumber());
+					// 如果已选数量大于了最大库存，则消减已选数量
+					if (null != cartColorPackage.getQuantity()
+							&& cartColorPackage.getQuantity() > goods.getLeftNumber()) {
+						cartColorPackage.setQuantity(goods.getLeftNumber());
+					}
+				}
+			}
+		}
+		req.getSession().setAttribute("all_selected", all_selected);
+		req.getSession().setAttribute("all_color", selected_colors);
 		map.addAttribute("all_selected", all_selected);
+		map.addAttribute("selected_colors", selected_colors);
 		return "/client/user_selected";
 	}
 
@@ -371,46 +387,80 @@ public class TdUserController {
 	 * @author dengxiao
 	 */
 	@RequestMapping(value = "/selected/change/quantity")
-	@ResponseBody
-	public Map<String, Object> selectedChangeQuantity(HttpServletRequest req, Long operation, Long type, Long goodsId,
-			Long colorId) {
-		Map<String, Object> res = new HashMap<>();
-		res.put("status", -1);
-
-		// 判断参数是否接收成功
-		if (null == operation) {
-			res.put("message", "operation参数接收失败！");
-			res.put("status", -2);
-			return res;
-		}
-		if (null == type) {
-			res.put("message", "type参数接收失败！");
-			res.put("status", -2);
-			return res;
-		}
-		if (null == goodsId) {
-			res.put("message", "goodsId参数接收失败！");
-			res.put("status", -2);
-			return res;
-		}
-		if (1L == type && null == colorId) {
-			res.put("message", "colorId参数接收失败！");
-			res.put("status", -2);
-			return res;
-		}
-
+	public String selectedChangeQuantity(HttpServletRequest req, ModelMap map, Long operation, Long type, Long id) {
 		// 操作已选商品的情况
 		if (0 == type) {
 			List<TdCartGoods> selected_goods = tdCommonService.getSelectedGoods(req);
-
+			for (int i = 0; i < selected_goods.size(); i++) {
+				TdCartGoods cartGoods = selected_goods.get(i);
+				if (null != cartGoods && null != cartGoods.getGoodsId() && cartGoods.getGoodsId() == id) {
+					if (0L == operation) {
+						cartGoods.setQuantity(cartGoods.getQuantity() - 1);
+					}
+					if (1L == operation) {
+						cartGoods.setQuantity(cartGoods.getQuantity() + 1);
+					}
+				}
+			}
+			req.getSession().setAttribute("all_selected", selected_goods);
 		}
 
 		// 操作已选调色包的情况
 		if (1 == type) {
-
+			List<TdCartColorPackage> selected_colors = tdCommonService.getSelectedColorPackage(req);
+			for (int i = 0; i < selected_colors.size(); i++) {
+				TdCartColorPackage cartColorPackage = selected_colors.get(i);
+				if (null != cartColorPackage && null != cartColorPackage.getGoodsId()
+						&& cartColorPackage.getGoodsId() == id) {
+					if (0L == operation) {
+						cartColorPackage.setQuantity(cartColorPackage.getQuantity() - 1);
+					}
+					if (1L == operation) {
+						cartColorPackage.setQuantity(cartColorPackage.getQuantity() + 1);
+					}
+				}
+			}
+			req.getSession().setAttribute("all_color", selected_colors);
 		}
-		res.put("status", 0);
-		return res;
+
+		// 获取所有已选的商品
+		List<TdCartGoods> all_selected = tdCommonService.getSelectedGoods(req);
+		for (int i = 0; i < all_selected.size(); i++) {
+			TdCartGoods cartGoods = all_selected.get(i);
+			// 获取已选商品的库存
+			if (null != cartGoods) {
+				TdGoods goods = tdGoodsService.findOne(cartGoods.getGoodsId());
+				if (null != goods) {
+					map.addAttribute("goods" + i, goods.getLeftNumber());
+					// 如果已选数量大于了最大库存，则消减已选数量
+					if (null != cartGoods.getQuantity() && cartGoods.getQuantity() > goods.getLeftNumber()) {
+						cartGoods.setQuantity(goods.getLeftNumber());
+					}
+
+				}
+			}
+		}
+		// 获取所有的调色包
+		List<TdCartColorPackage> selected_colors = tdCommonService.getSelectedColorPackage(req);
+		for (int i = 0; i < selected_colors.size(); i++) {
+			TdCartColorPackage cartColorPackage = selected_colors.get(i);
+			// 获取已选调色包的库存
+			if (null != cartColorPackage) {
+				TdGoods goods = tdGoodsService.findOne(cartColorPackage.getGoodsId());
+				if (null != goods) {
+					map.addAttribute("color" + i, goods.getLeftNumber());
+					// 如果已选数量大于了最大库存，则消减已选数量
+					if (null != cartColorPackage.getQuantity()
+							&& cartColorPackage.getQuantity() > goods.getLeftNumber()) {
+						cartColorPackage.setQuantity(goods.getLeftNumber());
+					}
+				}
+			}
+		}
+
+		map.addAttribute("all_selected", all_selected);
+		map.addAttribute("selected_colors", selected_colors);
+		return "/client/selected_goods_and_color";
 	}
 
 	/**
@@ -605,7 +655,7 @@ public class TdUserController {
 	 * 
 	 * @author dengxiao
 	 */
-	@RequestMapping(value = "/address/add/{type}")
+	@RequestMapping(value = "/address/{type}")
 	public String userAddressAdd(HttpServletRequest req, ModelMap map, @PathVariable Long type, Long id,
 			String receiver, String receiverMobile, String detailAddress) {
 		// 判断用户是否登陆
@@ -615,79 +665,73 @@ public class TdUserController {
 			return "redirect:/login";
 		}
 
-		// 创建一系列变量用于存储收货地址信息
-		String receiverName = (String) req.getSession().getAttribute("new_addresss_receiverName");
-		String mobile = (String) req.getSession().getAttribute("new_addresss_mobile");
-		String city = (String) req.getSession().getAttribute("new_address_city");
-		String district = (String) req.getSession().getAttribute("new_address_district");
-		String subdistrict = (String) req.getSession().getAttribute("new_address_subdistrict");
-		String detail = (String) req.getSession().getAttribute("new_address_detail");
-
-		// 如果目前没有填写收件人电话号码，则默认为当前登陆用户的电话号码
-		if (null == mobile) {
-			mobile = username;
+		// type的值代表了当前进行的操作：1. type==0代表进行的是增加收货地址的操作；2. type==1代表进行的是修改收货地址的操作
+		if (0L == type) {
+			TdShippingAddress address = new TdShippingAddress();
+			address.setCity(user.getCityName());
+			map.addAttribute("address", address);
 		}
 
-		// 城市永远为用户所在城市，不可更改
-		if (null == city) {
-			city = user.getCityName();
-			req.getSession().setAttribute("new_address_city", city);
+		if (1L == type) {
+			// 获取指定id的收货地址
+			TdShippingAddress address = tdShippingAddressService.findOne(id);
+			map.addAttribute("address", address);
+			map.addAttribute("addressId", id);
 		}
+		map.addAttribute("city", user.getCityName());
+		map.addAttribute("operation", type);
+		return "/client/add_address_base";
+	}
 
-		// 如果有填写的收件人姓名，则将其放入session中
-		if (null != receiver) {
-			req.getSession().setAttribute("new_addresss_receiverName", receiver);
-		}
+	/**
+	 * 获取（指定城市/行政区划）下的所有（行政区划/行政街道）的方法
+	 * 
+	 * @author dengxiao
+	 */
+	@RequestMapping(value = "/address/get")
+	public String addressGet(HttpServletRequest req, Long type, Long id, ModelMap map) {
 
-		// 如果有填写的电话号码，则将其放入到session中
-		if (null != receiverMobile) {
-			req.getSession().setAttribute("new_addresss_mobile", receiverMobile);
-		}
-
-		// 如果有填写的详细地址，则将其放入到session中
-		if (null != detailAddress) {
-			req.getSession().setAttribute("new_address_detail", detailAddress);
-		}
-
-		map.addAttribute("receiverName", receiverName);
-		map.addAttribute("mobile", mobile);
-		map.addAttribute("city", city);
-		map.addAttribute("district", district);
-		map.addAttribute("subdistrict", subdistrict);
-		map.addAttribute("detail", detail);
-
-		// type代表的目前进行的选择：0. 代表基础信息
+		// type的值表示不同的操作：0. 获取指定id的城市的所有下属行政区划；1. 获取指定id的行政区划的所有下属行政街道 ;3.
+		// 选择行政街道完毕，存储信息
 		if (0 == type) {
-			map.addAttribute("type", 1);
-			return "/client/add_address_base";
+			// 获取当前登陆的用户
+			String username = (String) req.getSession().getAttribute("username");
+			TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
+			if (null != user) {
+				// 获取用户城市下的所有行政区划
+				List<TdDistrict> region_list = tdDistrictService.findByCityIdOrderBySortIdAsc(user.getCityId());
+				map.addAttribute("region_list", region_list);
+				// status的值为1表示下一步是选择行政区划
+				map.addAttribute("status", 1);
+			}
 		}
-		// type代表的目前进行的选择：1. 代表行政区划选择
-		else if (1 == type) {
-			map.addAttribute("type", 2);
-			List<TdDistrict> region_list = tdDistrictService.findByCityIdOrderBySortIdAsc(user.getCityId());
-			map.addAttribute("region_list", region_list);
-			return "/client/add_address_detail";
+
+		if (1 == type) {
+			// 获取指定的行政区划
+			TdDistrict district = tdDistrictService.findOne(id);
+			// 获取指定行政区划下的所有行政街道
+			if (null != district) {
+				List<TdSubdistrict> region_list = tdSubdistrictService
+						.findByDistrictIdOrderBySortIdAsc(district.getId());
+				map.addAttribute("region_list", region_list);
+				// status的值为2表示下一步是选择行政街道
+				map.addAttribute("status", 2);
+				req.getSession().setAttribute("new_district", district.getName());
+				// 删除session中的行政街道
+				req.getSession().setAttribute("new_subdistrict", null);
+			}
 		}
-		// type代表的目前进行的选择：1. 代表行政区划选择
-		else if (2 == type) {
-			map.addAttribute("type", 3);
-			// 根据指定的id获取所选择的行政区划
-			TdDistrict tdDistrict = tdDistrictService.findOne(id);
-			req.getSession().setAttribute("new_address_district", tdDistrict.getName());
-			// 根据指定的行政区划，获取其下属所有的行政街道
-			List<TdSubdistrict> region_list = tdSubdistrictService.findByDistrictIdOrderBySortIdAsc(id);
-			map.addAttribute("region_list", region_list);
-			return "/client/add_address_detail";
+
+		if (2 == type) {
+			// 获取指定的行政街道
+			TdSubdistrict subdistrict = tdSubdistrictService.findOne(id);
+			// 存储行政街道
+			if (null != subdistrict) {
+				req.getSession().setAttribute("new_subdistrict", subdistrict.getName());
+			}
 		}
-		// 其他情况只有一种：3. 代表选择完毕，返回添加地址基础页面
-		else {
-			map.addAttribute("type", 0);
-			// 根据指定的id获取所选择的行政街道
-			TdSubdistrict tdSubdistrict = tdSubdistrictService.findOne(id);
-			req.getSession().setAttribute("new_address_subdistrict", tdSubdistrict.getName());
-			map.addAttribute("subdistrict", subdistrict);
-			return "/client/add_address_base";
-		}
+
+		return "/client/add_address_detail";
 	}
 
 	/**
@@ -698,7 +742,7 @@ public class TdUserController {
 	@RequestMapping(value = "/address/add/save")
 	@ResponseBody
 	public Map<String, Object> userAddressAddSave(HttpServletRequest req, String receiver, String receiverMobile,
-			String detailAddress) {
+			String detailAddress, Long operation, Long addressId) {
 		Map<String, Object> res = new HashMap<>();
 		res.put("status", -1);
 
@@ -710,39 +754,44 @@ public class TdUserController {
 			return res;
 		}
 
-		String city = (String) req.getSession().getAttribute("new_address_city");
-		String district = (String) req.getSession().getAttribute("new_address_district");
-		String subdistrict = (String) req.getSession().getAttribute("new_address_subdistrict");
+		String district = (String) req.getSession().getAttribute("new_district");
+		String subdistrict = (String) req.getSession().getAttribute("new_subdistrict");
 
-		if (null == receiver) {
+		if (null == receiver || "".equals(receiver)) {
 			res.put("message", "亲，请添加收货人姓名");
 			return res;
 		}
 
-		if (null == receiverMobile) {
+		if (null == receiverMobile || "".equals(receiverMobile)) {
 			res.put("message", "亲，请添加收件人联系电话");
 			return res;
 		}
 
-		if (null == district) {
+		if (null == district || "".equals(district)) {
 			res.put("message", "亲，请选择收件地址的行政区划");
 			return res;
 		}
 
-		if (null == subdistrict) {
+		if (null == subdistrict || "".equals(subdistrict)) {
 			res.put("message", "亲，请选择收件地址的行政街道");
 			return res;
 		}
 
-		if (null == detailAddress) {
+		if (null == detailAddress || "".equals(detailAddress)) {
 			res.put("message", "亲，请添加详细地址");
 			return res;
 		}
 
-		TdCity tdCity = tdCityService.findByCityName(city);
-		TdShippingAddress address = new TdShippingAddress();
+		TdShippingAddress address = null;
+
+		TdCity tdCity = tdCityService.findByCityName(user.getCityName());
+		if (0L == operation) {
+			address = new TdShippingAddress();
+		} else if (1L == operation) {
+			address = tdShippingAddressService.findOne(addressId);
+		}
 		address.setProvince(tdCity.getProvince());
-		address.setCity(city);
+		address.setCity(tdCity.getCityName());
 		address.setDisctrict(district);
 		address.setSubdistrict(subdistrict);
 		address.setDetailAddress(detailAddress);
@@ -760,6 +809,10 @@ public class TdUserController {
 		address_list.add(address);
 		user.setShippingAddressList(address_list);
 		tdUserService.save(user);
+
+		// 清除session中的行政区划和行政街道
+		req.getSession().setAttribute("new_district", null);
+		req.getSession().setAttribute("new_subdistrict", null);
 
 		res.put("status", 0);
 		return res;
@@ -937,10 +990,10 @@ public class TdUserController {
 	 * @author dengxiao
 	 */
 	@RequestMapping(value = "/recharge")
-	public String userRecharge(HttpServletRequest req){
+	public String userRecharge(HttpServletRequest req) {
 		String username = (String) req.getSession().getAttribute("username");
 		TdUser user = tdUserService.findByUsernameAndIsEnableTrue(username);
-		if(null == user){
+		if (null == user) {
 			return "redirect:/login";
 		}
 		return "/client/user_recharge";

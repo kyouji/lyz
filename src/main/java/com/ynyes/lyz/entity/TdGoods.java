@@ -359,7 +359,7 @@ public class TdGoods {
 	private Long totalCollects;
 
 	// 商品编码（sku）
-	@Column
+	@Column(unique = true)
 	private String code;
 	
 	//是否是调色包
@@ -370,9 +370,9 @@ public class TdGoods {
 	@Column
 	private Boolean isColorful;
 
-	// 可调色的调色包id（多个调色包以","分割）
+	// 可调色的调色包SKU编号（多个调色包以","分割）
 	@Column
-	private String colorPackageId;
+	private String colorPackageSku;
 
 	// 归属： 1 华润商品 2 乐意装商品
 	@Column
@@ -386,14 +386,6 @@ public class TdGoods {
 		this.id = id;
 	}
 
-	public String getFlashSaleImage() {
-		return flashSaleImage;
-	}
-
-	public void setFlashSaleImage(String flashSaleImage) {
-		this.flashSaleImage = flashSaleImage;
-	}
-
 	public Long getProductId() {
 		return productId;
 	}
@@ -402,36 +394,12 @@ public class TdGoods {
 		this.productId = productId;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Long getTotalCollects() {
-		return totalCollects;
-	}
-
-	public void setTotalCollects(Long totalCollects) {
-		this.totalCollects = totalCollects;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Double getFlashSaleTransactionPrice() {
-		return flashSaleTransactionPrice;
-	}
-
-	public void setFlashSaleTransactionPrice(Double flashSaleTransactionPrice) {
-		this.flashSaleTransactionPrice = flashSaleTransactionPrice;
 	}
 
 	public String getTitle() {
@@ -512,22 +480,6 @@ public class TdGoods {
 
 	public void setConfiguration(String configuration) {
 		this.configuration = configuration;
-	}
-
-	public List<TdGoodsParameter> getParamList() {
-		return paramList;
-	}
-
-	public void setParamList(List<TdGoodsParameter> paramList) {
-		this.paramList = paramList;
-	}
-
-	public Long getBelongTo() {
-		return belongTo;
-	}
-
-	public void setBelongTo(Long belongTo) {
-		this.belongTo = belongTo;
 	}
 
 	public String getService() {
@@ -626,6 +578,14 @@ public class TdGoods {
 		this.categoryId = categoryId;
 	}
 
+	public String getCategoryTitle() {
+		return categoryTitle;
+	}
+
+	public void setCategoryTitle(String categoryTitle) {
+		this.categoryTitle = categoryTitle;
+	}
+
 	public String getCategoryIdTree() {
 		return categoryIdTree;
 	}
@@ -634,13 +594,13 @@ public class TdGoods {
 		this.categoryIdTree = categoryIdTree;
 	}
 
-	// public List<TdGoodsParameter> getParamList() {
-	// return paramList;
-	// }
-	//
-	// public void setParamList(List<TdGoodsParameter> paramList) {
-	// this.paramList = paramList;
-	// }
+	public List<TdGoodsParameter> getParamList() {
+		return paramList;
+	}
+
+	public void setParamList(List<TdGoodsParameter> paramList) {
+		this.paramList = paramList;
+	}
 
 	public String getParamValueCollect() {
 		return paramValueCollect;
@@ -648,14 +608,6 @@ public class TdGoods {
 
 	public void setParamValueCollect(String paramValueCollect) {
 		this.paramValueCollect = paramValueCollect;
-	}
-
-	public String getGroupSaleImage() {
-		return groupSaleImage;
-	}
-
-	public void setGroupSaleImage(String groupSaleImage) {
-		this.groupSaleImage = groupSaleImage;
 	}
 
 	public String getSelectOneValue() {
@@ -714,6 +666,14 @@ public class TdGoods {
 		this.salePrice = salePrice;
 	}
 
+	public Double getOutFactoryPrice() {
+		return outFactoryPrice;
+	}
+
+	public void setOutFactoryPrice(Double outFactoryPrice) {
+		this.outFactoryPrice = outFactoryPrice;
+	}
+
 	public Double getIncludePrice() {
 		return includePrice;
 	}
@@ -730,14 +690,6 @@ public class TdGoods {
 		this.combPrice = combPrice;
 	}
 
-	public Long getLeftNumber() {
-		return leftNumber;
-	}
-
-	public void setLeftNumber(Long leftNumber) {
-		this.leftNumber = leftNumber;
-	}
-
 	public Long getWarehouseId() {
 		return warehouseId;
 	}
@@ -752,6 +704,14 @@ public class TdGoods {
 
 	public void setWarehouseTitle(String warehouseTitle) {
 		this.warehouseTitle = warehouseTitle;
+	}
+
+	public Long getLeftNumber() {
+		return leftNumber;
+	}
+
+	public void setLeftNumber(Long leftNumber) {
+		this.leftNumber = leftNumber;
 	}
 
 	public Long getStorehouseId() {
@@ -810,12 +770,28 @@ public class TdGoods {
 		this.giftList = giftList;
 	}
 
+	public Integer getTotalGift() {
+		return totalGift;
+	}
+
+	public void setTotalGift(Integer totalGift) {
+		this.totalGift = totalGift;
+	}
+
 	public List<TdGoodsCombination> getCombList() {
 		return combList;
 	}
 
 	public void setCombList(List<TdGoodsCombination> combList) {
 		this.combList = combList;
+	}
+
+	public Integer getTotalComb() {
+		return totalComb;
+	}
+
+	public void setTotalComb(Integer totalComb) {
+		this.totalComb = totalComb;
 	}
 
 	public Double getSortId() {
@@ -832,6 +808,14 @@ public class TdGoods {
 
 	public void setIsFlashSale(Boolean isFlashSale) {
 		this.isFlashSale = isFlashSale;
+	}
+
+	public String getFlashSaleImage() {
+		return flashSaleImage;
+	}
+
+	public void setFlashSaleImage(String flashSaleImage) {
+		this.flashSaleImage = flashSaleImage;
 	}
 
 	public Date getFlashSaleStartTime() {
@@ -856,6 +840,14 @@ public class TdGoods {
 
 	public void setFlashSalePrice(Double flashSalePrice) {
 		this.flashSalePrice = flashSalePrice;
+	}
+
+	public Double getFlashSaleTransactionPrice() {
+		return flashSaleTransactionPrice;
+	}
+
+	public void setFlashSaleTransactionPrice(Double flashSaleTransactionPrice) {
+		this.flashSaleTransactionPrice = flashSaleTransactionPrice;
 	}
 
 	public Long getFlashSaleLeftNumber() {
@@ -906,6 +898,14 @@ public class TdGoods {
 		this.groupSalePrice = groupSalePrice;
 	}
 
+	public String getGroupSaleImage() {
+		return groupSaleImage;
+	}
+
+	public void setGroupSaleImage(String groupSaleImage) {
+		this.groupSaleImage = groupSaleImage;
+	}
+
 	public Long getGroupSaleLeftNumber() {
 		return groupSaleLeftNumber;
 	}
@@ -920,14 +920,6 @@ public class TdGoods {
 
 	public void setGroupSaleSoldNumber(Long groupSaleSoldNumber) {
 		this.groupSaleSoldNumber = groupSaleSoldNumber;
-	}
-
-	public String getCategoryTitle() {
-		return categoryTitle;
-	}
-
-	public void setCategoryTitle(String categoryTitle) {
-		this.categoryTitle = categoryTitle;
 	}
 
 	public String getBrandTitle() {
@@ -960,6 +952,14 @@ public class TdGoods {
 
 	public void setReturnPoints(Long returnPoints) {
 		this.returnPoints = returnPoints;
+	}
+
+	public Long getPointLimited() {
+		return pointLimited;
+	}
+
+	public void setPointLimited(Long pointLimited) {
+		this.pointLimited = pointLimited;
 	}
 
 	public String getSeoTitle() {
@@ -1002,44 +1002,28 @@ public class TdGoods {
 		this.totalComments = totalComments;
 	}
 
-	public Integer getTotalGift() {
-		return totalGift;
+	public Long getTotalCollects() {
+		return totalCollects;
 	}
 
-	public Integer getTotalComb() {
-		return totalComb;
+	public void setTotalCollects(Long totalCollects) {
+		this.totalCollects = totalCollects;
 	}
 
-	public void setTotalComb(Integer totalComb) {
-		this.totalComb = totalComb;
+	public String getCode() {
+		return code;
 	}
 
-	public void setTotalGift(Integer totalGift) {
-		this.totalGift = totalGift;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public Double getOutFactoryPrice() {
-		return outFactoryPrice;
+	public Boolean getIsColorPackage() {
+		return isColorPackage;
 	}
 
-	public void setOutFactoryPrice(Double outFactoryPrice) {
-		this.outFactoryPrice = outFactoryPrice;
-	}
-
-	public Long getPointLimited() {
-		return pointLimited;
-	}
-
-	public void setPointLimited(Long pointLimited) {
-		this.pointLimited = pointLimited;
-	}
-
-	public String getColorPackageId() {
-		return colorPackageId;
-	}
-
-	public void setColorPackageId(String colorPackageId) {
-		this.colorPackageId = colorPackageId;
+	public void setIsColorPackage(Boolean isColorPackage) {
+		this.isColorPackage = isColorPackage;
 	}
 
 	public Boolean getIsColorful() {
@@ -1050,11 +1034,19 @@ public class TdGoods {
 		this.isColorful = isColorful;
 	}
 
-	public Boolean getIsColorPackage() {
-		return isColorPackage;
+	public String getColorPackageSku() {
+		return colorPackageSku;
 	}
 
-	public void setIsColorPackage(Boolean isColorPackage) {
-		this.isColorPackage = isColorPackage;
+	public void setColorPackageSku(String colorPackageSku) {
+		this.colorPackageSku = colorPackageSku;
+	}
+
+	public Long getBelongTo() {
+		return belongTo;
+	}
+
+	public void setBelongTo(Long belongTo) {
+		this.belongTo = belongTo;
 	}
 }

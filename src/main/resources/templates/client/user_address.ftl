@@ -24,7 +24,7 @@
         <header>
             <a class="back" href="/user/info"></a>
             <p>收货地址</p>
-            <a class="save fz2" href="/user/address/add/0">+</a>
+            <a class="save fz2" href="/user/address/0">+</a>
         </header>
         <!-- 头部 END -->
         
@@ -47,7 +47,7 @@
                         <div class="div2 c999">${default.detailAddress!''}</div>
                     </div>
                     <div class="editable">
-                        <a class="a2" href="javascript:operation(${default.id?c},0);">修改</a>
+                        <a class="a2" href="/user/address/1?id=${default.id?c}">修改</a>
                         <a class="a3" href="javascript:operation(${default.id?c},1);">删除</a>
                     </div>
                 </dt>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="editable">
                                 <a class="a1" href="javascript:operation(${item.id?c},2);">设为默认</a>
-                                <a class="a2" href="javascript:operation(${item.id?c},0);">修改</a>
+                                <a class="a2" href="/user/address/1?id=${item.id?c}">修改</a>
                                 <a class="a3" href="javascript:operation(${item.id?c},1);">删除</a>
                             </div>
                         </dd>

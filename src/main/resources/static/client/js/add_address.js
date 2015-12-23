@@ -1,44 +1,140 @@
-/**
- * 初步进入选择行政区划，行政街道的方法
- * 
- * @author dengxiao
- */
-function selectDetail() {
-	// 获取所有的项的内容
-	var receiver = $("#receiver").val();
-	var receiverMobile = $("#receiverMobile").val();
-	var detailAddress = $("#detailAddress").val();
-	// 开启等待图标
-	wait();
-	window.location.href = "/user/address/add/1" + "?receiver=" + receiver
-			+ "&receiverMobile=" + receiverMobile + "&detailAddress="
-			+ detailAddress;
+window.onload = function() {
+	var oBox = document.getElementById('win_box');
+	var oBtn = document.getElementById('add_btn');
+	var oBack = document.getElementById('back');
+	oBox.children[1].style.height = window.screen.height - 50 + 'px';
+	oBox.children[1].style.background = 'rgba(0,0,0,0.5)';
+	oBox.style.webkitTransition = '0';
 }
 
 /**
- * 在选择行政区划，行政街道的页面中进入下一步的方法
+ * 获取用户城市下所有的行政区划的方法
  * 
  * @author dengxiao
  */
-function theNextStep(id) {
-	// 获取步骤编号
-	var type = $("#type").val();
+function getDistrict() {
+	var oBox = document.getElementById('win_box');
+	var oBtn = document.getElementById('add_btn');
+	var oBack = document.getElementById('back');
+
 	// 开启等待图标
 	wait();
-	window.location.href = "/user/address/add/" + type + "?id=" + id;
+
+	// 发送异步请求
+	$.ajax({
+		url : "/user/address/get",
+		type : "post",
+		timeout : 10000,
+		data : {
+			type : 0
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			// 关闭等待图标
+			close(1);
+			warning("亲，您的网速不给力啊");
+		},
+		success : function(res) {
+			// 关闭等待图标
+			close(100);
+			$("#win_box").html(res);
+			oBox.children[1].style.height = window.screen.height - 50 + 'px';
+			oBox.children[1].style.background = 'rgba(0,0,0,0.5)';
+			oBox.style.webkitTransition = '1s';
+			oBox.style.webkitTransform = 'translateX(0)';
+		}
+	});
 }
 
 /**
- * 提交保存新的收货地址的方法
+ * 选择行政区划或行政街道的方法
+ * 
+ * @author dengxiao
+ */
+function getRegion(id, name, status) {
+	var oBox = document.getElementById('win_box');
+	var oBtn = document.getElementById('add_btn');
+	var oBack = document.getElementById('back');
+	var city = $("#user_city").val();
+	// 开启等待图标
+	wait();
+	if (1 == status) {
+		$.ajax({
+			url : "/user/address/get",
+			type : "post",
+			timeout : 10000,
+			data : {
+				type : 1,
+				id : id
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				// 关闭等待图标
+				close(1);
+				warning("亲，您的网速不给力啊");
+			},
+			success : function(res) {
+				// 关闭等待图标
+				close(100);
+				$("#win_box").html(res);
+				oBox.children[1].style.height = window.screen.height - 50
+						+ 'px';
+				oBox.children[1].style.background = 'rgba(0,0,0,0.5)';
+				oBox.style.webkitTransition = '1s';
+				oBox.style.webkitTransform = 'translateX(0)';
+				$("#add_btn").html(city + name);
+			}
+		});
+	} else if (2 == status) {
+		$.ajax({
+			url : "/user/address/get",
+			type : "post",
+			timeout : 10000,
+			data : {
+				type : 2,
+				id : id
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				// 关闭等待图标
+				close(1);
+				warning("亲，您的网速不给力啊");
+			},
+			success : function(res) {
+				var info = $("#add_btn").html();
+				$("#add_btn").html(info + name);
+				// 关闭等待图标
+				close(100);
+				windowHide();
+			}
+		});
+	}
+}
+
+/**
+ * 关闭弹窗的方法
+ * 
+ * @author dengxiao
+ */
+function windowHide() {
+	var oBox = document.getElementById('win_box');
+	var oBtn = document.getElementById('add_btn');
+	var oBack = document.getElementById('back');
+	oBox.style.webkitTransition = '1s';
+	oBox.style.webkitTransform = 'translateX(100%)';
+}
+
+/**
+ * 提交新的收货地址的方法
  * 
  * @author dengxiao
  */
 function saveAddress() {
-	// 获取所有的项的内容
-	var receiver = $("#receiver").val();
+	var receiverName = $("#receiverName").val();
 	var receiverMobile = $("#receiverMobile").val();
 	var detailAddress = $("#detailAddress").val();
 
+	var operation_type = $("#operation_type").val();
+	var addressId = $("#address_id").val();
+	
+	
 	// 开启等待图标
 	wait();
 
@@ -48,9 +144,11 @@ function saveAddress() {
 		type : "post",
 		timeout : 10000,
 		data : {
-			receiver : receiver,
+			receiver : receiverName,
 			receiverMobile : receiverMobile,
-			detailAddress : detailAddress
+			detailAddress : detailAddress,
+			operation : operation_type,
+			addressId : addressId
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			// 关闭等待图标
@@ -63,16 +161,16 @@ function saveAddress() {
 				window.location.href = "/login";
 				return;
 			}
-
 			// 关闭等待图标
 			close(100);
+			if (-1 == res.status) {
+				warning(res.message);
+			}
 			if (0 == res.status) {
-				warning("收货地址已经添加");
+				warning("收货地址保存成功");
 				setTimeout(function() {
 					window.location.href = "/user/address";
 				}, 1000);
-			} else {
-				warning(res.message);
 			}
 		}
 	});

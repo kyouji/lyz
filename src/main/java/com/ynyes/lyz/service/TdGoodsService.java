@@ -191,7 +191,7 @@ public class TdGoodsService {
 	public List<TdGoods> findByIdAndIsOnSaleTrue(Iterable<Long> ids) {
 		return repository.findByIdAndIsOnSaleTrue(ids);
 	}
-	
+
 	// 查找返现金额不为零的上架商品
 	public Page<TdGoods> findByReturnPriceNotZeroAndIsOnSaleTrue(int page, int size) {
 		PageRequest pageRequest = new PageRequest(page, size);
@@ -1312,9 +1312,10 @@ public class TdGoodsService {
 		}
 		return repository.findByCategoryIdAndIsOnSaleTrueOrderBySortIdAsc(categoryId);
 	}
-	
+
 	/**
-	 * //更新商品类别信息，查找该类别所有。  zhangji
+	 * //更新商品类别信息，查找该类别所有。 zhangji
+	 * 
 	 * @author Zhangji
 	 * @param categoryId
 	 * @return
@@ -1326,4 +1327,15 @@ public class TdGoodsService {
 		return repository.findByCategoryIdOrderBySortIdAsc(categoryId);
 	}
 
+	/**
+	 * 根据指定的sku查找商品
+	 * 
+	 * @author dengxiao
+	 */
+	public TdGoods findByCode(String code){
+		if(null == code){
+			return null;
+		}
+		return repository.findByCode(code);
+	}
 }

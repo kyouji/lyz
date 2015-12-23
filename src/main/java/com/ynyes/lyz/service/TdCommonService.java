@@ -164,26 +164,6 @@ public class TdCommonService {
 	}
 
 	/**
-	 * 获取指定商品已选的调色包的方法
-	 * 
-	 * @author dengxiao
-	 */
-	public List<TdCartColorPackage> getSelectedColorPakcageByGoodsId(HttpServletRequest req, Long goodsId) {
-		// 获取所有已经选择的调色包
-		List<TdCartColorPackage> all_color = this.getSelectedColorPackage(req);
-		// 创建一个集合用于存储指定商品的调色包
-		List<TdCartColorPackage> colors = new ArrayList<>();
-		for (int i = 0; i < all_color.size(); i++) {
-			TdCartColorPackage cartColorPackage = all_color.get(i);
-			if (null != cartColorPackage && null != cartColorPackage.getGoodsId()
-					&& goodsId == cartColorPackage.getGoodsId()) {
-				colors.add(cartColorPackage);
-			}
-		}
-		return colors;
-	}
-
-	/**
 	 * 获取指定id商品和添加登陆用户浏览记录的方法
 	 * 
 	 * @author dengxiao

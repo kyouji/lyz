@@ -29,63 +29,7 @@
         
         <!-- 我的已选 -->
         <div id="my_selected">
-            <#if all_selected??&&all_selected?size gt 0>
-                <article class="my-selected">
-                    <!-- 已选列表 -->
-                    <#list all_selected as goods>
-                        <div class="selected-list">
-                            <section class="sec1">
-                                <div class="img">
-                                    <img src="${goods.goodsCoverImageUri!''}" alt="产品图片">
-                                </div>
-                                <div class="product-info">
-                                    <div class="descript">${goods.goodsTitle!''}</div>
-                                    <div class="choose-num">
-                                        <!-- 数量选择 -->
-                                        <div class="numbers">
-                                            <a class="less" href="javascript:operate(0,0,${goods_index});">-</a>
-                                            <input type="text" id="goods${goods_index}" value="${goods.quantity!'0'}">
-                                            <a class="add" href="javascript:operate(1,0,${goods_index});">+</a>
-                                        </div>
-                                        <div class="price">￥
-                                            <span>
-                                                <#if goods.price??&&goods.quantity??>
-                                                    ${(goods.price*goods.quantity)?eval?string("0.00")}
-                                                </#if>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <#if ("goods_colors"+goods_index)?eval??&&("goods_colors"+goods_index)?eval?size gt 0>
-                                <#list ("goods_colors"+goods_index)?eval as color>
-                                    <section class="sec1">
-                                        <div class="colortap"></div>
-                                        <div class="product-info">
-                                        <div class="descript">调色包：<span>${color.number!''}</span></div>
-                                            <div class="choose-num">
-                                                <!-- 数量选择 -->
-                                                <div class="numbers">
-                                                    <a class="less" href="javascript:operate(0,1,${goods_index},${color_index});">-</a>
-                                                    <input type="text" id="price${goods_index}_${color_index}" value="${color.quantity!'0'}">
-                                                    <a class="add" href="javascript:operate(1,1,${goods_index},${color_index});">+</a>
-                                                </div>
-                                                <div class="price">￥
-                                                    <span>
-                                                        <#if color.salePrice??&&color.quantity??>
-                                                            ${(color.salePrice*color.quantity)?eval?string("0.00")}
-                                                        </#if>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </#list>
-                            </#if>
-                        </div>
-                    </#list>
-                </article>
-            </#if>
+            <#include "/client/selected_goods_and_color.ftl">
         </div>
         <!-- 我的已选 END -->
         <div class="clear h50"></div>

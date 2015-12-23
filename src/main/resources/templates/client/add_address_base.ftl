@@ -11,7 +11,6 @@
         <link rel="stylesheet" type="text/css" href="/client/css/my_base.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/x_common.css"/>
         <link rel="stylesheet" type="text/css" href="/client/css/x_account_settings.css"/>
-        
         <script type="text/javascript" src="/client/js/jquery-1.11.0.js"></script>
         <script type="text/javascript" src="/client/js/add_address.js"></script>
     </head>
@@ -19,7 +18,10 @@
         <#-- 引入警告提示样式 -->
         <#include "/client/common_warn.ftl">
         <#-- 引入等待提示样式 -->
-        <#include "/client/common_wait.ftl"> 
+        <#include "/client/common_wait.ftl">
+        <div class="win_add" id="win_box">
+            <#include "/client/add_address_detail.ftl">
+        </div>
         <!-- 头部 -->
         <header>
             <a class="back" href="javascript:history.go(-1);"></a>
@@ -32,23 +34,27 @@
             <form>
                 <div class="edit-info">
                     <label>收货人：</label>
-                    <input id="receiver" type="text" value="">
+                    <input type="text" id="receiverName" value="${address.receiverName!''}">
                 </div>
                 <div class="edit-info">
                     <label>手机号码：</label>
-                    <input id="receiverMobile" type="text" value="${mobile!''}">
+                    <input type="text" id="receiverMobile" value="${address.receiverMobile!''}">
                 </div>
-                <div class="edit-info">
+                <div class="edit-info" onclick="getDistrict();">
                     <label>所在地区：</label>
-                    <a class="edit-city" href="javascript:selectDetail();">${city!''}${district!''}${subdistrict!''}</a>
+                    <a class="edit-city" id="add_btn">${address.city!''}</a>
                 </div>
                 <div class="edit-info">
                     <label>详细地址：</label>
-                    <input id="detailAddress" type="text" value="">
+                    <input type="text" id="detailAddress" value="${address.detailAddress!''}">
                 </div>
-                <input class="btn-submit-save" type="button" onclick="saveAddress();" value="保存">
+                <input class="btn-submit-save" type="button" value="保存" onclick="saveAddress();">
             </form>
         </article>
         <!-- 添加收货地址 END -->
+        <#-- 用于存储用户的城市 -->
+        <input type="hidden" id="user_city" value="${city!''}">
+        <input type="hidden" id="operation_type" value="${operation!''}">
+        <input type="hidden" id="address_id" value="${addressId!''}">
     </body>
 </html>
