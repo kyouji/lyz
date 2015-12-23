@@ -191,8 +191,8 @@ public class TdManagerCouponController {
             tdManagerLogService.addLog("edit", "用户修改优惠券类型", req);
         }
         
-        if(null != tdCouponType.getCategoryId() && (tdCouponType.getCategoryId() == 1L || tdCouponType.getCategoryId() == 2L))
-        tdCouponType.setPicUri("unique");
+//        if(null != tdCouponType.getCategoryId() && (tdCouponType.getCategoryId() == 1L || tdCouponType.getCategoryId() == 2L))
+//        tdCouponType.setPicUri("unique");
         tdCouponTypeService.save(tdCouponType);       
         
         //同步优惠券数据
@@ -670,14 +670,8 @@ public class TdManagerCouponController {
             if ( null != leftNumber 
                     && null != typeId)
             {
-            	/**
-				 * @author lc
-				 * @注释：如果不是免费洗车券和免费打蜡券就不存在同盟店
-				 */
             	TdCouponType tdCouponType = tdCouponTypeService.findOne(typeId);
                          
-            
-
 				TdCoupon coupon = tdCouponService.findTopByTypeIdAndIsDistributtedFalse(typeId);
                 
                 if (null == coupon)
